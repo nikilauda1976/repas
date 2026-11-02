@@ -1,442 +1,1116 @@
-<!doctype html>
-<html lang="fr">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Les menus de la semaine de la maison, la liste de courses et les recettes en PDF.">
-<meta name="theme-color" content="#2f7a4f">
-<title>Repas de la maison</title>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Menus de la maison 1</title>
+<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600;700&display=swap">
 <style>
-/* Layout : la semaine en une colonne (un soir par ligne), la recette s'ouvre par-dessus ; même palette que « Les menus de la maison » */
+/* Layout : carnet de cuisine en une colonne, cartes de menus cochables, liste de courses qui se construit en bas */
 :root{
   --bg:#f5f7f2; --surface:#ffffff; --ink:#1d2a24; --muted:#5d6b63; --line:#dbe3dc;
-  --basil:#2f7a4f; --basil-soft:#e3f0e7; --saffron:#b86e00; --saffron-soft:#fbf0dc; --on-accent:#ffffff;
+  --basil:#2f7a4f; --basil-soft:#e3f0e7; --saffron:#b86e00; --saffron-soft:#fbf0dc;
   --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
   --body:"Source Sans 3",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#121815; --surface:#1a221e; --ink:#e6ede8; --muted:#9fb0a6; --line:#2c3832;
-  --basil:#6cc493; --basil-soft:#1f3328; --saffron:#f0b45a; --saffron-soft:#33281a; --on-accent:#121815; color-scheme:dark}}
+  --basil:#6cc493; --basil-soft:#1f3328; --saffron:#f0b45a; --saffron-soft:#33281a; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#121815; --surface:#1a221e; --ink:#e6ede8; --muted:#9fb0a6; --line:#2c3832;
-  --basil:#6cc493; --basil-soft:#1f3328; --saffron:#f0b45a; --saffron-soft:#33281a; --on-accent:#121815; color-scheme:dark}
+  --basil:#6cc493; --basil-soft:#1f3328; --saffron:#f0b45a; --saffron-soft:#33281a; color-scheme:dark}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
-.wrap{max-width:820px;margin:0 auto;padding-block:22px 96px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:20px}
+.wrap{max-width:860px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:36px}
 h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(28px,6vw,40px);font-weight:700}
+h2{font-size:24px;font-weight:700}
+h3{font-size:19px;font-weight:700}
 p{margin:0}
-button{font:inherit;color:inherit;cursor:pointer}
-:focus-visible{outline:2px solid var(--basil);outline-offset:2px}
 .eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
 header{display:flex;flex-direction:column;gap:12px}
-.weekline{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.weekline h1{font-size:clamp(26px,6vw,38px);font-weight:700;flex:1 1 260px;min-width:0}
-.weekline h1 small{display:block;font-family:var(--body);font-weight:400;font-size:16px;color:var(--muted);margin-top:4px}
-.nav{display:flex;gap:6px}
-.icon-btn{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--surface);font-size:20px;display:grid;place-items:center;padding:0}
-.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.tabs{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px}
-.tabs button{border:0;background:transparent;padding:7px 16px;border-radius:999px;font-weight:700;color:var(--muted)}
-.tabs button[aria-selected="true"]{background:var(--basil);color:var(--on-accent)}
-.spacer{flex:1}
-.btn{border:1px solid var(--line);background:var(--surface);padding:9px 16px;border-radius:999px;font-weight:700}
-.btn.primary{background:var(--saffron);border-color:var(--saffron);color:var(--on-accent)}
-.btn:disabled{opacity:.55;cursor:progress}
 .facts{display:flex;flex-wrap:wrap;gap:8px}
-.chip{display:inline-flex;gap:6px;align-items:center;padding:4px 10px;border-radius:999px;background:var(--basil-soft);font-size:14px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--basil-soft);color:var(--ink);font-size:14px}
 .chip b{color:var(--basil)}
-
-.days{display:flex;flex-direction:column;gap:10px}
-.day{display:grid;grid-template-columns:92px minmax(0,1fr);gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;text-align:left;width:100%}
-button.day:hover{border-color:var(--basil)}
-.day.today{box-shadow:0 0 0 2px var(--basil) inset;border-color:var(--basil)}
-.day.free{background:transparent;border-style:dashed}
-.dname{font-family:var(--display);font-weight:700;font-size:18px;color:var(--saffron)}
-.dname span{display:block;font-family:var(--body);font-weight:400;font-size:14px;color:var(--muted)}
-.dmeal{display:flex;flex-direction:column;gap:4px;min-width:0}
-.dmeal h3{font-size:18px}
-.dmeal .empty{color:var(--muted);font-style:italic}
-.meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:14px;color:var(--muted)}
-.meta .kcal{color:var(--saffron);font-weight:700}
-.tag{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--basil)}
-.tag.veg{color:var(--saffron)}
-@media (max-width:520px){.day{grid-template-columns:1fr;gap:6px}.dname span{display:inline;margin-left:8px}}
-h2.section{font-size:20px;margin-top:8px}
-
-.shop{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px}
-.shop section h3{font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--basil);padding-bottom:6px;border-bottom:2px solid var(--basil)}
-.shop ul{list-style:none;margin:0;padding:0}
-.shop label{display:flex;gap:10px;padding:7px 0;border-bottom:1px dashed var(--line);cursor:pointer;align-items:baseline}
-.shop input{accent-color:var(--basil);width:18px;height:18px;transform:translateY(3px);flex:none}
-.shop .n{min-width:0}
-.shop .q{margin-left:auto;color:var(--muted);font-variant-numeric:tabular-nums;text-align:right;padding-left:8px}
-.shop li.done .n{text-decoration:line-through;color:var(--muted)}
-.totals{display:flex;flex-wrap:wrap;gap:10px 28px;font-variant-numeric:tabular-nums}
+.lead{color:var(--muted);max-width:65ch}
+.menus{display:flex;flex-direction:column;gap:16px}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:-20px}
+.filters button{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px}
+.filters button[aria-pressed="true"]{background:var(--basil);color:var(--surface);border-color:var(--basil)}
+.menu{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:grid;grid-template-columns:1fr auto;gap:10px 16px}
+.menu.on{border-color:var(--basil);box-shadow:0 0 0 2px var(--basil) inset}
+.menu-head{display:flex;flex-direction:column;gap:4px;min-width:0}
+.menu .meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px;color:var(--muted)}
+.price{text-align:right;font-variant-numeric:tabular-nums;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.fav{background:none;border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:5px 11px;font-size:14px;display:inline-flex;align-items:center;gap:6px}
+.fav .heart{font-size:15px;line-height:1}
+.fav[aria-pressed="true"]{background:var(--saffron-soft);border-color:var(--saffron);color:var(--saffron)}
+.favlist{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+.favlist li{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 12px}
+.favlist a{color:var(--basil);font-weight:600;text-decoration:none}
+.favlist span{font-size:13px;color:var(--muted)}
+.price strong{font-family:var(--display);font-size:22px;color:var(--saffron);display:block}
+.price span{font-size:13px;color:var(--muted)}
+.pick{grid-column:1/-1;display:flex;align-items:center;gap:10px;font-weight:600;cursor:pointer;padding:8px 12px;border-radius:8px;background:var(--basil-soft);width:fit-content}
+.pick input{width:20px;height:20px;accent-color:var(--basil)}
+details{grid-column:1/-1;border-top:1px solid var(--line);padding-top:10px}
+summary{cursor:pointer;font-weight:600;color:var(--basil)}
+summary:focus-visible,.pick:focus-within,button:focus-visible{outline:2px solid var(--basil);outline-offset:2px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:10px}
+.cols>div{min-width:0}
+ul,ol{margin:6px 0 0;padding-left:20px}
+li{margin:2px 0}
+.ing{font-variant-numeric:tabular-nums}
+.ing small{color:var(--muted)}
+.cols{grid-template-columns:minmax(0,1fr) minmax(0,1.6fr)}
+.sub{margin:4px 0 0;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--basil)}
+.etapes li{margin:0 0 10px;padding-left:4px}
+.basics{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 18px}
+.basics summary{font-family:var(--display);font-size:18px}
+.basics dl{display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:8px 16px;margin:12px 0 0}
+.basics dt{font-weight:700}
+.basics dd{margin:0}
+@media (max-width:620px){.basics dl{grid-template-columns:1fr}.basics dd{margin-bottom:6px}}
+.tips{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:14px}
+.tip{padding:8px 10px;border-radius:8px;background:var(--bg)}
+.tip b{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.basket{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.totals{display:flex;flex-wrap:wrap;gap:10px 24px;font-variant-numeric:tabular-nums}
 .totals div{display:flex;flex-direction:column}
 .totals strong{font-family:var(--display);font-size:24px}
 .totals span{font-size:13px;color:var(--muted)}
-.note{color:var(--muted);font-size:14px;max-width:65ch}
-.cta{color:var(--basil);font-weight:700}
-
-.foyer{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:flex-end;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.rayon h4{margin:8px 0 2px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--basil)}
+.rayon ul{list-style:none;padding:0}
+.rayon li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding:3px 0;font-variant-numeric:tabular-nums}
+.empty{color:var(--muted)}
+button{font:inherit;font-weight:600;border:0;border-radius:8px;padding:10px 14px;background:var(--basil);color:var(--surface);cursor:pointer;width:fit-content}
+.note{font-size:14px;color:var(--muted)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;display:flex;gap:6px;background:var(--bg);padding:8px 0;margin-block:-16px;overflow-x:auto;border-bottom:1px solid var(--line)}
+.tabs button{background:transparent;color:var(--muted);border:1px solid transparent;border-radius:999px;padding:8px 14px;white-space:nowrap}
+.tabs button[aria-selected="true"]{background:var(--basil);color:var(--surface)}
+.ajout{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:14px}
+.ajout-row{display:flex;flex-wrap:wrap;gap:8px}
+.ajout input{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 12px;min-width:0;flex:1 1 160px}
+.ajout input:focus-visible{outline:2px solid var(--basil);outline-offset:1px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.x{background:none;border:1px solid var(--line);color:var(--muted);padding:0 8px;border-radius:6px;font-size:16px;line-height:1.4}
+.oeufs{font-weight:700}
+.kcal{color:var(--saffron);font-weight:700}
+section{display:flex;flex-direction:column;gap:12px}
+.table-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:560px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.ok{color:var(--basil);font-weight:700}
+.warn{color:var(--saffron);font-weight:700}
+.steps{display:flex;flex-direction:column;gap:10px}
+.step{display:grid;grid-template-columns:110px 1fr;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.step .day{font-family:var(--display);font-weight:700;color:var(--saffron)}
+.foyer{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:flex-end;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
 .foyer label{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:600;color:var(--muted)}
-.foyer input{font:inherit;font-size:18px;font-weight:700;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 10px;width:84px}
-
-.empty-week{border:1px dashed var(--line);border-radius:12px;padding:28px 20px;text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center}
-.empty-week p{color:var(--muted);max-width:46ch}
-
-.status{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-weight:700;font-size:15px;max-width:calc(100% - 32px);z-index:40}
-
-.sheet-bg{position:fixed;inset:0;background:rgba(10,16,12,.5);z-index:30;display:flex;align-items:flex-end;justify-content:center}
-.sheet{background:var(--bg);width:100%;max-width:640px;max-height:90%;border-radius:18px 18px 0 0;display:flex;flex-direction:column;overflow:hidden}
-.sheet-head{display:flex;align-items:flex-start;gap:12px;padding:16px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));border-bottom:1px solid var(--line)}
-.sheet-head h2{font-size:21px;flex:1;min-width:0}
-.sheet-body{overflow-y:auto;padding:14px max(16px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:14px}
-.sheet h4{margin:0;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--basil)}
-.ings{list-style:none;margin:0;padding:0}
-.ings li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding:4px 0;font-variant-numeric:tabular-nums}
-.ings li span:last-child{color:var(--muted);text-align:right}
-.steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:10px}
-.row{display:flex;gap:8px;flex-wrap:wrap}
-.sheet input[type=text]{font:inherit;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);flex:1 1 180px;min-width:0}
-.pick{border-top:1px solid var(--line)}
-.pick button{width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);background:transparent;padding:10px 4px;display:flex;gap:10px;align-items:baseline}
-.pick button .n{flex:1;min-width:0}
-.pick button.cur{background:var(--basil-soft)}
-@media (prefers-reduced-motion:no-preference){.sheet{animation:up .18s ease-out}@keyframes up{from{transform:translateY(24px);opacity:.6}}}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-[hidden]{display:none!important}
+.foyer input{font:inherit;font-size:18px;font-weight:700;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 10px;width:90px}
+.foyer input:focus-visible{outline:2px solid var(--basil);outline-offset:1px}
+.foyer .note{flex-basis:100%}
+.ghost{background:var(--surface);color:var(--basil);border:1px solid var(--basil)}
+button:disabled{opacity:.55;cursor:progress}
+.cf-ligne{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:6px 12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.cf-ligne img{width:48px;height:48px;object-fit:contain;border-radius:6px;background:#fff}
+.cf-nom{font-weight:600;line-height:1.3}
+.cf-nom small{display:block;font-weight:400;color:var(--muted);font-size:13px}
+.cf-prix{font-variant-numeric:tabular-nums;font-weight:700;text-align:right;white-space:nowrap}
+.cf-actions{grid-column:2/-1;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.qte{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.qte button{background:var(--surface);color:var(--ink);border-radius:0;padding:4px 12px;font-size:18px;line-height:1.2}
+.qte span{min-width:30px;text-align:center;font-variant-numeric:tabular-nums;font-weight:700}
+.lien{background:none;color:var(--basil);padding:4px 6px;text-decoration:underline;font-weight:600}
+.cf-alts{grid-column:1/-1;display:flex;flex-direction:column;gap:6px;background:var(--bg);border-radius:8px;padding:8px 10px}
+.cf-alt{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px}
+.cf-alt button{padding:6px 10px;font-size:14px}
+.top{display:inline-block;margin-top:3px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--saffron);background:var(--saffron-soft);border-radius:999px;padding:1px 8px}
+.cf-warn{background:var(--saffron-soft);color:var(--ink);border-radius:8px;padding:8px 12px;font-size:14px}
+.cta{display:inline-block;background:var(--saffron);color:var(--surface);font-weight:700;text-decoration:none;border-radius:8px;padding:12px 16px;width:fit-content}
+@media (max-width:620px){
+  .cols,.tips{grid-template-columns:1fr}
+  .step{grid-template-columns:1fr;gap:2px}
+}
 </style>
-</head>
-<body>
+
 <div class="wrap">
-  <header>
-    <span class="eyebrow">Repas de la maison</span>
-    <div class="weekline">
-      <h1 id="weekTitle">Les menus de la semaine<small>Chargement…</small></h1>
-      <div class="nav">
-        <button class="icon-btn" id="prev" aria-label="Semaine précédente">‹</button>
-        <button class="icon-btn" id="next" aria-label="Semaine suivante">›</button>
-      </div>
+<header>
+  <span class="eyebrow">Semaine du 2 novembre 2026 · livraison samedi 31 octobre</span>
+  <h1>Les menus de la maison</h1>
+  <p class="lead">Vingt menus au choix. Réglez votre foyer ci-dessous, cochez vos menus, puis ouvrez l'onglet « Ma liste » : les quantités, le nombre d'œufs et le total s'adaptent tout seuls.</p>
+  <form class="foyer" id="foyer" aria-label="Réglages du foyer">
+    <label>Adultes et ados<input type="number" id="f-adultes" min="0" max="12" step="1" value="5" inputmode="numeric"></label>
+    <label>Enfants de moins de 12 ans<input type="number" id="f-enfants" min="0" max="12" step="1" value="0" inputmode="numeric"></label>
+    <label>Menus par semaine<input type="number" id="f-menus" min="1" max="21" step="1" value="5" inputmode="numeric"></label>
+    <p class="note" id="f-note"></p>
+  </form>
+  <div class="facts">
+    <span class="chip">Calories : <b>≈ 560 à 1 010</b> par portion</span>
+    <span class="chip" id="chip-foyer"><b>5</b> mangeurs, 6 portions</span>
+    <span class="chip" id="chip-menus"><b>0</b> sur 15 menus choisis</span>
+    <span class="chip"><b>20-25 min</b> de préparation</span>
+    <span class="chip">Budget <b>3 à 4 €</b> par personne</span>
+    <span class="chip">Plat + accompagnement + dessert</span>
+  </div>
+</header>
+
+<nav class="tabs" role="tablist" aria-label="Sections de la page">
+  <button type="button" role="tab" data-tab="semaine" aria-selected="true">Menus</button>
+  <button type="button" role="tab" data-tab="favoris" aria-selected="false">Favoris <span id="tab-fav"></span></button>
+  <button type="button" role="tab" data-tab="liste" aria-selected="false">Ma liste <span id="tab-count"></span></button>
+  <button type="button" role="tab" data-tab="carrefour" aria-selected="false">Panier Carrefour <span id="tab-cf"></span></button>
+  <button type="button" role="tab" data-tab="commande" aria-selected="false">Commande</button>
+</nav>
+<details class="basics" data-view="semaine">
+  <summary>Les gestes de base, à lire une fois avant de commencer</summary>
+  <dl>
+    <dt>Feu doux, moyen, fort</dt><dd>Sur une plaque de 1 à 9 : doux = 2-3, moyen = 5-6, fort = 8-9. En cas de doute, commencez moyen : on peut toujours monter.</dd>
+    <dt>« Quand l'eau bout »</dt><dd>De grosses bulles remontent sans arrêt à la surface. Un couvercle fait bouillir l'eau deux fois plus vite.</dd>
+    <dt>Faire revenir</dt><dd>Cuire dans un peu d'huile chaude en remuant souvent, pour que ça dore sans brûler. Si ça noircit ou fume beaucoup, baissez le feu.</dd>
+    <dt>Mijoter</dt><dd>Cuire doucement, à feu doux, avec seulement quelques petites bulles.</dd>
+    <dt>Égoutter</dt><dd>Verser le contenu de la casserole dans une passoire posée dans l'évier pour enlever l'eau. Attention à la vapeur.</dd>
+    <dt>Les mesures</dt><dd>1 c. à soupe = une grande cuillère pleine, 1 c. à café = une petite cuillère, 1 pincée = ce qu'on tient entre deux doigts, 25 cl = un grand verre.</dd>
+    <dt>Viande et volaille</dt><dd>Le poulet et la dinde doivent être blancs à l'intérieur, sans rose. Lavez mains et planche au savon après avoir touché de la viande crue.</dd>
+    <dt>Couper un oignon</dt><dd>Coupez les deux bouts, retirez la peau marron, coupez en deux, posez à plat, puis tranchez en lamelles ou en petits dés.</dd>
+    <dt>Avant de commencer</dt><dd>Lisez toute la recette, sortez tous les ingrédients et le matériel sur le plan de travail. C'est le meilleur moyen de tenir les 25 minutes.</dd>
+  </dl>
+</details>
+<div class="filters" id="filters" data-view="semaine" role="group" aria-label="Filtrer les menus"></div>
+<div class="menus" id="menus" data-view="semaine"></div>
+
+<section data-view="semaine">
+  <span class="eyebrow">En plus des repas</span>
+  <h2>Le gâteau et la soirée de la semaine</h2>
+  <p class="lead">Chaque semaine, un gâteau pour les goûters et une soirée pour se retrouver autour de la table, qui changent avec la saison. Cochez-les pour les ajouter aux courses.</p>
+  <div class="menus" id="extras"></div>
+  <details class="basics">
+    <summary>Le calendrier des idées selon la saison</summary>
+    <div class="table-wrap"><table style="min-width:0;margin-top:10px"><tbody id="saisons"></tbody></table></div>
+  </details>
+</section>
+
+<section data-view="favoris">
+  <span class="eyebrow">Ce que vous avez aimé</span>
+  <h2>Mes recettes favorites</h2>
+  <p class="lead">Toutes vos recettes préférées au même endroit, avec les ingrédients et les étapes. Vous pouvez les cocher pour les remettre dans la liste de courses. Je les relis pour proposer des recettes dans le même esprit.</p>
+  <div class="menus" id="favoris"></div>
+  <p class="note" id="fav-note" hidden></p>
+</section>
+
+<section class="basket" data-view="liste" aria-live="polite">
+  <h2>Ma liste de courses</h2>
+  <div class="totals" id="totals"></div>
+  <div id="list"></div>
+  <form id="ajout-form" class="ajout">
+    <h3>Ajouter autre chose à la commande</h3>
+    <p class="note">Lait, café, produit d'entretien, une envie du moment. Ce que vous ajoutez ici, je peux le lire et le mettre dans le panier avec le reste.</p>
+    <div class="ajout-row">
+      <label for="ajout-nom" class="sr">Produit</label><input id="ajout-nom" type="text" placeholder="Produit (par exemple : café)" autocomplete="off">
+      <label for="ajout-qte" class="sr">Quantité</label><input id="ajout-qte" type="text" placeholder="Quantité (par exemple : 2 paquets)" autocomplete="off">
+      <button type="submit">Ajouter</button>
     </div>
-    <div class="facts" id="facts"></div>
-    <div class="toolbar">
-      <div class="tabs" role="tablist">
-        <button role="tab" id="tabMenu" aria-selected="true">Menus</button>
-        <button role="tab" id="tabShop" aria-selected="false">Courses</button>
-      </div>
-      <span class="spacer"></span>
-      <button class="btn" id="todayBtn">Cette semaine</button>
-      <button class="btn primary" id="pdfBtn" hidden>Télécharger le PDF</button>
+    <p class="note" id="ajout-note" hidden></p>
+  </form>
+  <button type="button" id="send">Envoyer à Claude pour commander</button>
+  <p class="note" id="sent" hidden></p>
+  <button type="button" id="copy">Copier la liste</button>
+  <p class="note" id="copied" hidden>Liste copiée. Vous pouvez la coller dans le site du supermarché ou m'envoyer vos choix dans le fil.</p>
+  <p class="note">Les prix sont des estimations au prix courant des grandes surfaces (marques distributeur), relevés à la main. Ils peuvent bouger de 10 à 15 % selon l'enseigne et les promos. Non comptés, car on les a en général dans le placard : huile, beurre, lait, sel, poivre, ail, moutarde, vinaigre, cubes de bouillon, herbes de Provence, laurier, thym, paprika, cumin, curry, sucre, miel.</p>
+</section>
+
+<section class="basket" data-view="carrefour" aria-live="polite">
+  <h2>Mon panier Carrefour</h2>
+  <p class="lead">Le panier se remplit ici à partir de Ma liste, avec votre compte Carrefour connecté à Claude. Pour la viande, le poisson, les œufs et les produits laitiers, la page choisit le haut de gamme Carrefour (Label Rouge, AOP, bio, MSC, fermier, Charolais) et écarte les premiers prix. Vous ajustez les produits et les quantités, puis vous finalisez sur Carrefour.fr pour choisir le créneau et payer.</p>
+  <div class="ajout">
+    <div class="ajout-row">
+      <label for="cf-adresse" class="sr">Adresse de livraison</label><input id="cf-adresse" type="text" value="" placeholder="Votre adresse de livraison" autocomplete="street-address">
     </div>
-  </header>
-  <main id="view"></main>
+    <div class="ajout-row">
+      <button type="button" id="cf-remplir">Remplir le panier avec ma liste</button>
+      <button type="button" id="cf-voir" class="ghost">Actualiser le panier</button>
+    </div>
+  </div>
+  <p class="note" id="cf-etat" role="status"></p>
+  <div class="totals" id="cf-totaux"></div>
+  <div id="cf-alerte"></div>
+  <div id="cf-lignes"><p class="empty">Le panier est vide. Cochez des menus, puis appuyez sur « Remplir le panier avec ma liste ».</p></div>
+  <form id="cf-cherche" class="ajout">
+    <h3>Ajouter un produit Carrefour</h3>
+    <div class="ajout-row">
+      <label for="cf-q" class="sr">Produit à chercher</label><input id="cf-q" type="text" placeholder="Par exemple : café moulu" autocomplete="off">
+      <button type="submit">Chercher</button>
+    </div>
+    <div id="cf-resultats"></div>
+  </form>
+  <a id="cf-lien" class="cta" href="#" target="_blank" rel="noopener" hidden>Finaliser sur Carrefour.fr</a>
+  <p class="note">Les prix et la disponibilité viennent directement de Carrefour. Le paiement et le choix du créneau se font sur Carrefour.fr, jamais ici. Pour ouvrir le panier sur votre compte, connectez-vous sur le site Carrefour avant de cliquer.</p>
+</section>
+
+<section data-view="commande">
+  <h2>Où commander près de chez vous</h2>
+  <p class="lead">Aucune enseigne française n'ouvre d'API publique pour passer une commande à la place d'un client. Même Jow passe par des accords privés avec ses partenaires. Il reste trois façons réalistes de remplir le panier.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Enseigne</th><th>Livraison à domicile</th><th>Frais et minimum</th><th>Prix</th></tr></thead>
+    <tbody>
+      <tr><td>Leclerc Drive</td><td class="warn">Surtout en retrait (drive)</td><td>Drive gratuit, pas de minimum</td><td class="ok">Le moins cher dans les comparatifs</td></tr>
+      <tr><td>Carrefour</td><td class="ok">Oui</td><td>3,90 à 7,90 €, minimum 30 €</td><td>Moyen, bonne gamme marque Carrefour</td></tr>
+      <tr><td>Auchan</td><td class="ok">Oui</td><td>4,95 à 8,90 €, minimum 25 €</td><td>Moyen, prix au kilo affiché</td></tr>
+      <tr><td>Intermarché</td><td class="warn">Zones limitées</td><td>5,90 €, pas de minimum</td><td class="ok">Juste après Leclerc</td></tr>
+      <tr><td>Monoprix</td><td class="ok">Oui</td><td>5,90 à 9,90 €, minimum 40 €</td><td class="warn">Plus cher</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">Frais relevés sur un comparatif 2026 (meslistesdecourses.fr). La disponibilité exacte à votre adresse se vérifie en entrant l'adresse sur le site de l'enseigne.</p>
+  <p><strong>Ma recommandation :</strong> Carrefour en livraison à domicile pour le samedi. C'est le meilleur compromis entre prix, qualité de la marque distributeur et créneaux du samedi. Si vous pouvez passer au drive, Leclerc fait économiser encore 10 à 15 %.</p>
+  <ul>
+    <li><b>Option 1, la plus simple :</b> je vous envoie la liste, vous la collez dans le site Carrefour (environ 10 minutes) et vous payez.</li>
+    <li><b>Option 2, avec l'appli Jow :</b> elle envoie un panier directement au drive Carrefour, Leclerc, Auchan ou Intermarché, pour 0,99 € par commande. Mais il faut prendre leurs recettes à eux.</li>
+    <li><b>Option 3, la plus automatique :</b> ouvrez l'onglet « Panier Carrefour » et appuyez sur « Remplir le panier avec ma liste ». La page cherche chaque produit chez Carrefour, calcule les quantités d'après les grammages et remplit le panier. Vous ajustez, puis vous finalisez sur Carrefour.fr.</li>
+  </ul>
+</section>
+
+<section data-view="commande">
+  <h2>Le rythme chaque semaine</h2>
+  <div class="steps">
+    <div class="step"><span class="day">Samedi</span><span>Je vous envoie de nouveaux menus, de quoi en choisir 15 (ou le nombre réglé en haut), différents des semaines passées.</span></div>
+    <div class="step"><span class="day">Dim. à merc.</span><span>Vous choisissez vos menus. Je prépare la liste groupée par rayon.</span></div>
+    <div class="step"><span class="day">Mercredi soir</span><span>Dernier moment pour réserver un créneau du samedi, qui partent vite en Île-de-France.</span></div>
+    <div class="step"><span class="day">Samedi suivant</span><span>Livraison, et je vous envoie les menus de la semaine d'après.</span></div>
+  </div>
+</section>
 </div>
-<div class="status" id="status" hidden></div>
-<div id="sheetRoot"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
-(function(){
-let R = {}, STATE = {foyer:{adultes:6,enfants:0},weeks:{}};
-const DAYS = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
-const MONTHS = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
-const RAYONS = ["Fruits et légumes","Viande","Poissonnerie","Frais","Surgelés","Épicerie","Boulangerie"];
-const PLACARD = "huile, beurre, lait, sel, poivre, ail, moutarde, vinaigre, bouillon, herbes et épices, sucre, miel";
-
-const $ = id => document.getElementById(id);
-const store = {get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
-const eur = n => n.toFixed(2).replace(".",",")+" €";
-
-// ---- Foyer : recettes écrites pour 6 portions (5 personnes + 1 de marge) ----
-const F = () => STATE.foyer;
-const nbPers = () => Math.max(1, F().adultes + F().enfants);
-const portions = () => F().adultes + 0.6*F().enfants + 1;
-const fac = () => Math.max(0.2, portions()/6);
-const fmt = n => String(Math.round(n*10)/10).replace(".",",");
+const MENUS=[
+ {id:"poulet",nom:"Poulet au paprika, riz et haricots verts",dessert:"Clémentines",temps:"25 min",profil:"Riche en protéines",
+  ing:[["Viande","Hauts de cuisse de poulet désossés","1,2 kg",9.00],["Épicerie","Riz basmati","500 g",1.50],["Surgelés","Haricots verts extra-fins","1 kg",2.20],["Fruits et légumes","Oignons","2",0.40],["Frais","Crème fraîche légère 15 %","20 cl",0.90],["Fruits et légumes","Clémentines","1 kg",2.50]],
+  etapes:["Lancer le riz.","Couper le poulet en lanières, le dorer 8 min avec l'oignon émincé et 2 c. à café de paprika.","Ajouter la crème et laisser mijoter 5 min.","Cuire les haricots verts 8 min à la vapeur ou à la poêle."],
+  jeunes:"Une portion de poulet un peu plus généreuse.",seniors:"Plus de haricots verts, moins de riz : léger mais complet."},
+ {id:"colin",nom:"Colin en papillote citron-aneth, pommes de terre et carottes",dessert:"Yaourt nature et un filet de miel",temps:"25 min",profil:"Léger",
+  ing:[["Surgelés","Filets de colin d'Alaska","1 kg",7.90],["Fruits et légumes","Pommes de terre","2 kg",2.60],["Fruits et légumes","Carottes","1 kg",1.30],["Fruits et légumes","Citrons","2",0.80],["Surgelés","Aneth ou persil","1 sachet",1.00],["Frais","Yaourts nature","8",1.60]],
+  etapes:["Cuire pommes de terre et carottes en rondelles 20 min à la vapeur.","Poser le poisson sur du papier cuisson avec citron, aneth, sel, poivre, un filet d'huile.","Fermer les papillotes, 15 min au four à 200 °C.","Servir avec un trait de citron."],
+  jeunes:"Ajouter un œuf dur ou une deuxième portion de poisson.",seniors:"Le plat idéal : beaucoup de légumes, peu de gras."},
+ {id:"chili",nom:"Chili con carne, riz",dessert:"Pommes",temps:"25 min",profil:"Riche en protéines",
+  ing:[["Viande","Bœuf haché 5 %","500 g",5.50],["Épicerie","Haricots rouges","2 boîtes",1.80],["Épicerie","Tomates concassées","2 boîtes",1.60],["Épicerie","Maïs","1 boîte",0.90],["Fruits et légumes","Poivrons","2",1.80],["Fruits et légumes","Oignons","2",0.40],["Épicerie","Riz basmati","500 g",1.50],["Fruits et légumes","Pommes","1,5 kg",2.70]],
+  etapes:["Lancer le riz.","Faire revenir oignons et poivrons en dés 5 min, puis la viande 5 min.","Ajouter tomates, haricots rouges égouttés, maïs, cumin et paprika.","Laisser mijoter 12 min."],
+  jeunes:"Les haricots rouges doublent l'apport en protéines.",seniors:"Une petite louche de riz, le reste en chili riche en légumes."},
+ {id:"curry",nom:"Curry de lentilles corail, épinards et œufs",dessert:"Bananes",temps:"25 min",profil:"Végétarien",
+  ing:[["Épicerie","Lentilles corail","500 g",2.20],["Épicerie","Lait de coco","2 × 40 cl",3.00],["Surgelés","Épinards hachés","1 kg",2.10],["Épicerie","Tomates concassées","1 boîte",0.80],["Frais","Œufs plein air","12",3.60],["Boulangerie","Pain complet","500 g",1.80],["Fruits et légumes","Oignons","1",0.20],["Fruits et légumes","Bananes","1 kg",1.90]],
+  etapes:["Cuire 10 œufs durs (10 min).","Faire revenir l'oignon avec 2 c. à soupe de curry.","Ajouter lentilles, lait de coco, tomates et 50 cl d'eau, cuire 15 min.","Ajouter les épinards 5 min avant la fin, servir avec les œufs coupés en deux."],
+  jeunes:"Deux œufs chacun pour un plein de protéines.",seniors:"Rassasiant grâce aux lentilles, sans être lourd."},
+ {id:"wok",nom:"Wok de dinde, nouilles et légumes",dessert:"Kiwis",temps:"20 min",profil:"Riche en protéines",
+  ing:[["Viande","Émincé de dinde","800 g",7.60],["Épicerie","Nouilles aux œufs","500 g",1.90],["Surgelés","Poêlée de légumes pour wok","1 kg",2.60],["Épicerie","Sauce soja","25 cl",1.40],["Fruits et légumes","Gingembre frais","1 morceau",0.60],["Fruits et légumes","Kiwis","10",2.50]],
+  etapes:["Cuire les nouilles 4 min, égoutter.","Saisir la dinde 5 min à feu vif avec gingembre et ail râpés.","Ajouter les légumes 6 min.","Mélanger nouilles et sauce soja, 2 min de plus."],
+  jeunes:"Dinde maigre et riche en protéines.",seniors:"Plus de légumes, moitié moins de nouilles."},
+ {id:"frittata",nom:"Frittata courgettes-feta, salade verte",dessert:"Poires",temps:"25 min",profil:"Végétarien",
+  ing:[["Frais","Œufs plein air","12",3.60],["Fruits et légumes","Courgettes","1 kg",2.50],["Frais","Feta","200 g",2.20],["Fruits et légumes","Salade verte","1",1.00],["Boulangerie","Pain complet","500 g",1.80],["Fruits et légumes","Poires","1 kg",2.60]],
+  etapes:["Faire revenir les courgettes en rondelles 8 min.","Battre les œufs avec sel, poivre et la feta émiettée.","Verser sur les courgettes, cuire 5 min à couvert.","Finir 8 min sous le gril du four."],
+  jeunes:"Deux belles parts et du pain.",seniors:"Une part avec beaucoup de salade."},
+ {id:"pates-thon",nom:"Pâtes complètes au thon, tomates et olives",dessert:"Clémentines",temps:"20 min",profil:"Léger",
+  ing:[["Épicerie","Pâtes complètes","1 kg",2.20],["Épicerie","Thon au naturel","3 boîtes",6.00],["Épicerie","Tomates concassées","2 boîtes",1.60],["Épicerie","Olives noires","1 bocal",1.20],["Fruits et légumes","Salade verte","1",1.00],["Fruits et légumes","Clémentines","1 kg",2.50]],
+  etapes:["Cuire les pâtes.","Faire revenir l'ail, ajouter les tomates et laisser réduire 10 min.","Ajouter thon émietté et olives, 3 min.","Mélanger aux pâtes."],
+  jeunes:"Les pâtes complètes et le thon tiennent au corps.",seniors:"Petite assiette de pâtes et une grande salade."},
+ {id:"boulettes",nom:"Boulettes de bœuf à la tomate, semoule et courgettes",dessert:"Yaourt nature",temps:"25 min",profil:"Riche en protéines",
+  ing:[["Surgelés","Boulettes de bœuf","1 kg",7.00],["Épicerie","Semoule moyenne","1 kg",1.60],["Épicerie","Tomates concassées","2 boîtes",1.60],["Fruits et légumes","Courgettes","1 kg",2.50],["Frais","Yaourts nature","8",1.60]],
+  etapes:["Dorer les boulettes 5 min.","Ajouter tomates, courgettes en dés, cumin, mijoter 15 min.","Préparer la semoule à l'eau bouillante, 5 min."],
+  jeunes:"Six boulettes chacun.",seniors:"Plus de sauce aux courgettes, peu de semoule."},
+ {id:"galettes",nom:"Galettes de sarrasin jambon, œuf, fromage",dessert:"Pommes",temps:"20 min",profil:"Riche en protéines",
+  ing:[["Frais","Galettes de sarrasin","12",3.50],["Frais","Jambon blanc","8 tranches",3.50],["Frais","Œufs plein air","12",3.60],["Frais","Emmental râpé","200 g",2.00],["Fruits et légumes","Salade verte","1",1.00],["Fruits et légumes","Pommes","1,5 kg",2.70]],
+  etapes:["Chauffer une galette à la poêle.","Casser un œuf au centre, ajouter jambon et fromage.","Replier les bords, 3 min à couvert.","Recommencer, servir avec la salade."],
+  jeunes:"Deux galettes complètes.",seniors:"Une galette et de la salade."},
+ {id:"soupe-croque",nom:"Velouté de légumes et croque-monsieur",dessert:"Kiwis",temps:"25 min",profil:"Léger",
+  ing:[["Surgelés","Légumes pour potage","1 kg",2.00],["Fruits et légumes","Pommes de terre","1 kg",1.30],["Boulangerie","Pain de mie","2 paquets",3.00],["Frais","Jambon blanc","8 tranches",3.50],["Frais","Emmental râpé","200 g",2.00],["Fruits et légumes","Kiwis","10",2.50]],
+  etapes:["Cuire légumes et pommes de terre 20 min dans 1,5 l d'eau.","Pendant ce temps, monter les croques et les passer 10 min au four.","Mixer la soupe."],
+  jeunes:"Deux croques chacun.",seniors:"Un grand bol de soupe et un croque."},
+ {id:"pois-chiches",nom:"Poêlée de pois chiches, chorizo et poivrons, riz",dessert:"Oranges",temps:"20 min",profil:"Riche en protéines",
+  ing:[["Épicerie","Pois chiches","2 boîtes",1.80],["Frais","Chorizo","200 g",2.50],["Fruits et légumes","Poivrons","3",2.70],["Épicerie","Tomates concassées","1 boîte",0.80],["Épicerie","Riz basmati","500 g",1.50],["Fruits et légumes","Oranges","1,5 kg",3.00]],
+  etapes:["Lancer le riz.","Faire revenir le chorizo en rondelles, puis les poivrons 8 min.","Ajouter pois chiches et tomates, mijoter 8 min."],
+  jeunes:"Pois chiches et chorizo, un bon mélange de protéines.",seniors:"Peu de chorizo, beaucoup de poivrons."},
+ {id:"porc-moutarde",nom:"Porc à la moutarde, purée et brocolis",dessert:"Yaourt nature",temps:"25 min",profil:"Riche en protéines",
+  ing:[["Viande","Tranches d'échine de porc","1,2 kg",7.50],["Fruits et légumes","Pommes de terre","2 kg",2.60],["Surgelés","Brocolis","1 kg",2.20],["Frais","Crème fraîche légère 15 %","20 cl",0.90],["Frais","Yaourts nature","8",1.60]],
+  etapes:["Cuire les pommes de terre en morceaux 18 min, puis écraser en purée.","Cuire les brocolis 8 min à la vapeur.","Saisir le porc 4 min par face, ajouter crème et 1 c. à soupe de moutarde."],
+  jeunes:"Une tranche de porc chacun, bien servie.",seniors:"Moitié purée, moitié brocolis."},
+ {id:"riz-cantonais",nom:"Riz cantonais aux crevettes et œufs",dessert:"Ananas",temps:"25 min",profil:"Riche en protéines",
+  ing:[["Surgelés","Crevettes décortiquées","400 g",5.00],["Épicerie","Riz basmati","500 g",1.50],["Frais","Œufs plein air","12",3.60],["Surgelés","Petits pois","1 kg",1.80],["Frais","Dés de jambon","200 g",2.00],["Épicerie","Ananas au sirop léger","1 boîte",1.50]],
+  etapes:["Cuire le riz, l'étaler pour qu'il refroidisse un peu.","Faire une omelette fine, la couper en lanières.","Sauter crevettes, petits pois et jambon 5 min.","Ajouter le riz et l'omelette, 3 min avec un peu de soja."],
+  jeunes:"Crevettes, œufs et jambon : trois protéines.",seniors:"Plus de petits pois, moins de riz."},
+ {id:"wraps",nom:"Wraps de poulet et crudités",dessert:"Fromage blanc",temps:"20 min",profil:"Riche en protéines",
+  ing:[["Épicerie","Tortillas de blé","2 × 8",3.00],["Viande","Filets de poulet","800 g",8.00],["Fruits et légumes","Salade et tomates","1 + 4",2.50],["Frais","Fromage blanc","1 kg",1.80]],
+  etapes:["Couper le poulet en lanières, saisir 8 min avec paprika et cumin.","Préparer une sauce avec un tiers du fromage blanc, citron, herbes.","Garnir les tortillas chaudes de poulet, crudités et sauce."],
+  jeunes:"Trois wraps bien garnis.",seniors:"Deux wraps avec beaucoup de crudités."},
+ {id:"saucisses",nom:"Saucisses de Toulouse aux lentilles et carottes",dessert:"Clémentines",temps:"25 min",profil:"Riche en protéines",
+  ing:[["Viande","Saucisses de Toulouse","6",5.50],["Épicerie","Lentilles vertes","500 g",2.00],["Fruits et légumes","Carottes","1 kg",1.30],["Fruits et légumes","Oignons","2",0.40],["Fruits et légumes","Clémentines","1 kg",2.50]],
+  etapes:["Cuire lentilles, carottes en rondelles et oignon 20 min dans l'eau avec thym et laurier.","Dorer les saucisses 15 min à la poêle.","Servir les saucisses sur les lentilles."],
+  jeunes:"Lentilles et saucisse, très rassasiant.",seniors:"Une demi-saucisse et une bonne assiette de lentilles."},
+ {id:"lieu",nom:"Lieu noir à la provençale, boulgour",dessert:"Poires",temps:"25 min",profil:"Léger",
+  ing:[["Surgelés","Filets de lieu noir","1 kg",8.00],["Épicerie","Boulgour","500 g",1.60],["Fruits et légumes","Courgettes","1 kg",2.50],["Épicerie","Tomates concassées","1 boîte",0.80],["Fruits et légumes","Citrons","2",0.80],["Fruits et légumes","Poires","1 kg",2.60]],
+  etapes:["Cuire le boulgour 12 min.","Faire revenir les courgettes en dés, ajouter tomates et herbes de Provence.","Poser le poisson sur les légumes, couvrir et cuire 10 min."],
+  jeunes:"Une portion de poisson et demie.",seniors:"Le plat parfait : léger et complet."},
+ {id:"burgers",nom:"Burgers maison et salade",dessert:"Pommes",temps:"20 min",profil:"Riche en protéines",
+  ing:[["Viande","Steaks hachés 5 %","10 × 100 g",9.00],["Boulangerie","Pains à burger","6",1.60],["Fruits et légumes","Salade et tomates","1 + 4",2.50],["Frais","Fromage en tranches","10",1.50],["Fruits et légumes","Pommes","1,5 kg",2.70]],
+  etapes:["Cuire les steaks 3 min par face.","Toaster les pains.","Monter : pain, salade, steak, fromage, tomate."],
+  jeunes:"Double steak pour eux.",seniors:"Un burger ouvert, sans le pain du dessus, et une grande salade."},
+ {id:"gnocchis",nom:"Gnocchis poêlés aux légumes et mozzarella",dessert:"Poires",temps:"20 min",profil:"Végétarien",
+  ing:[["Frais","Gnocchis","3 × 500 g",3.60],["Surgelés","Poêlée méditerranéenne","1 kg",2.50],["Frais","Mozzarella","3 × 125 g",2.40],["Fruits et légumes","Tomates cerises","250 g",1.50],["Fruits et légumes","Poires","1 kg",2.60]],
+  etapes:["Dorer les gnocchis 8 min à la poêle.","Ajouter la poêlée de légumes, 8 min.","Ajouter tomates cerises et mozzarella en dés, 2 min, basilic."],
+  jeunes:"Ajouter deux œufs au plat s'il le faut.",seniors:"Plus de légumes, moins de gnocchis."},
+ {id:"soupe-thai",nom:"Soupe thaï au poulet, coco et nouilles de riz",dessert:"Bananes",temps:"25 min",profil:"Léger",
+  ing:[["Viande","Filets de poulet","600 g",6.00],["Épicerie","Lait de coco","2 × 40 cl",3.00],["Épicerie","Nouilles de riz","400 g",1.80],["Fruits et légumes","Champignons de Paris","500 g",2.00],["Fruits et légumes","Citron vert et gingembre","1 + 1",1.20],["Fruits et légumes","Bananes","1 kg",1.90]],
+  etapes:["Chauffer lait de coco, 1 l d'eau, gingembre râpé et un bouillon cube.","Ajouter le poulet en fines lamelles et les champignons, 10 min.","Ajouter les nouilles 4 min, finir au citron vert."],
+  jeunes:"Un grand bol bien garni en poulet.",seniors:"Un bol léger et parfumé."},
+ {id:"shakshuka",nom:"Shakshuka, œufs pochés tomates-poivrons",dessert:"Yaourt nature",temps:"25 min",profil:"Végétarien",
+  ing:[["Frais","Œufs plein air","18",5.40],["Épicerie","Tomates concassées","3 boîtes",2.40],["Fruits et légumes","Poivrons","3",2.70],["Fruits et légumes","Oignons","1",0.20],["Frais","Feta","200 g",2.20],["Boulangerie","Pain complet","500 g",1.80],["Frais","Yaourts nature","8",1.60]],
+  etapes:["Faire revenir oignon et poivrons 8 min avec cumin et paprika.","Ajouter les tomates, mijoter 8 min.","Creuser des puits, casser les œufs, couvrir 6 min.","Parsemer de feta."],
+  jeunes:"Trois œufs chacun.",seniors:"Deux œufs et beaucoup de sauce aux légumes."}
+];
+// Recettes détaillées pour débutant : matériel + étapes pas à pas
+const DETAIL={
+ poulet:{materiel:"1 grande casserole, 1 grande poêle (ou sauteuse) avec couvercle, 1 passoire, 1 planche, 1 couteau, 1 cuillère en bois",etapes:[
+  "Riz : remplissez la grande casserole aux trois quarts d'eau, ajoutez 1 cuillère à café de sel, couvrez et mettez sur feu fort. Quand l'eau fait de grosses bulles (environ 8 min), versez les 500 g de riz, retirez le couvercle et laissez cuire 11 min (regardez le temps sur le paquet). Égouttez dans la passoire.",
+  "Pendant que l'eau chauffe : épluchez les 2 oignons (coupez les deux bouts, retirez la peau marron), coupez-les en deux puis en fines lamelles.",
+  "Sur la planche, coupez le poulet en lanières de la taille d'un doigt. Lavez-vous les mains et la planche à l'eau chaude savonneuse juste après (viande crue).",
+  "Mettez la poêle sur feu moyen-fort avec 2 cuillères à soupe d'huile. Attendez 1 min que l'huile chauffe, ajoutez les oignons et remuez 3 min jusqu'à ce qu'ils deviennent transparents.",
+  "Ajoutez le poulet, 2 cuillères à café de paprika, 1 pincée de sel et de poivre. Remuez de temps en temps pendant 8 à 10 min. Le poulet est cuit quand il est blanc à l'intérieur (coupez un morceau pour vérifier, il ne doit plus être rose).",
+  "Baissez à feu doux, versez la crème (20 cl), mélangez et laissez 5 min.",
+  "Haricots verts : dans une autre casserole d'eau bouillante salée, plongez-les encore surgelés 8 min, puis égouttez. Ajoutez un filet d'huile et un peu de sel.",
+  "Servez : riz, poulet avec sa sauce, haricots verts. Dessert : 2 clémentines par personne."]},
+ colin:{materiel:"1 grande casserole avec couvercle et un panier vapeur (ou une passoire métallique qui tient dessus), 1 plaque de four, papier cuisson, 1 éplucheur",etapes:[
+  "Allumez le four à 200 °C (chaleur tournante si possible) pour qu'il chauffe pendant que vous préparez.",
+  "Épluchez les pommes de terre et les carottes avec l'éplucheur, rincez-les. Coupez les pommes de terre en morceaux de la taille d'une noix et les carottes en rondelles de l'épaisseur d'un doigt.",
+  "Mettez 3 cm d'eau dans la casserole, posez le panier vapeur dessus avec les légumes, couvrez et mettez sur feu fort. Comptez 20 min à partir du moment où ça fume. C'est cuit quand un couteau entre sans forcer.",
+  "Pendant ce temps, découpez 6 grands rectangles de papier cuisson (environ 30 × 40 cm). Posez 1 ou 2 filets de colin (encore surgelés, c'est normal) au milieu de chaque feuille.",
+  "Sur chaque filet : 2 rondelles de citron, 1 pincée d'aneth, 1 pincée de sel, un peu de poivre, 1 cuillère à café d'huile.",
+  "Fermez chaque papillote : ramenez les deux grands côtés au-dessus du poisson, pliez-les ensemble plusieurs fois, puis roulez les deux bouts comme un bonbon. Posez-les sur la plaque.",
+  "Enfournez 15 min (20 min si les filets étaient très épais). Le poisson est cuit quand il est blanc opaque et se défait à la fourchette. Attention à la vapeur brûlante en ouvrant.",
+  "Servez une papillote par personne avec les légumes, un filet d'huile et le reste du citron. Dessert : un yaourt avec une cuillère de miel."]},
+ chili:{materiel:"1 grande casserole pour le riz, 1 grande cocotte ou sauteuse, 1 passoire, 1 ouvre-boîte, 1 planche, 1 couteau",etapes:[
+  "Lancez le riz comme d'habitude : grande casserole d'eau salée, quand ça bout versez 500 g de riz, 11 min, égouttez.",
+  "Épluchez et coupez les 2 oignons en petits dés. Lavez les 2 poivrons, coupez-les en deux, retirez la queue, les graines blanches et les filaments, puis coupez en petits carrés.",
+  "Cocotte sur feu moyen avec 2 cuillères à soupe d'huile. Ajoutez oignons et poivrons, remuez 5 min.",
+  "Ajoutez la viande hachée. Écrasez-la avec la cuillère en bois pour qu'elle se défasse en miettes. Remuez 5 min jusqu'à ce qu'il n'y ait plus de rose.",
+  "Ouvrez les boîtes. Versez les haricots rouges et le maïs dans la passoire et rincez-les sous l'eau froide.",
+  "Ajoutez dans la cocotte : les 2 boîtes de tomates, les haricots, le maïs, 2 cuillères à café de cumin, 1 cuillère à café de paprika, 1 cuillère à café de sel, du poivre.",
+  "Mélangez, baissez à feu doux et laissez mijoter 12 min à petits bouillons en remuant de temps en temps pour que ça n'attache pas au fond. Goûtez et rajoutez du sel si besoin.",
+  "Servez une louche de riz et une ou deux louches de chili. Dessert : une pomme."]},
+ curry:{materiel:"1 casserole moyenne pour les œufs, 1 grande cocotte ou casserole, 1 passoire fine, 1 cuillère en bois, 1 ouvre-boîte",etapes:[
+  "Œufs durs : mettez 10 œufs dans la casserole, couvrez d'eau froide, mettez sur feu fort. Quand l'eau bout, comptez 9 min. Videz l'eau chaude et remplissez d'eau froide. Écalez-les (enlevez la coquille) quand ils ont refroidi.",
+  "Rincez les 500 g de lentilles corail dans la passoire fine sous l'eau froide, jusqu'à ce que l'eau soit presque claire.",
+  "Épluchez l'oignon et coupez-le en petits dés.",
+  "Cocotte sur feu moyen avec 2 cuillères à soupe d'huile. Ajoutez l'oignon 3 min, puis 2 cuillères à soupe de curry en poudre et remuez 30 secondes (ça sent fort, c'est normal).",
+  "Ajoutez les lentilles, les 2 boîtes de lait de coco, la boîte de tomates, 50 cl d'eau (un grand bol) et 1 cuillère à café de sel. Mélangez.",
+  "Quand ça bout, baissez à feu doux et laissez cuire 15 min en remuant souvent : les lentilles collent facilement au fond. Si c'est trop épais, ajoutez un peu d'eau.",
+  "5 min avant la fin, ajoutez les épinards surgelés directement et mélangez jusqu'à ce qu'ils soient fondus.",
+  "Servez dans des bols, avec 2 demi-œufs durs dessus et une tranche de pain complet. Dessert : une banane."]},
+ wok:{materiel:"1 grande casserole, 1 wok ou très grande poêle, 1 passoire, 1 râpe (ou couteau), 1 cuillère en bois",etapes:[
+  "Mettez une grande casserole d'eau sur feu fort. Pendant ce temps, épluchez le morceau de gingembre (grattez la peau avec une petite cuillère) et râpez-en l'équivalent d'1 cuillère à soupe. Écrasez ou hachez 2 gousses d'ail.",
+  "Quand l'eau bout, plongez les nouilles 4 min (ou le temps du paquet), égouttez et passez-les sous l'eau froide pour qu'elles ne collent pas.",
+  "Wok sur feu fort avec 2 cuillères à soupe d'huile. Attendez 1 min qu'il soit bien chaud.",
+  "Ajoutez la dinde, le gingembre et l'ail. Remuez sans arrêt 5 min jusqu'à ce que la viande soit dorée et blanche à l'intérieur.",
+  "Ajoutez les légumes surgelés directement, remuez 6 min à feu fort.",
+  "Ajoutez les nouilles et 6 cuillères à soupe de sauce soja. Mélangez bien 2 min pour tout réchauffer. Pas besoin de sel : la sauce soja est déjà salée.",
+  "Servez aussitôt. Dessert : un kiwi coupé en deux, à manger à la petite cuillère."]},
+ frittata:{materiel:"1 grande poêle qui va au four (sans manche en plastique), 1 saladier, 1 fourchette, 1 planche, 1 couteau",etapes:[
+  "Allumez le gril du four (position « grill »).",
+  "Lavez les courgettes, coupez les deux bouts et coupez-les en rondelles fines (épaisseur d'une pièce de 2 €).",
+  "Poêle sur feu moyen avec 2 cuillères à soupe d'huile. Ajoutez les courgettes avec 1 pincée de sel, remuez de temps en temps 8 min jusqu'à ce qu'elles soient tendres et un peu dorées.",
+  "Dans le saladier, cassez les 12 œufs. Battez-les à la fourchette 1 min. Ajoutez 1 pincée de sel, du poivre et la feta émiettée avec les doigts.",
+  "Versez les œufs sur les courgettes, répartissez avec la cuillère. Baissez à feu doux, couvrez (une assiette fait l'affaire) et laissez 5 min sans toucher.",
+  "Mettez la poêle 6 à 8 min sous le gril, en haut du four. Le dessus doit être gonflé et doré. Sortez-la avec des gants : le manche est brûlant.",
+  "Pendant ce temps, lavez la salade, essorez-la et assaisonnez-la (3 c. à soupe d'huile, 1 c. à soupe de vinaigre, 1 c. à café de moutarde, sel).",
+  "Coupez la frittata en 6 parts comme un gâteau. Servez avec la salade et du pain. Dessert : une poire."]},
+ "pates-thon":{materiel:"1 grande casserole, 1 poêle ou sauteuse, 1 passoire, 1 ouvre-boîte",etapes:[
+  "Grande casserole d'eau sur feu fort avec 1 cuillère à soupe de sel. Quand ça bout, versez 1 kg de pâtes et comptez le temps du paquet (souvent 10 à 12 min). Remuez une fois au début pour qu'elles ne collent pas.",
+  "Pendant ce temps, épluchez et hachez finement 2 gousses d'ail.",
+  "Sauteuse sur feu moyen avec 2 cuillères à soupe d'huile d'olive. Ajoutez l'ail 1 min sans le laisser brunir (il deviendrait amer).",
+  "Ajoutez les 2 boîtes de tomates, 1 pincée de sel, du poivre, 1 cuillère à café d'herbes de Provence. Laissez réduire 10 min à feu doux : la sauce épaissit.",
+  "Égouttez le thon (ouvrez la boîte en laissant le couvercle dessus et pressez pour vider le jus). Émiettez-le à la fourchette dans la sauce avec les olives. Laissez 3 min.",
+  "Égouttez les pâtes, remettez-les dans la grande casserole, versez la sauce et mélangez.",
+  "Servez avec la salade assaisonnée. Dessert : 2 clémentines."]},
+ boulettes:{materiel:"1 grande sauteuse avec couvercle, 1 saladier, 1 bouilloire ou casserole, 1 fourchette",etapes:[
+  "Sauteuse sur feu moyen avec 1 cuillère à soupe d'huile. Mettez les boulettes encore surgelées et faites-les rouler 5 min pour qu'elles dorent de tous les côtés.",
+  "Pendant ce temps, lavez les courgettes et coupez-les en petits cubes.",
+  "Ajoutez dans la sauteuse les courgettes, les 2 boîtes de tomates, 1 cuillère à café de cumin, 1 pincée de sel. Couvrez et laissez cuire 15 min à feu doux. Les boulettes sont cuites quand elles sont chaudes au cœur (coupez-en une).",
+  "Semoule, 5 min avant la fin : faites bouillir 1 litre d'eau. Versez 750 g de semoule dans le saladier avec 1 cuillère à café de sel et 2 cuillères à soupe d'huile. Versez l'eau bouillante dessus juste pour couvrir, posez une assiette sur le saladier et attendez 5 min.",
+  "Égrainez la semoule à la fourchette (grattez pour séparer les grains).",
+  "Servez semoule, boulettes et sauce. Dessert : un yaourt nature."]},
+ galettes:{materiel:"1 grande poêle antiadhésive avec couvercle, 1 spatule large, 1 saladier pour la salade",etapes:[
+  "Préparez tout avant de commencer : galettes, œufs, jambon coupé en deux, fromage râpé. Lavez et assaisonnez la salade.",
+  "Poêle sur feu moyen avec une noisette de beurre ou un peu d'huile étalée avec un essuie-tout.",
+  "Posez une galette (face la plus claire vers le bas). Attendez 30 secondes qu'elle chauffe.",
+  "Cassez 1 œuf au centre et étalez le blanc avec le dos d'une cuillère sans crever le jaune. Ajoutez une demi-tranche de jambon et une poignée de fromage autour du jaune.",
+  "Couvrez 2 à 3 min : le blanc doit devenir blanc, le jaune reste coulant.",
+  "Avec la spatule, repliez les 4 bords vers le centre pour faire un carré. Glissez sur une assiette.",
+  "Recommencez pour les autres galettes. Gardez les premières au four à 80 °C pour qu'elles restent chaudes.",
+  "Servez avec la salade. Dessert : une pomme."]},
+ "soupe-croque":{materiel:"1 grande casserole, 1 mixeur plongeant, 1 plaque de four, papier cuisson, 1 éplucheur",etapes:[
+  "Allumez le four à 200 °C.",
+  "Épluchez les pommes de terre et coupez-les en morceaux. Mettez-les dans la grande casserole avec les légumes surgelés, 1,5 litre d'eau et 1 cube de bouillon. Couvrez et mettez sur feu fort. Quand ça bout, baissez à feu moyen et comptez 20 min.",
+  "Croques : posez 12 tranches de pain de mie sur la plaque recouverte de papier cuisson. Sur chacune de 6 tranches : 1 tranche de jambon pliée, une poignée de fromage. Fermez avec une autre tranche, puis un peu de fromage dessus.",
+  "Recommencez avec le reste du pain pour avoir 12 croques. Enfournez 10 min jusqu'à ce que le fromage soit doré.",
+  "Quand les légumes sont tendres (un couteau entre sans résistance), retirez du feu. Plongez le mixeur jusqu'au fond avant de l'allumer (sinon ça éclabousse) et mixez 2 min.",
+  "Goûtez, salez et poivrez si besoin. Servez un bol de soupe et les croques. Dessert : un kiwi."]},
+ "pois-chiches":{materiel:"1 grande casserole, 1 grande poêle, 1 passoire, 1 ouvre-boîte, 1 couteau",etapes:[
+  "Lancez le riz : eau salée bouillante, 500 g de riz, 11 min, égouttez.",
+  "Coupez le chorizo en fines rondelles et retirez la peau si elle est épaisse. Lavez les 3 poivrons, retirez queue et graines, coupez en lanières.",
+  "Poêle sur feu moyen, sans huile : mettez le chorizo 2 min, il rend sa propre graisse rouge.",
+  "Ajoutez les poivrons et remuez 8 min jusqu'à ce qu'ils soient tendres.",
+  "Versez les pois chiches dans la passoire, rincez-les. Ajoutez-les dans la poêle avec la boîte de tomates et 1 pincée de sel. Laissez mijoter 8 min à feu doux.",
+  "Servez sur le riz. Dessert : une orange."]},
+ "porc-moutarde":{materiel:"1 grande casserole, 1 presse-purée ou fourchette, 1 casserole moyenne, 1 grande poêle, 1 éplucheur",etapes:[
+  "Épluchez les 2 kg de pommes de terre, coupez-les en 4. Mettez-les dans la grande casserole, couvrez d'eau froide, 1 cuillère à soupe de sel, feu fort. Comptez 18 min après l'ébullition : un couteau doit entrer tout seul.",
+  "Brocolis : casserole moyenne d'eau salée bouillante, plongez-les surgelés 8 min, égouttez.",
+  "Poêle sur feu moyen-fort avec 1 cuillère à soupe d'huile. Salez et poivrez les tranches de porc, posez-les dans la poêle chaude (en deux fois si elles ne tiennent pas). Cuisez 4 à 5 min de chaque côté sans les bouger. Elles sont cuites quand le jus qui sort est clair, pas rose.",
+  "Retirez la viande sur une assiette. Dans la poêle, à feu doux, versez la crème et 1 cuillère à soupe de moutarde, grattez le fond avec la cuillère en bois, mélangez 1 min. Remettez la viande dedans.",
+  "Purée : égouttez les pommes de terre, remettez-les dans la casserole chaude, écrasez-les. Ajoutez 20 cl de lait chaud et une noix de beurre, sel, muscade si vous en avez. Mélangez fort.",
+  "Servez porc et sauce, purée, brocolis. Dessert : un yaourt nature."]},
+ "riz-cantonais":{materiel:"1 grande casserole, 1 wok ou grande poêle, 1 bol, 1 fourchette, 1 plat",etapes:[
+  "Riz : eau salée bouillante, 500 g de riz, 11 min, égouttez puis étalez-le dans un grand plat pour qu'il refroidisse et sèche un peu (il collera moins).",
+  "Laissez les crevettes et les petits pois surgelés dans une passoire sous l'eau tiède 5 min pour les décongeler.",
+  "Omelette : battez 6 œufs dans un bol avec 1 pincée de sel. Wok sur feu moyen avec 1 cuillère à soupe d'huile, versez les œufs, laissez prendre 2 min sans remuer, puis retournez-la comme une crêpe 1 min. Mettez sur une planche, roulez et coupez en fines lanières.",
+  "Wok sur feu fort avec 2 cuillères à soupe d'huile. Ajoutez crevettes, petits pois et dés de jambon, remuez 5 min. Les crevettes doivent être bien roses.",
+  "Ajoutez le riz et 4 cuillères à soupe de sauce soja. Remuez 3 min sans arrêt, puis ajoutez les lanières d'omelette.",
+  "Servez. Dessert : quelques tranches d'ananas égouttées."]},
+ wraps:{materiel:"1 grande poêle, 1 bol, 1 planche, 1 couteau",etapes:[
+  "Sauce : dans un bol, mélangez 300 g de fromage blanc, le jus d'un demi-citron, 1 pincée de sel, du poivre et des herbes (ciboulette ou persil). Mettez au frigo.",
+  "Lavez la salade et les tomates. Coupez la salade en lanières et les tomates en petits dés.",
+  "Coupez le poulet en lanières fines. Lavez-vous les mains et la planche juste après.",
+  "Poêle sur feu moyen-fort avec 2 cuillères à soupe d'huile. Ajoutez le poulet, 1 cuillère à café de paprika, 1 de cumin, 1 pincée de sel. Remuez 8 min jusqu'à ce qu'il soit doré et blanc à l'intérieur.",
+  "Réchauffez les tortillas une par une 20 secondes dans une poêle sèche (ou 30 secondes au micro-ondes).",
+  "Montez : 1 cuillère de sauce au centre de la tortilla, du poulet, de la salade, des tomates. Repliez le bas, puis roulez les côtés.",
+  "Dessert : le reste du fromage blanc avec un peu de sucre ou de miel."]},
+ saucisses:{materiel:"1 grande casserole, 1 grande poêle avec couvercle, 1 passoire, 1 éplucheur",etapes:[
+  "Rincez les 500 g de lentilles vertes dans la passoire. Épluchez les carottes et coupez-les en rondelles. Épluchez les oignons et coupez-les en quatre.",
+  "Mettez lentilles, carottes et oignons dans la casserole, couvrez de 3 fois leur volume d'eau froide (environ 1,5 l), ajoutez 1 feuille de laurier et 1 pincée de thym. Pas de sel maintenant : il durcit les lentilles.",
+  "Feu fort jusqu'à ébullition, puis feu doux 20 à 25 min. Goûtez : elles doivent être tendres. Salez à la fin et égouttez s'il reste de l'eau.",
+  "Saucisses : piquez-les 3 ou 4 fois avec une fourchette (elles n'éclateront pas). Poêle sur feu moyen avec un filet d'huile, posez les saucisses, couvrez. Tournez-les toutes les 3 min pendant 15 min. Elles sont cuites quand elles sont bien dorées et que l'intérieur n'est plus rose.",
+  "Servez une saucisse sur une louche de lentilles. Dessert : 2 clémentines."]},
+ lieu:{materiel:"1 casserole moyenne, 1 grande sauteuse avec couvercle, 1 planche, 1 couteau",etapes:[
+  "Boulgour : mettez 500 g de boulgour dans la casserole avec 1 litre d'eau et 1 cuillère à café de sel. Feu fort jusqu'à ébullition, puis feu doux à couvert 12 min. Il a bu toute l'eau quand c'est prêt.",
+  "Lavez les courgettes et coupez-les en petits cubes.",
+  "Sauteuse sur feu moyen avec 2 cuillères à soupe d'huile d'olive. Ajoutez les courgettes 5 min.",
+  "Ajoutez la boîte de tomates, 1 cuillère à café d'herbes de Provence, sel, poivre. Mélangez.",
+  "Posez les filets de lieu (même surgelés) sur les légumes, ajoutez quelques rondelles de citron. Couvrez et laissez cuire 10 min à feu doux (15 min si surgelés). Le poisson est cuit quand il est blanc et se défait à la fourchette.",
+  "Servez boulgour, légumes et poisson. Dessert : une poire."]},
+ burgers:{materiel:"1 grande poêle, 1 planche, 1 couteau, 1 grille-pain ou le four",etapes:[
+  "Préparez la garniture : lavez la salade et prenez les feuilles entières, coupez les tomates en rondelles fines.",
+  "Coupez les pains en deux et faites-les dorer 2 min face coupée dans une poêle sèche ou 3 min au four à 200 °C.",
+  "Poêle sur feu fort avec un filet d'huile. Posez les steaks (en plusieurs fois). Cuisez 3 min sans les toucher, retournez avec une spatule, salez et poivrez, 2 à 3 min de plus.",
+  "Juste avant la fin, posez 1 tranche de fromage sur chaque steak pour qu'elle fonde.",
+  "Montez : pain du bas, 1 cuillère de moutarde ou de ketchup, salade, steak avec fromage, tomate, pain du haut.",
+  "Servez avec le reste de la salade. Dessert : une pomme."]},
+ gnocchis:{materiel:"1 très grande poêle (ou deux poêles), 1 spatule, 1 couteau",etapes:[
+  "Poêle sur feu moyen-fort avec 2 cuillères à soupe d'huile d'olive. Versez les gnocchis directement du paquet, sans les cuire à l'eau.",
+  "Laissez-les dorer 8 min en les retournant toutes les 2 min. Ils doivent être dorés et un peu croustillants.",
+  "Ajoutez la poêlée de légumes surgelée, mélangez et laissez cuire 8 min en remuant.",
+  "Coupez les tomates cerises en deux et la mozzarella en petits cubes.",
+  "Ajoutez tomates et mozzarella, mélangez 2 min hors du feu : la mozzarella doit commencer à fondre.",
+  "Salez, poivrez, ajoutez quelques feuilles de basilic. Servez. Dessert : une poire."]},
+ "soupe-thai":{materiel:"1 grande casserole (faitout), 1 planche, 1 couteau, 1 râpe, 1 louche",etapes:[
+  "Coupez le poulet en lamelles très fines (cela cuit plus vite). Lavez-vous les mains et la planche.",
+  "Rincez les champignons rapidement sous l'eau, coupez le bout terreux du pied et émincez-les en lamelles. Épluchez et râpez 1 cuillère à soupe de gingembre.",
+  "Dans la casserole : les 2 boîtes de lait de coco, 1 litre d'eau, 1 cube de bouillon de volaille, le gingembre. Feu fort jusqu'à ébullition.",
+  "Ajoutez poulet et champignons, baissez à feu moyen et laissez 10 min. Le poulet doit être blanc.",
+  "Ajoutez les nouilles de riz cassées en deux, 4 min (ou le temps du paquet).",
+  "Hors du feu, pressez le citron vert dedans, ajoutez 2 cuillères à soupe de sauce soja. Goûtez et ajustez.",
+  "Servez à la louche dans des bols. Dessert : une banane."]},
+ shakshuka:{materiel:"1 très grande poêle ou sauteuse avec couvercle, 1 planche, 1 couteau, 1 cuillère",etapes:[
+  "Épluchez l'oignon, coupez-le en petits dés. Lavez les poivrons, retirez queue et graines, coupez-les en lanières fines.",
+  "Sauteuse sur feu moyen avec 3 cuillères à soupe d'huile d'olive. Ajoutez oignon et poivrons, 1 cuillère à café de cumin et 1 de paprika. Remuez 8 min jusqu'à ce que ce soit tendre.",
+  "Versez les 3 boîtes de tomates, 1 cuillère à café de sel, du poivre. Laissez mijoter 8 min à feu doux : la sauce épaissit.",
+  "Avec le dos d'une cuillère, creusez des petits trous dans la sauce. Cassez un œuf dans chaque trou (faites-le d'abord dans un verre si vous avez peur de crever le jaune). Faites-le en deux fois si tout ne rentre pas.",
+  "Couvrez et laissez 6 à 8 min à feu doux. Le blanc doit être bien blanc et le jaune encore un peu tremblant.",
+  "Émiettez la feta dessus. Servez directement dans la poêle avec le pain pour saucer. Dessert : un yaourt nature."]}
+};
+MENUS.forEach(m=>{if(DETAIL[m.id]){m.etapes=DETAIL[m.id].etapes;m.materiel=DETAIL[m.id].materiel}});
+// 15 nouvelles propositions
+const NOUV=[
+ {id:"n-escalopes",nom:"Escalopes de poulet fermier, sauce crème champignons, tagliatelles",dessert:"Poires",temps:"25 min",profil:"Riche en protéines",
+  ing:[["Viande","Escalopes de poulet fermier Label Rouge","1,2 kg",13.50],["Épicerie","Tagliatelles","600 g",1.80],["Fruits et légumes","Champignons de Paris","600 g",3.00],["Frais","Crème fraîche épaisse","30 cl",1.60],["Fruits et légumes","Échalotes","3",0.90],["Fruits et légumes","Poires","1 kg",2.80]],
+  jeunes:"Ajoutez un petit pain pour saucer.",seniors:"Gardez la crème légère et doublez les champignons.",
+  materiel:"1 grande casserole, 1 grande poêle, 1 passoire, 1 planche, 1 couteau",
+  etapes:["Faites bouillir une grande casserole d'eau salée. Versez les tagliatelles et laissez cuire le temps du paquet, environ 9 min. Égouttez.","Épluchez les échalotes et émincez-les. Coupez le pied des champignons et tranchez-les.","Dans la poêle, faites chauffer 1 cuillère à soupe d'huile à feu moyen-fort. Faites dorer les escalopes 4 min de chaque côté avec du sel et du poivre. Sortez-les sur une assiette.","Dans la même poêle, ajoutez les échalotes et les champignons. Laissez cuire 6 min en remuant, jusqu'à ce que l'eau s'évapore.","Versez la crème, remettez les escalopes, laissez frémir 3 min. Le poulet est cuit quand il n'est plus rose à l'intérieur.","Servez sur les tagliatelles. Dessert : une poire."]},
+ {id:"n-saumon",nom:"Saumon à la moutarde et au miel, riz et brocolis",dessert:"Yaourt nature",temps:"25 min",profil:"Riche en protéines",
+  ing:[["Poissonnerie","Pavés de saumon Label Rouge ou bio","1,1 kg",19.00],["Épicerie","Riz basmati","500 g",1.50],["Surgelés","Brocolis","1 kg",2.60],["Épicerie","Moutarde de Dijon","1",1.20],["Épicerie","Miel","1",3.20],["Frais","Yaourts nature","8",1.60]],
+  jeunes:"Un pavé un peu plus gros.",seniors:"Peu de sel, plus de brocolis.",
+  materiel:"1 plat allant au four, 1 casserole, 1 passoire, 1 petit bol",
+  etapes:["Allumez le four à 200 °C.","Mélangez dans le bol 3 cuillères à soupe de moutarde, 2 cuillères à soupe de miel et 1 cuillère à soupe d'huile.","Posez les pavés dans le plat, étalez le mélange dessus. Enfournez 12 à 15 min. Le saumon est cuit quand il se détache en pétales.","Faites cuire le riz 11 min dans une casserole d'eau salée. Égouttez.","Cuisez les brocolis surgelés 8 min à la vapeur ou dans l'eau bouillante.","Servez avec un peu de jus de cuisson sur le riz."]},
+ {id:"n-faux-filet",nom:"Faux filet de bœuf poêlé, pommes de terre grenailles et haricots verts",dessert:"Pommes",temps:"25 min",profil:"Riche en protéines",
+  ing:[["Viande","Faux filet de bœuf Charolais Label Rouge","1,2 kg",28.00],["Fruits et légumes","Pommes de terre grenailles","1,5 kg",4.20],["Surgelés","Haricots verts extra fins","1 kg",2.20],["Frais","Beurre demi sel","1",2.10],["Fruits et légumes","Ail","1",0.60],["Fruits et légumes","Pommes","1,5 kg",3.40]],
+  jeunes:"Prévoyez une tranche en plus.",seniors:"Un steak plus petit et plus de haricots.",
+  materiel:"2 poêles, 1 casserole, 1 planche, 1 couteau, des pinces ou une fourchette",
+  etapes:["Sortez la viande du frigo dès que vous arrivez en cuisine.","Coupez les grenailles en deux. Mettez-les dans une poêle avec 2 cuillères à soupe d'huile, couvrez et laissez cuire 15 min à feu moyen en remuant de temps en temps.","Faites cuire les haricots verts 8 min à la vapeur ou dans l'eau bouillante salée.","Chauffez la deuxième poêle à feu vif. Salez et poivrez la viande. Posez-la sans huile ou avec une noix de beurre. Comptez 3 min de chaque côté pour une viande rosée, 4 min pour bien cuite.","Laissez reposer la viande 3 min sous une assiette. Coupez en tranches.","Ajoutez 2 gousses d'ail écrasées et une noix de beurre aux grenailles pour la dernière minute. Servez."]},
+ {id:"n-cabillaud",nom:"Cabillaud poêlé, purée de patates douces et épinards",dessert:"Clémentines",temps:"25 min",profil:"Léger",
+  ing:[["Poissonnerie","Dos de cabillaud MSC","1,1 kg",19.50],["Fruits et légumes","Patates douces","1,5 kg",4.20],["Surgelés","Épinards en branches","1 kg",2.40],["Frais","Beurre demi sel","1",2.10],["Fruits et légumes","Citrons","2",0.80],["Fruits et légumes","Clémentines","1 kg",2.50]],
+  jeunes:"Ajoutez du riz si la faim est grande.",seniors:"Plat doux et facile à mâcher, idéal le soir.",
+  materiel:"1 grande casserole, 1 poêle, 1 fourchette ou un presse purée",
+  etapes:["Épluchez les patates douces et coupez-les en cubes. Plongez-les dans l'eau bouillante salée 15 min.","Mettez les épinards surgelés dans une casserole avec un couvercle, à feu doux, 10 min. Salez, ajoutez une noix de beurre.","Séchez le cabillaud avec du papier absorbant. Salez et poivrez.","Chauffez la poêle avec 1 cuillère à soupe d'huile. Posez le poisson côté peau et laissez cuire 4 min sans y toucher. Retournez, 3 min de plus.","Égouttez les patates douces, écrasez-les avec une fourchette, une noix de beurre et du sel.","Servez le poisson avec un quartier de citron."]},
+ {id:"n-magret",nom:"Magret de canard au miel, pommes de terre sautées et salade",dessert:"Poires",temps:"25 min",profil:"Riche en protéines",
+  ing:[["Viande","Magrets de canard IGP Sud Ouest","4",20.00],["Fruits et légumes","Pommes de terre","1,5 kg",2.00],["Fruits et légumes","Salade","2",1.80],["Épicerie","Miel","1",3.20],["Épicerie","Vinaigre balsamique","1",2.30],["Fruits et légumes","Poires","1 kg",2.80]],
+  jeunes:"Un demi magret de plus par personne.",seniors:"Retirez la peau avant de manger.",
+  materiel:"1 grande poêle, 1 poêle, 1 planche, 1 couteau aiguisé",
+  etapes:["Coupez les pommes de terre en dés de 2 cm. Mettez-les dans la poêle avec 2 cuillères à soupe d'huile, couvrez, 15 min à feu moyen, en remuant souvent.","Avec le couteau, quadrillez la peau des magrets en faisant des petites entailles, sans toucher à la chair.","Posez les magrets côté peau dans une poêle froide, mettez sur feu moyen. Laissez 8 min, la graisse fond. Retournez et cuisez 4 min. Jetez la graisse dans une tasse.","Arrosez de 2 cuillères à soupe de miel pendant 1 min. Laissez reposer 5 min sous une assiette.","Préparez la salade avec 3 cuillères à soupe d'huile, 1 de vinaigre, sel et poivre.","Tranchez les magrets en lamelles fines et servez."]},
+ {id:"n-crevettes",nom:"Crevettes à l'ail et au persil, linguine au citron",dessert:"Ananas",temps:"20 min",profil:"Léger",
+  ing:[["Poissonnerie","Crevettes décortiquées crues ASC ou bio","900 g",22.00],["Épicerie","Linguine","600 g",1.80],["Fruits et légumes","Ail","1",0.60],["Fruits et légumes","Persil","1",1.20],["Fruits et légumes","Citrons","3",1.20],["Épicerie","Ananas au sirop léger","1",2.20]],
+  jeunes:"Ajoutez du piment en poudre dans votre assiette.",seniors:"Peu d'huile, beaucoup de citron.",
+  materiel:"1 grande casserole, 1 grande poêle, 1 passoire, 1 râpe",
+  etapes:["Faites bouillir l'eau salée et cuisez les linguine 9 min. Gardez un verre d'eau de cuisson avant d'égoutter.","Pelez 4 gousses d'ail et écrasez-les. Hachez le persil.","Chauffez 3 cuillères à soupe d'huile dans la poêle à feu moyen. Ajoutez l'ail 30 secondes, sans le brûler.","Ajoutez les crevettes (décongelées si besoin) et cuisez 3 à 4 min, jusqu'à ce qu'elles soient roses.","Mélangez les pâtes dans la poêle avec le jus de 2 citrons, le zeste d'un citron, le persil et un peu d'eau de cuisson.","Servez tout de suite."]},
+ {id:"n-tarte",nom:"Tarte fine tomates et chèvre, salade verte",dessert:"Fromage blanc et miel",temps:"25 min",profil:"Végétarien",
+  ing:[["Frais","Pâte feuilletée pur beurre","3",5.40],["Frais","Bûche de chèvre","400 g",5.50],["Fruits et légumes","Tomates","1,2 kg",4.20],["Fruits et légumes","Salade","2",1.80],["Épicerie","Herbes de Provence","1",1.20],["Frais","Fromage blanc","1 kg",2.60],["Épicerie","Miel","1",3.20]],
+  jeunes:"Ajoutez du jambon cru sur la tarte si vous voulez.",seniors:"Salade en grande quantité pour alléger.",
+  materiel:"2 plaques de four, du papier cuisson, 1 planche, 1 couteau",
+  etapes:["Allumez le four à 200 °C.","Déroulez les pâtes sur du papier cuisson, posez-les sur les plaques. Piquez-les avec une fourchette.","Coupez les tomates en rondelles fines, le chèvre en tranches.","Disposez les tomates sur les pâtes en laissant 2 cm de bord. Ajoutez le chèvre, un filet d'huile, les herbes, sel et poivre.","Enfournez 20 min, jusqu'à ce que les bords soient dorés.","Servez avec la salade assaisonnée."]},
+ {id:"n-dahl",nom:"Dahl de lentilles corail, riz et coriandre",dessert:"Yaourts à la mangue",temps:"25 min",profil:"Végétarien",
+  ing:[["Épicerie","Lentilles corail","600 g",2.80],["Épicerie","Lait de coco","2",3.00],["Épicerie","Riz basmati","500 g",1.50],["Épicerie","Tomates concassées","2",2.00],["Fruits et légumes","Oignons","2",0.40],["Fruits et légumes","Ail","1",0.60],["Épicerie","Curry en poudre","1",1.50],["Frais","Yaourts nature","8",1.60],["Surgelés","Mangue en morceaux","400 g",3.00]],
+  jeunes:"Ajoutez un œuf dur sur le dahl.",seniors:"Doux, riche en fibres et facile à digérer.",
+  materiel:"1 grande casserole, 1 casserole, 1 planche, 1 couteau, 1 cuillère en bois",
+  etapes:["Épluchez et hachez les oignons et 3 gousses d'ail. Faites-les revenir 4 min dans 2 cuillères à soupe d'huile.","Ajoutez 2 cuillères à soupe de curry, remuez 30 secondes.","Versez les lentilles rincées, les tomates, le lait de coco et 40 cl d'eau. Salez.","Laissez cuire 15 à 18 min à feu doux en remuant de temps en temps. Les lentilles doivent s'écraser.","Pendant ce temps, cuisez le riz 11 min dans l'eau salée.","Servez avec de la coriandre fraîche. Dessert : yaourt et mangue."]},
+ {id:"n-courgettes",nom:"Pâtes à la ricotta, aux courgettes et au citron",dessert:"Fraises ou fruit de saison",temps:"20 min",profil:"Végétarien",
+  ing:[["Épicerie","Pâtes coquillettes ou penne","700 g",2.10],["Frais","Ricotta","500 g",3.40],["Fruits et légumes","Courgettes","1,2 kg",3.20],["Fruits et légumes","Citrons","2",0.80],["Frais","Parmesan AOP","100 g",3.50],["Fruits et légumes","Fruits de saison","1 kg",3.00]],
+  jeunes:"Doublez le parmesan.",seniors:"Courgettes bien cuites, repas léger.",
+  materiel:"1 grande casserole, 1 poêle, 1 râpe, 1 passoire",
+  etapes:["Faites cuire les pâtes dans l'eau salée selon le paquet. Gardez un verre d'eau de cuisson.","Râpez les courgettes grossièrement. Faites-les revenir 6 min dans la poêle avec 2 cuillères à soupe d'huile, sel et poivre.","Dans un saladier, mélangez la ricotta, le zeste et le jus d'un citron, la moitié du parmesan.","Égouttez les pâtes, versez-les dans le saladier avec les courgettes. Ajoutez un peu d'eau de cuisson pour rendre la sauce crémeuse.","Servez avec le reste de parmesan."]},
+ {id:"n-brochettes",nom:"Brochettes de poulet fermier au yaourt et aux épices, semoule et concombre",dessert:"Pastèque ou fruit de saison",temps:"25 min",profil:"Riche en protéines",
+  ing:[["Viande","Filets de poulet fermier Label Rouge","1,2 kg",16.50],["Frais","Yaourts nature","6",1.20],["Épicerie","Semoule moyenne","500 g",1.30],["Fruits et légumes","Concombres","2",1.60],["Épicerie","Paprika et cumin","1",2.20],["Fruits et légumes","Citrons","2",0.80],["Fruits et légumes","Fruits de saison","1 kg",3.00]],
+  jeunes:"Faites des brochettes plus grosses.",seniors:"Servez la viande en petits morceaux avec la semoule.",
+  materiel:"1 plat, 12 piques en bois, 1 poêle ou plaque de four, 1 saladier",
+  etapes:["Coupez le poulet en cubes de 3 cm. Mélangez avec 4 yaourts, 2 cuillères à café de paprika, 1 de cumin, le jus d'un citron, sel et poivre. Laissez 10 min.","Piquez le poulet sur les piques en bois.","Faites cuire 10 à 12 min dans la poêle huilée, en retournant. Comptez 2 min de plus si les cubes sont gros.","Versez 500 g de semoule dans un saladier, ajoutez 500 ml d'eau bouillante salée, couvrez 5 min, égrenez à la fourchette.","Coupez le concombre en dés, mélangez-le avec 2 yaourts, du sel et du citron."]},
+ {id:"n-risotto",nom:"Risotto aux champignons et au jambon blanc supérieur",dessert:"Pommes",temps:"25 min",profil:"Riche en protéines",
+  ing:[["Épicerie","Riz arborio","500 g",2.50],["Fruits et légumes","Champignons de Paris","700 g",3.50],["Charcuterie","Jambon blanc supérieur Label Rouge ou sans nitrite","6 tranches",5.80],["Frais","Parmesan AOP","100 g",3.50],["Épicerie","Bouillon de volaille","2 l",2.80],["Fruits et légumes","Oignons","2",0.40],["Fruits et légumes","Pommes","1,5 kg",3.40]],
+  jeunes:"Ajoutez du fromage râpé.",seniors:"Riz bien fondant, jambon coupé fin.",
+  materiel:"1 grande casserole ou sauteuse, 1 casserole pour le bouillon, 1 louche",
+  etapes:["Faites chauffer 2 litres de bouillon dans une casserole, laissez-le chaud.","Émincez les oignons, tranchez les champignons, coupez le jambon en lamelles.","Dans la grande casserole, faites revenir oignons et champignons 6 min dans 2 cuillères à soupe d'huile.","Ajoutez le riz et remuez 2 min. Versez une louche de bouillon, remuez jusqu'à absorption. Recommencez pendant 18 min.","Hors du feu, ajoutez le jambon et la moitié du parmesan, mélangez.","Servez avec le reste de parmesan."]},
+ {id:"n-thon",nom:"Thon mi cuit au sésame, nouilles sautées et légumes",dessert:"Ananas",temps:"20 min",profil:"Léger",
+  ing:[["Poissonnerie","Steaks de thon albacore MSC","900 g",24.00],["Épicerie","Nouilles asiatiques","500 g",2.80],["Surgelés","Poêlée de légumes pour wok","1 kg",3.20],["Épicerie","Graines de sésame","1",1.80],["Épicerie","Sauce soja","1",2.00],["Épicerie","Ananas au sirop léger","1",2.20]],
+  jeunes:"Ajoutez un œuf sur chaque assiette.",seniors:"Peu de sauce soja si vous surveillez le sel.",
+  materiel:"1 poêle, 1 wok ou grande poêle, 1 casserole, 1 assiette creuse",
+  etapes:["Faites cuire les nouilles selon le paquet, environ 4 min. Égouttez.","Versez les graines de sésame dans une assiette. Passez les steaks de thon dedans pour les enrober.","Chauffez une poêle avec 1 cuillère à soupe d'huile à feu vif. Saisissez le thon 1 min 30 par face. Il reste rose à l'intérieur.","Dans le wok, faites cuire la poêlée de légumes 8 min avec 2 cuillères à soupe d'huile.","Ajoutez les nouilles et 3 cuillères à soupe de sauce soja, mélangez 2 min.","Tranchez le thon et posez-le sur les nouilles."]},
+ {id:"n-pizza",nom:"Pizzas maison au jambon cru, mozzarella et roquette",dessert:"Glace vanille",temps:"25 min",profil:"Riche en protéines",
+  ing:[["Frais","Pâtes à pizza fraîches","3",5.40],["Frais","Mozzarella di bufala","500 g",8.50],["Charcuterie","Jambon cru de pays ou San Daniele","200 g",7.50],["Frais","Roquette","200 g",2.40],["Épicerie","Coulis de tomates","2",2.20],["Surgelés","Glace vanille","1",3.50]],
+  jeunes:"Choisissez deux garnitures de plus.",seniors:"Moins de jambon, plus de roquette.",
+  materiel:"2 plaques de four, du papier cuisson, 1 cuillère",
+  etapes:["Allumez le four à 220 °C.","Déroulez les pâtes sur du papier cuisson. Étalez le coulis dessus, salez, poivrez.","Déchirez la mozzarella en morceaux et répartissez-la.","Enfournez 12 à 15 min, jusqu'à ce que les bords soient dorés.","Posez le jambon cru et la roquette à la sortie du four.","Coupez en parts et servez."]},
+ {id:"n-morteau",nom:"Saucisse de Morteau IGP, lentilles vertes et moutarde",dessert:"Poires",temps:"25 min",profil:"Riche en protéines",
+  ing:[["Charcuterie","Saucisse de Morteau IGP","3",16.50],["Épicerie","Lentilles vertes du Puy AOP","600 g",4.80],["Fruits et légumes","Carottes","600 g",0.90],["Fruits et légumes","Oignons","2",0.40],["Épicerie","Moutarde de Dijon","1",1.20],["Fruits et légumes","Poires","1 kg",2.80]],
+  jeunes:"Ajoutez une saucisse en plus à partager.",seniors:"Plus de lentilles et de carottes.",
+  materiel:"1 grande casserole, 1 poêle, 1 planche, 1 couteau",
+  etapes:["Rincez les lentilles. Mettez-les dans la casserole avec 1,5 litre d'eau froide, 1 oignon piqué en deux et les carottes en rondelles. Ne salez pas encore.","Portez à ébullition, puis laissez frémir 20 min.","Piquez les saucisses avec une fourchette. Faites-les dorer 10 min dans la poêle, à feu moyen, en les tournant.","Salez les lentilles à la fin de la cuisson. Égouttez.","Servez avec les saucisses en tranches et de la moutarde."]},
+ {id:"n-moules",nom:"Moules de bouchot marinières et frites au four",dessert:"Compote",temps:"25 min",profil:"Riche en protéines",
+  ing:[["Poissonnerie","Moules de bouchot AOP","3 kg",16.50],["Surgelés","Frites au four","1,5 kg",4.50],["Fruits et légumes","Échalotes","4",1.20],["Frais","Beurre demi sel","1",2.10],["Fruits et légumes","Persil","1",1.20],["Épicerie","Vin blanc sec","1",3.50],["Épicerie","Compote de pommes","1",2.20]],
+  jeunes:"Prévoyez 500 g de moules en plus.",seniors:"Peu de sel, les moules sont déjà salées.",
+  materiel:"1 grande casserole avec couvercle, 1 plaque de four, 1 passoire",
+  etapes:["Allumez le four selon le paquet de frites, environ 220 °C. Enfournez les frites sur une plaque.","Lavez les moules à l'eau froide. Jetez celles qui restent ouvertes quand vous les tapez.","Émincez les échalotes. Faites-les fondre 3 min dans la casserole avec une noix de beurre.","Ajoutez les moules et 20 cl de vin blanc. Couvrez, feu fort, 6 à 8 min en secouant la casserole.","Jetez les moules restées fermées. Ajoutez le persil haché et du poivre.","Servez avec les frites."]}
+];
+const NOUV_KCAL={"n-escalopes":790,"n-saumon":720,"n-faux-filet":780,"n-cabillaud":560,"n-magret":840,"n-crevettes":640,"n-tarte":690,"n-dahl":680,"n-courgettes":640,"n-brochettes":700,"n-risotto":760,"n-thon":650,"n-pizza":780,"n-morteau":760,"n-moules":760};
+NOUV.forEach(m=>{m.nouveau=true;MENUS.push(m)});
+// Extras de la semaine : un gâteau et une soirée à thème, selon la saison
+const EXTRAS=[
+ {id:"gateau",nom:"Gâteau moelleux aux pommes et à la cannelle",temps:"15 min + 35 min au four",profil:"Gâteau de la semaine",
+  ing:[["Épicerie","Farine de blé","1 kg",0.90],["Épicerie","Sucre en poudre","1 kg",1.20],["Frais","Œufs plein air","6",1.80],["Frais","Yaourt nature","1",0.20],["Fruits et légumes","Pommes","1 kg",1.80],["Épicerie","Levure chimique","1 sachet",0.30],["Épicerie","Cannelle en poudre","1 pot",1.20]],
+  materiel:"1 moule rond de 24 cm environ, 1 saladier, 1 fouet ou fourchette, 1 couteau, 1 éplucheur, le pot du yaourt (il sert de verre doseur)",
+  etapes:["Allumez le four à 180 °C. Beurrez le moule avec un peu de beurre étalé avec les doigts, puis saupoudrez 1 cuillère à soupe de farine et secouez pour qu'elle colle partout.",
+   "Videz le yaourt dans le saladier. Rincez et séchez le pot : il sert de mesure pour la suite.",
+   "Ajoutez 3 œufs et 2 pots de sucre. Fouettez 1 min jusqu'à ce que ce soit mousseux.",
+   "Ajoutez 3 pots de farine, le sachet de levure et 1 cuillère à café de cannelle. Mélangez jusqu'à ce qu'il n'y ait plus de grumeaux.",
+   "Ajoutez 1/2 pot d'huile et mélangez encore.",
+   "Épluchez 3 pommes, coupez-les en quatre, retirez le cœur dur et les pépins, puis coupez en fines lamelles. Ajoutez la moitié des pommes dans la pâte et mélangez.",
+   "Versez la pâte dans le moule. Posez le reste des lamelles sur le dessus en rond, et saupoudrez 1 cuillère à soupe de sucre.",
+   "Enfournez 35 min au milieu du four. Il est cuit quand un couteau planté au centre ressort sec, sans pâte collée. Sinon, remettez 5 min.",
+   "Laissez refroidir 10 min avant de démouler. Il se garde 3 jours sous un torchon : parfait pour les goûters et les petits-déjeuners."],
+  jeunes:"Une grosse part au goûter après le sport.",seniors:"Peu sucré et léger grâce au yaourt, une part avec un thé."},
+ {id:"soiree",nom:"Soirée crêpes salées et sucrées",temps:"20 min de pâte + cuisson à table",profil:"Soirée de la semaine",
+  ing:[["Épicerie","Farine de blé","1 kg",0.90],["Frais","Œufs plein air","12",3.60],["Frais","Lait demi-écrémé","2 l",2.20],["Frais","Jambon blanc","8 tranches",3.50],["Frais","Emmental râpé","200 g",2.00],["Fruits et légumes","Champignons de Paris","500 g",2.00],["Épicerie","Pâte à tartiner","400 g",2.50],["Fruits et légumes","Bananes","1 kg",1.90]],
+  materiel:"1 grand saladier, 1 fouet, 1 louche, 1 ou 2 poêles antiadhésives (ou une crêpière électrique posée sur la table), 1 spatule, 1 petite poêle pour les champignons",
+  etapes:["Pâte (à faire 1 h avant si possible, elle sera meilleure) : dans le saladier, mettez 500 g de farine et 1 pincée de sel. Creusez un trou au milieu et cassez-y 6 œufs.",
+   "Fouettez au centre en ajoutant le lait petit à petit (1 litre en tout), d'abord doucement. Si vous versez tout d'un coup, il y aura des grumeaux. Ajoutez 2 cuillères à soupe d'huile. La pâte doit être fluide comme une crème liquide.",
+   "Garnitures : rincez et émincez les champignons, faites-les revenir 8 min dans une poêle avec un peu d'huile et de sel. Coupez le jambon en lanières, les bananes en rondelles. Disposez tout dans des bols sur la table.",
+   "Cuisson : poêle sur feu moyen-fort, graissez-la avec un essuie-tout imbibé d'huile. Versez une petite louche de pâte et tournez la poêle pour l'étaler en couche fine.",
+   "Quand les bords se décollent et dorent (environ 1 min), retournez avec la spatule et laissez 30 secondes de l'autre côté.",
+   "Crêpe salée « complète » : sur la crêpe retournée, cassez un œuf, ajoutez jambon, fromage et champignons, couvrez 2 min, puis repliez les bords.",
+   "Crêpe sucrée : tartinez de pâte à tartiner, ajoutez des rondelles de banane, ou simplement sucre et un filet de citron.",
+   "L'idée de la soirée : chacun compose sa crêpe. Les jeunes peuvent apprendre à la retourner en la faisant sauter. Comptez 4 crêpes par personne."],
+  jeunes:"Crêpes complètes œuf-jambon-fromage, pleines de protéines.",seniors:"Une complète puis une crêpe banane, sans excès."}
+];
+const ALL=MENUS.concat(EXTRAS);
+const REG=new Map(ALL.map(m=>[m.id,m]));
+// Calories estimées par portion (1/6 de la recette, dessert ou accompagnement compris), à ±15 %
+const KCAL={poulet:760,colin:560,chili:660,curry:950,wok:590,frittata:560,"pates-thon":830,boulettes:1010,galettes:700,"soupe-croque":700,"pois-chiches":640,"porc-moutarde":920,"riz-cantonais":690,wraps:680,saucisses:790,lieu:600,burgers:650,gnocchis:720,"soupe-thai":700,shakshuka:700,gateau:350,soiree:1200};
+ALL.forEach(m=>{m.kcal=KCAL[m.id]||NOUV_KCAL[m.id]||0});
+const SAISONS=[
+ ["Novembre","Soirée crêpes ou raclette, gâteau aux pommes, soupes à la courge"],
+ ["Décembre","Soirée sapin avec chocolat chaud, sablés de Noël à décorer ensemble, bûche maison"],
+ ["Janvier","Galette des rois à la frangipane, soirée raclette ou fondue"],
+ ["Février","Chandeleur le 2 février : soirée crêpes ; Mardi gras : beignets et gaufres"],
+ ["Mars","Gaufres maison, gâteau au citron, soirée pizzas à garnir soi-même"],
+ ["Avril","Pâques : nids en chocolat, gâteau aux fraises dès qu'elles arrivent"],
+ ["Mai et juin","Soirée tacos, clafoutis aux cerises, premiers barbecues"],
+ ["Juillet et août","Barbecue, salades géantes, glaces et sorbets maison, tarte aux abricots"],
+ ["Septembre","Soirée burgers de rentrée, tarte aux prunes, gâteau aux mûres"],
+ ["Octobre","Halloween : soupe de potiron et muffins citrouille, crumble aux pommes"]
+];
+const eur=n=>n.toFixed(2).replace(".",",")+" €";
+// Foyer : les recettes sont écrites pour 6 portions (5 personnes + 1 portion de marge)
+let FOYER={adultes:5,enfants:0,menus:5};
+try{const s=JSON.parse(localStorage.getItem("menus-foyer")||"null");if(s&&typeof s==="object")FOYER={...FOYER,...s}}catch(e){}
+const nbPers=()=>Math.max(1,FOYER.adultes+FOYER.enfants);
+const portions=()=>FOYER.adultes+0.6*FOYER.enfants+1;
+const fac=()=>Math.max(0.2,portions()/6);
+const fmt=n=>{const r=Math.round(n*10)/10;return String(r).replace(".",",")};
 function scaleQ(q,f){
-  if(Math.abs(f-1)<0.01) return q;
-  const s=String(q), mx=s.match(/^(\d+)\s*×\s*(.*)$/);
-  if(mx) return Math.max(1,Math.ceil(parseInt(mx[1],10)*f-0.3))+" × "+mx[2];
+  if(Math.abs(f-1)<0.01)return q;
+  const s=String(q);
+  const mx=s.match(/^(\d+)\s*×\s*(.*)$/);
+  if(mx)return Math.max(1,Math.ceil(parseInt(mx[1],10)*f-0.3))+" × "+mx[2];
   return s.replace(/(\d+(?:,\d+)?)(\s*)(kg|g|cl|l)?(?![\w])/g,(all,num,sp,u)=>{
     let v=parseFloat(num.replace(",","."))*f;
-    if(u==="g"){v=Math.max(50,Math.round(v/50)*50); if(v>=1000) return fmt(v/1000)+sp+"kg"; return v+sp+u}
-    if(u==="kg"){if(v<1) return Math.max(50,Math.round(v*1000/50)*50)+sp+"g"; return fmt(v)+sp+u}
-    if(u==="cl"||u==="l") return fmt(Math.max(u==="cl"?10:0.25,v))+sp+u;
+    if(u==="g"){v=Math.max(50,Math.round(v/50)*50);if(v>=1000)return fmt(v/1000)+sp+"kg";return v+sp+u}
+    if(u==="kg"){if(v<1)return Math.max(50,Math.round(v*1000/50)*50)+sp+"g";return fmt(v)+sp+u}
+    if(u==="cl"||u==="l")return fmt(Math.max(u==="cl"?10:0.25,v))+sp+u;
     return Math.max(1,Math.ceil(v-0.3))+sp;
   });
 }
-const ingF = r => r.i.map(([ray,n,q,p])=>[ray,n,scaleQ(q,fac()),p*fac()]);
-const prix = r => r.i.reduce((s,x)=>s+x[3],0)*fac();
+const ingF=m=>{const f=fac();return m.ing.map(([r,n,q,p])=>[r,n,scaleQ(q,f),p*f])};
+const total=m=>m.ing.reduce((s,i)=>s+i[3],0)*fac();
+let chosen=new Set();
+try{const s=JSON.parse(localStorage.getItem("menus-choix")||"null");if(Array.isArray(s))chosen=new Set(s)}catch(e){}
 
-// ---- Dates ----
-function mondayOf(d){const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());x.setDate(x.getDate()-((x.getDay()+6)%7));return x}
-const key = d => d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
-const parseKey = k => {const [y,m,d]=k.split("-").map(Number);return new Date(y,m-1,d)};
-const addDays = (d,n) => {const x=new Date(d);x.setDate(x.getDate()+n);return x};
-function rangeLabel(mon){const sun=addDays(mon,6);
-  return mon.getMonth()===sun.getMonth() ? "du "+mon.getDate()+" au "+sun.getDate()+" "+MONTHS[sun.getMonth()]+" "+sun.getFullYear()
-    : "du "+mon.getDate()+" "+MONTHS[mon.getMonth()]+" au "+sun.getDate()+" "+MONTHS[sun.getMonth()]+" "+sun.getFullYear()}
-
-const thisMonday = mondayOf(new Date());
-const hot = null;
-let current = (hot && hot.week) || store.get("rdm-week", null) || key(thisMonday);
-let tab = (hot && hot.tab) || "menu";
-let canEdit=false, downloadsApi={};
-
-function recipe(v){ if(!v) return null; if(typeof v==="string") return R[v]?Object.assign({id:v},R[v]):null; return {id:null,n:String(v.n||""),d:"",t:"",p:"",k:0,i:[],mat:"",e:[]} }
-const week = k => STATE.weeks[k] || null;
-const mealsOf = w => w.soirs.map(recipe).filter(Boolean).concat((w.extras||[]).map(recipe).filter(Boolean));
-function status(msg,ms){const s=$("status");s.textContent=msg;s.hidden=false;clearTimeout(status.t);if(ms!==0)status.t=setTimeout(()=>s.hidden=true,ms||2800)}
-function el(tag,cls,text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
-
-// ---------- Rendu ----------
-function render(){
-  const mon=parseKey(current), w=week(current), isThis=current===key(thisMonday);
-  const t=$("weekTitle"); t.textContent=isThis?"Cette semaine ":"Semaine ";
-  t.appendChild(el("small",null,rangeLabel(mon)));
-  const facts=$("facts"); facts.innerHTML="";
-  const c1=el("span","chip"); c1.append(el("b",null,String(nbPers())), " personnes · "+fmt(portions())+" portions par repas"); facts.appendChild(c1);
-  if(w){const n=w.soirs.filter(Boolean).length; const c2=el("span","chip"); c2.append(el("b",null,String(n))," repas prévus"); facts.appendChild(c2);
-    const tot=mealsOf(w).reduce((s,r)=>s+prix(r),0); if(tot){const c3=el("span","chip"); c3.append("Courses ≈ ",el("b",null,eur(tot))); facts.appendChild(c3)}}
-  $("todayBtn").hidden=isThis;
-  $("pdfBtn").hidden=!(w && downloadsApi);
-  $("tabMenu").setAttribute("aria-selected",tab==="menu"); $("tabShop").setAttribute("aria-selected",tab==="shop");
-  const v=$("view"); v.innerHTML="";
-  if(!w){ v.appendChild(emptyWeek()); return }
-  v.appendChild(tab==="menu"?menuView(w,mon):shopView(w));
+let favs=new Map(), favDb=null, favLocal=false, ajouts=new Map(), touched=false, lastKey="";
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function card(m,p="m-"){
+  const t=total(m);
+  return `<article class="menu${chosen.has(m.id)?" on":""}" id="${p}${esc(m.id)}" data-rid="${esc(m.id)}">
+   <div class="menu-head"><span class="eyebrow">${m.nouveau?"Nouveau · ":""}${esc(m.profil)}</span><h3>${esc(m.nom)}</h3>
+    <div class="meta">${m.dessert?`<span>Dessert : ${esc(m.dessert)}</span>`:""}<span>${esc(m.temps)}</span>${m.kcal?`<span class="kcal">≈ ${m.kcal} kcal ${m.id==="gateau"?"par part":"par personne"}</span>`:""}</div></div>
+   <div class="price"><div><strong>${eur(t/nbPers())}</strong><span>par personne · ${eur(t)} le repas</span></div>
+    <button type="button" class="fav" data-fav="${esc(m.id)}" aria-pressed="false" aria-label="Ajouter ${esc(m.nom)} à mes favorites"><span class="heart" aria-hidden="true">♡</span> Favorite</button></div>
+   <div class="tips"><div class="tip"><b>Pour les 18 et 22 ans</b>${esc(m.jeunes)}</div><div class="tip"><b>Pour les plus de 50 ans</b>${esc(m.seniors)}</div></div>
+   <details><summary>Ingrédients et recette pas à pas</summary><div class="cols">
+    <div><h4 class="sub">À acheter${Math.abs(fac()-1)>0.01?` pour ${fmt(portions())} portions`:""}</h4><ul>${ingF(m).map(i=>`<li class="ing">${esc(i[1])}, ${esc(i[2])} <small>${eur(i[3])}</small></li>`).join("")}</ul>
+     ${m.materiel?`<h4 class="sub">Matériel</h4><p class="note">${esc(m.materiel)}</p>`:""}</div>
+    <div><h4 class="sub">Étapes</h4>${Math.abs(fac()-1)>0.01?`<p class="note">Les étapes donnent les quantités pour 6 portions. Pour votre foyer, multipliez-les par ${fmt(fac())} (environ ${fac()<0.85?"les deux tiers":fac()<1.2?"pareil":fac()<1.7?"une fois et demie":"le double"}).</p>`:""}<ol class="etapes">${m.etapes.map(e=>`<li>${esc(e)}</li>`).join("")}</ol></div></div></details>
+   <label class="pick"><input type="checkbox" id="${p}pick-${esc(m.id)}" data-id="${esc(m.id)}" ${chosen.has(m.id)?"checked":""}> Je choisis ce menu</label>
+  </article>`;
 }
-
-function emptyWeek(){
-  const box=el("div","empty-week");
-  box.appendChild(el("h2",null,"Pas encore de menus pour cette semaine"));
-  if(canEdit){
-    box.appendChild(el("p",null,"Je prépare 5 menus différents des deux semaines précédentes. Vous pourrez ensuite changer ceux qui ne vous tentent pas."));
-    const b=el("button","btn primary","Préparer les menus de la semaine");
-    b.onclick=()=>{STATE.weeks[current]=generateWeek(); save("Menus préparés")}; box.appendChild(b);
-  } else box.appendChild(el("p",null,"Les menus seront publiés ici dès qu'ils seront prêts."));
-  return box;
+const isExtra=m=>m.profil==="Gâteau de la semaine"||m.profil==="Soirée de la semaine";
+const chosenRecipes=()=>[...chosen].map(id=>REG.get(id)).filter(Boolean);
+const nbOeufs=sel=>sel.reduce((n,m)=>n+ingF(m).reduce((s,i)=>s+(/^[œŒ]ufs/.test(i[1])?(parseInt(i[2],10)||0):0),0),0);
+function buildList(){
+  const sel=chosenRecipes(), repas=sel.filter(m=>!isExtra(m)), map=new Map();
+  sel.forEach(m=>ingF(m).forEach(([r,n,q,p])=>{const k=r+"|"+n;const x=map.get(k)||{r,n,q:[],p:0};x.q.push(q);x.p+=p;map.set(k,x)}));
+  return {sel,repas,lignes:[...map.values()],tot:sel.reduce((s,m)=>s+total(m),0),totRepas:repas.reduce((s,m)=>s+total(m),0),oeufs:nbOeufs(sel)};
 }
-
-function mealMeta(r){
-  const meta=el("div","meta");
-  if(r.p) meta.appendChild(el("span","tag"+(r.p==="Végétarien"?" veg":""),r.p));
-  if(r.t) meta.appendChild(el("span",null,r.t));
-  if(r.k) meta.appendChild(el("span","kcal","≈ "+r.k+" kcal"));
-  if(r.i.length) meta.appendChild(el("span",null,eur(prix(r))));
-  return meta;
+let syncTimer=null, syncChain=Promise.resolve();
+// Écrit la commande en cours pour que Claude puisse la relire (une seule fois par changement)
+function syncCommande(b){
+  if(!favDb||!touched)return;
+  const data={foyer:{...FOYER,portions:portions()},menus:b.sel.map(m=>({id:m.id,nom:m.nom})),oeufs:b.oeufs,total:Math.round(b.tot*100)/100,
+    lignes:b.lignes.map(x=>({rayon:x.r,nom:x.n,quantites:x.q.join(" + "),prix:Math.round(x.p*100)/100})),
+    ajouts:[...ajouts.values()].map(a=>({nom:a.nom,qte:a.qte}))};
+  const key=JSON.stringify(data);
+  if(key===lastKey)return;
+  clearTimeout(syncTimer);
+  syncTimer=setTimeout(()=>{
+    lastKey=key;
+    syncChain=syncChain.then(()=>favDb.doc("commande/courante").update({...data,statut:"brouillon",maj:new Date().toISOString()}).catch(()=>favDb.doc("commande/courante").set({...data,statut:"brouillon",maj:new Date().toISOString()}))).catch(()=>{});
+  },800);
 }
-
-function menuView(w,mon){
-  const box=el("div","days"), today=key(new Date());
-  w.soirs.forEach((v,i)=>{
-    const date=addDays(mon,i), r=recipe(v);
-    const card=el(r||canEdit?"button":"div","day"+(key(date)===today?" today":"")+(r?"":" free"));
-    if(r||canEdit){card.type="button"; card.onclick=()=>r&&r.id?openRecipe(r,i):openPicker(i)}
-    const dn=el("div","dname",DAYS[i]); dn.appendChild(el("span",null,date.getDate()+" "+MONTHS[date.getMonth()])); card.appendChild(dn);
-    const m=el("div","dmeal");
-    if(r){ m.appendChild(el("h3",null,r.n)); if(r.d) m.appendChild(el("p","note","Dessert : "+r.d)); if(r.id) m.appendChild(mealMeta(r)) }
-    else m.appendChild(el("p","empty",canEdit?"Soir libre · toucher pour ajouter un menu":"Soir libre"));
-    card.appendChild(m); box.appendChild(card);
+function renderBasket(){
+  const b=buildList(), {sel,repas,lignes,tot,totRepas,oeufs}=b;
+  document.getElementById("totals").innerHTML=`<div><strong>${repas.length} / ${FOYER.menus}</strong><span>menus choisis</span></div><div><strong>${sel.length-repas.length}</strong><span>extras</span></div><div><strong>${oeufs}</strong><span>œufs à commander</span></div><div><strong>${eur(tot)}</strong><span>courses estimées</span></div><div><strong>${repas.length?eur(totRepas/repas.length/nbPers()):"–"}</strong><span>par personne et par repas</span></div>`;
+  document.getElementById("chip-menus").innerHTML=`<b>${repas.length}</b> sur ${FOYER.menus} menus choisis`;
+  const n=sel.length+ajouts.size;
+  document.getElementById("tab-count").textContent=n?`(${n})`:"";
+  const by={};lignes.forEach(x=>(by[x.r]=by[x.r]||[]).push(x));
+  let html=Object.keys(by).sort().map(r=>`<div class="rayon"><h4>${esc(r)}</h4><ul>${by[r].map(x=>`<li${/^[œŒ]ufs/.test(x.n)?' class="oeufs"':""}><span>${esc(x.n)} (${x.q.map(esc).join(" + ")})</span><span>${eur(x.p)}</span></li>`).join("")}</ul></div>`).join("");
+  if(ajouts.size)html+=`<div class="rayon"><h4>Ajouts manuels</h4><ul>${[...ajouts.entries()].map(([id,a])=>`<li><span>${esc(a.nom)}${a.qte?` (${esc(a.qte)})`:""}</span><span><button type="button" class="x" data-del="${esc(id)}" aria-label="Retirer ${esc(a.nom)}">×</button></span></li>`).join("")}</ul></div>`;
+  document.getElementById("list").innerHTML=html||'<p class="empty">Cochez un ou plusieurs menus, ou ajoutez un produit ci-dessous.</p>';
+  syncCommande(b);
+}
+function listText(){
+  const {sel,oeufs}=buildList();
+  return "Menus choisis : "+sel.map(m=>m.nom).join(" ; ")+"\nŒufs à commander : "+oeufs+"\n\n"+[...document.querySelectorAll("#list .rayon")].map(r=>r.querySelector("h4").textContent+"\n"+[...r.querySelectorAll("li")].map(li=>"- "+li.firstElementChild.textContent).join("\n")).join("\n\n");
+}
+function renderCards(){
+  const act=document.querySelector("#filters button[aria-pressed=true]");
+  document.getElementById("menus").innerHTML=MENUS.slice().sort((a,b)=>(b.nouveau?1:0)-(a.nouveau?1:0)).map(m=>card(m)).join("");
+  document.getElementById("extras").innerHTML=EXTRAS.map(m=>card(m)).join("");
+  if(act&&act.dataset.p!=="Tous")MENUS.forEach(m=>{document.getElementById("m-"+m.id).hidden=m.profil!==act.dataset.p});
+}
+function foyerUI(){
+  document.getElementById("f-adultes").value=FOYER.adultes;
+  document.getElementById("f-enfants").value=FOYER.enfants;
+  document.getElementById("f-menus").value=FOYER.menus;
+  const p=nbPers();
+  document.getElementById("chip-foyer").innerHTML=`<b>${p}</b> ${p>1?"mangeurs":"mangeur"}, ${fmt(portions())} portions par repas`;
+  document.getElementById("f-note").textContent=`Chaque recette est calculée pour ${fmt(portions())} portions : 1 par adulte ou ado, 0,6 par enfant, plus 1 portion de marge. Les quantités, les prix, la liste et le panier Carrefour suivent.`;
+}
+function setFoyer(next,fromDb){
+  const c=(v,a,b,d)=>{v=parseInt(v,10);return isNaN(v)?d:Math.min(b,Math.max(a,v))};
+  const n={adultes:c(next.adultes,0,12,5),enfants:c(next.enfants,0,12,0),menus:c(next.menus,1,21,5)};
+  if(n.adultes+n.enfants<1)n.adultes=1;
+  if(n.adultes===FOYER.adultes&&n.enfants===FOYER.enfants&&n.menus===FOYER.menus){foyerUI();return}
+  FOYER=n;
+  try{localStorage.setItem("menus-foyer",JSON.stringify(FOYER))}catch(e){}
+  foyerUI();renderCards();if(typeof renderFavs==="function"&&favs)renderFavs();else renderBasket();
+  if(!fromDb&&favDb){touched=true;favDb.doc("config/foyer").set({...FOYER,maj:new Date().toISOString()}).catch(()=>{})}
+}
+document.getElementById("foyer").addEventListener("change",()=>setFoyer({adultes:document.getElementById("f-adultes").value,enfants:document.getElementById("f-enfants").value,menus:document.getElementById("f-menus").value}));
+document.getElementById("foyer").addEventListener("submit",e=>e.preventDefault());
+foyerUI();
+renderCards();
+document.getElementById("saisons").innerHTML=SAISONS.map(([mois,idee])=>`<tr><td>${mois}</td><td>${idee}</td></tr>`).join("");
+renderBasket();
+const PROFILS=["Tous","Riche en protéines","Léger","Végétarien"];
+const fbox=document.getElementById("filters");
+fbox.innerHTML=PROFILS.map((p,i)=>`<button type="button" aria-pressed="${i===0}" data-p="${p}">${p}${i?` (${MENUS.filter(m=>m.profil===p).length})`:` (${MENUS.length})`}</button>`).join("");
+fbox.addEventListener("click",e=>{
+  const b=e.target.closest("button");if(!b)return;
+  fbox.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  MENUS.forEach(m=>{document.getElementById("m-"+m.id).hidden=!(b.dataset.p==="Tous"||m.profil===b.dataset.p)});
+});
+document.querySelector(".wrap").addEventListener("change",e=>{
+  const id=e.target.dataset&&e.target.dataset.id;if(!id)return;
+  e.target.checked?chosen.add(id):chosen.delete(id);
+  touched=true;
+  document.querySelectorAll('.menu[data-rid="'+id+'"]').forEach(a=>a.classList.toggle("on",e.target.checked));
+  document.querySelectorAll('input[data-id="'+id+'"]').forEach(i=>{i.checked=e.target.checked});
+  try{localStorage.setItem("menus-choix",JSON.stringify([...chosen]))}catch(err){}
+  renderBasket();
+});
+document.getElementById("copy").addEventListener("click",()=>{
+  const t=listText(),ok=document.getElementById("copied");
+  const done=()=>{ok.hidden=false};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,()=>{fallback(t);done()})}else{fallback(t);done()}
+});
+// Favorites et ajouts manuels : côté serveur quand c'est possible, sinon dans ce navigateur
+try{const s=JSON.parse(localStorage.getItem("menus-favoris")||"null");if(s&&typeof s==="object")Object.entries(s).forEach(([k,v])=>{if(v&&Array.isArray(v.ing))favs.set(k,v)})}catch(e){}
+try{const s=JSON.parse(localStorage.getItem("menus-ajouts")||"null");if(s&&typeof s==="object")Object.entries(s).forEach(([k,v])=>ajouts.set(k,v))}catch(e){}
+function saveLocal(){try{localStorage.setItem("menus-favoris",JSON.stringify(Object.fromEntries(favs)));localStorage.setItem("menus-ajouts",JSON.stringify(Object.fromEntries(ajouts)))}catch(e){}}
+const toDb=m=>({nom:m.nom,profil:m.profil,temps:m.temps,dessert:m.dessert||"",ing:m.ing.map(([r,n,q,p])=>({r,n,q,p})),materiel:m.materiel||"",etapes:m.etapes,jeunes:m.jeunes||"",seniors:m.seniors||"",kcal:m.kcal||0});
+const fromDb=v=>({...v,ing:(v.ing||[]).map(i=>Array.isArray(i)?i:[i.r,i.n,i.q,i.p]),etapes:v.etapes||[]});
+function renderFavs(){
+  const items=[...favs.entries()].filter(([id,v])=>v&&Array.isArray(v.ing)&&v.ing.length).sort((a,b)=>(a[1].nom||"").localeCompare(b[1].nom||""));
+  items.forEach(([id,v])=>{if(!REG.has(id))REG.set(id,{id,...v})});
+  document.getElementById("favoris").innerHTML=items.length
+    ? items.map(([id])=>card(REG.get(id),"f-")).join("")
+    : '<p class="empty">Aucune favorite pour le moment. Appuyez sur « Favorite » dans une recette et elle apparaît ici, avec ses ingrédients et toutes ses étapes.</p>';
+  document.querySelectorAll(".fav").forEach(b=>{
+    const on=favs.has(b.dataset.fav);
+    b.setAttribute("aria-pressed",on?"true":"false");
+    b.querySelector(".heart").textContent=on?"♥":"♡";
   });
-  const ex=(w.extras||[]).map(recipe).filter(Boolean);
-  if(ex.length){
-    const wrap=el("div","days"); wrap.appendChild(el("h2","section","En plus cette semaine"));
-    ex.forEach(r=>{const card=el("button","day"); card.type="button"; card.onclick=()=>openRecipe(r,-1);
-      card.appendChild(el("div","dname",r.p.replace(" de la semaine","")));
-      const m=el("div","dmeal"); m.append(el("h3",null,r.n), mealMeta(r)); card.appendChild(m); wrap.appendChild(card)});
-    const frag=el("div"); frag.style.display="contents"; frag.append(box,wrap); return frag;
+  document.getElementById("tab-fav").textContent=items.length?`(${items.length})`:"";
+  renderBasket();
+}
+function noteFav(txt){["fav-note","ajout-note"].forEach(i=>{const n=document.getElementById(i);n.textContent=txt;n.hidden=!txt})}
+document.querySelector(".wrap").addEventListener("click",e=>{
+  const b=e.target.closest(".fav");
+  if(b){
+    const id=b.dataset.fav, m=REG.get(id);if(!m)return;
+    const on=!favs.has(id);
+    if(on)favs.set(id,{id,nom:m.nom,profil:m.profil,temps:m.temps,dessert:m.dessert||"",ing:m.ing,materiel:m.materiel||"",etapes:m.etapes,jeunes:m.jeunes||"",seniors:m.seniors||"",kcal:m.kcal||0});else favs.delete(id);
+    renderFavs();
+    if(favDb){
+      const ref=favDb.collection("favoris").doc(id);
+      (on?ref.set({...toDb(m),ajoute:new Date().toISOString()}):ref.delete())
+        .catch(()=>{favLocal=true;saveLocal();noteFav("Vos favorites sont enregistrées dans ce navigateur seulement.")});
+    }else{saveLocal()}
+    return;
   }
-  return box;
+  const d=e.target.closest("[data-del]");
+  if(d){
+    const id=d.dataset.del;
+    ajouts.delete(id);touched=true;renderBasket();saveLocal();
+    if(favDb)favDb.collection("ajouts").doc(id).delete().catch(()=>{});
+  }
+});
+document.getElementById("ajout-form").addEventListener("submit",e=>{
+  e.preventDefault();
+  const nom=document.getElementById("ajout-nom").value.trim(), qte=document.getElementById("ajout-qte").value.trim();
+  if(!nom)return;
+  const id="a"+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+  ajouts.set(id,{nom,qte});touched=true;renderBasket();saveLocal();
+  if(favDb)favDb.collection("ajouts").doc(id).set({nom,qte,ajoute:new Date().toISOString()}).catch(()=>{});
+  e.target.reset();document.getElementById("ajout-nom").focus();
+});
+function showTab(t){
+  document.querySelectorAll("[data-view]").forEach(el=>{el.hidden=el.dataset.view!==t});
+  document.querySelectorAll(".tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t?"true":"false"));
+  window.scrollTo(0,0);
 }
-
-// ---------- Courses ----------
-function parseQty(q){const m=String(q).trim().match(/^(\d+(?:[.,]\d+)?)\s*([^\d×+]*)$/); if(!m) return null;
-  let n=parseFloat(m[1].replace(",",".")), u=m[2].trim(); if(u==="kg"){n*=1000;u="g"} if(u==="l"){n*=100;u="cl"} return {n,u}}
-function fmtQ(n,u){ if(u==="g"&&n>=1000) return fmt(n/1000)+" kg"; if(u==="cl"&&n>=100) return fmt(n/100)+" l"; return u? fmt(n)+" "+u : fmt(n) }
-function shoppingList(w){
-  const items={};
-  mealsOf(w).forEach(r=>ingF(r).forEach(([ray,name,q,p])=>{
-    const it=items[name]||(items[name]={name,ray,units:{},other:[],prix:0}); it.prix+=p;
-    const pq=parseQty(q); if(pq) it.units[pq.u]=(it.units[pq.u]||0)+pq.n; else it.other.push(q);
-  }));
-  const groups={};
-  Object.values(items).forEach(it=>{it.q=Object.entries(it.units).map(([u,n])=>fmtQ(n,u)).concat(it.other).join(" + "); (groups[it.ray]||(groups[it.ray]=[])).push(it)});
-  const order=RAYONS.concat(Object.keys(groups).filter(g=>!RAYONS.includes(g)));
-  return order.filter(g=>groups[g]).map(g=>({label:g,items:groups[g].sort((a,b)=>a.name.localeCompare(b.name,"fr"))}));
-}
-function shopView(w){
-  const box=el("div"); box.style.cssText="display:flex;flex-direction:column;gap:18px";
-  const list=shoppingList(w), tot=list.reduce((s,g)=>s+g.items.reduce((a,i)=>a+i.prix,0),0), n=list.reduce((s,g)=>s+g.items.length,0);
-  const totals=el("div","totals");
-  [[String(n),"produits"],[eur(tot),"courses estimées"],[eur(tot/Math.max(1,w.soirs.filter(Boolean).length)/nbPers()),"par personne et par repas"]].forEach(([a,b])=>{const d=el("div");d.append(el("strong",null,a),el("span",null,b));totals.appendChild(d)});
-  box.appendChild(totals);
-  const grid=el("div","shop"), ck=store.get("rdm-check-"+current,{});
-  list.forEach(g=>{
-    const sec=el("section"); sec.appendChild(el("h3",null,g.label)); const ul=el("ul");
-    g.items.forEach(it=>{const li=el("li",ck[it.name]?"done":""); const lb=el("label"); const cb=el("input"); cb.type="checkbox"; cb.checked=!!ck[it.name];
-      cb.id="ck-"+g.label.slice(0,3)+"-"+it.name.replace(/[^a-z0-9]/gi,"_");
-      cb.onchange=()=>{ck[it.name]=cb.checked; store.set("rdm-check-"+current,ck); li.className=cb.checked?"done":""};
-      lb.append(cb,el("span","n",it.name),el("span","q",it.q)); li.appendChild(lb); ul.appendChild(li)});
-    sec.appendChild(ul); grid.appendChild(sec)});
-  box.appendChild(grid);
-  box.appendChild(el("p","note","Quantités calculées pour "+fmt(portions())+" portions par repas. Les cases cochées restent sur cet appareil. Pas comptés, car vous les avez au placard : "+PLACARD+"."));
-  if(canEdit) box.appendChild(foyerForm());
-  return box;
-}
-function foyerForm(){
-  const f=el("form","foyer"); f.setAttribute("aria-label","Réglages du foyer");
-  const mk=(lab,id,val)=>{const l=el("label",null,lab); const i=el("input"); i.type="number"; i.id=id; i.min="0"; i.max="12"; i.value=val; i.inputMode="numeric"; l.appendChild(i); f.appendChild(l); return i};
-  const a=mk("Adultes et ados","f-adultes",F().adultes), e=mk("Enfants de moins de 12 ans","f-enfants",F().enfants);
-  const b=el("button","btn","Enregistrer"); b.type="submit"; f.appendChild(b);
-  f.onsubmit=ev=>{ev.preventDefault(); const na=Math.max(0,Math.min(12,parseInt(a.value,10)||0)), ne=Math.max(0,Math.min(12,parseInt(e.value,10)||0));
-    if(na+ne<1){status("Il faut au moins une personne.");return} STATE.foyer={adultes:na,enfants:ne}; save("Foyer mis à jour")};
-  return f;
-}
-
-// ---------- Recette ----------
-function sheet(title,build){
-  const root=$("sheetRoot"); root.innerHTML="";
-  const bg=el("div","sheet-bg"); bg.onclick=e=>{if(e.target===bg) close()};
-  const sh=el("div","sheet"); sh.setAttribute("role","dialog"); sh.setAttribute("aria-modal","true"); sh.setAttribute("aria-label",title);
-  const head=el("div","sheet-head"); const h=el("h2",null,title); const x=el("button","icon-btn","×"); x.setAttribute("aria-label","Fermer"); x.onclick=close;
-  head.append(h,x); const body=el("div","sheet-body"); sh.append(head,body); bg.appendChild(sh); root.appendChild(bg);
-  const esc=e=>{if(e.key==="Escape") close()}; document.addEventListener("keydown",esc);
-  function close(){root.innerHTML=""; document.removeEventListener("keydown",esc)}
-  build(body,close); x.focus();
-}
-function openRecipe(r,dayIndex){
-  sheet(r.n,(b,close)=>{
-    b.appendChild(mealMeta(r));
-    if(r.d) b.appendChild(el("p",null,"Dessert : "+r.d));
-    b.appendChild(el("h4",null,"Ingrédients pour "+fmt(portions())+" portions"));
-    const ul=el("ul","ings"); ingF(r).forEach(([,n,q])=>{const li=el("li"); li.append(el("span",null,n),el("span",null,q)); ul.appendChild(li)}); b.appendChild(ul);
-    if(r.mat){b.appendChild(el("h4",null,"Matériel")); b.appendChild(el("p",null,r.mat))}
-    if(r.e.length){b.appendChild(el("h4",null,"Étapes"));
-      if(Math.abs(fac()-1)>0.01) b.appendChild(el("p","note","Les étapes donnent les quantités pour 6 portions : multipliez-les par "+fmt(fac())+"."));
-      const ol=el("ol","steps"); r.e.forEach(s=>ol.appendChild(el("li",null,s))); b.appendChild(ol)}
-    if(canEdit && dayIndex>=0){const row=el("div","row");
-      const c=el("button","btn","Changer ce menu"); c.onclick=()=>{close(); openPicker(dayIndex)};
-      const rm=el("button","btn","Libérer ce soir"); rm.onclick=()=>{week(current).soirs[dayIndex]=null; close(); save("Soir libéré")};
-      row.append(c,rm); b.appendChild(row)}
-  });
-}
-function openPicker(i){
-  const w=week(current), cur=w.soirs[i];
-  sheet(DAYS[i]+" soir : choisir un menu",(b,close)=>{
-    const apply=v=>{w.soirs[i]=v; close(); save("Menu changé")};
-    const row=el("div","row");
-    const rnd=el("button","btn primary","Une autre idée au hasard");
-    rnd.onclick=()=>{const used=new Set(w.soirs.filter(x=>typeof x==="string")); const pool=Object.keys(R).filter(k=>!R[k].x&&!used.has(k)); apply(pool[Math.floor(Math.random()*pool.length)])};
-    const none=el("button","btn","Soir libre"); none.onclick=()=>apply(null); row.append(rnd,none); b.appendChild(row);
-    const own=el("div","row"); const inp=el("input"); inp.type="text"; inp.id="customMeal"; inp.maxLength=80; inp.placeholder="Ou écrivez votre propre repas (restes, resto…)";
-    if(cur&&typeof cur==="object") inp.value=cur.n;
-    const ok=el("button","btn","Utiliser"); ok.onclick=()=>{const t=inp.value.trim(); if(t) apply({n:t})};
-    inp.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault(); ok.click()}}; own.append(inp,ok); b.appendChild(own);
-    const s=el("input"); s.type="text"; s.id="searchMeal"; s.placeholder="Chercher : poulet, poisson, végétarien…"; b.appendChild(s);
-    const list=el("div","pick"); b.appendChild(list);
-    const fill=()=>{list.innerHTML=""; const q=s.value.trim().toLowerCase();
-      Object.keys(R).filter(k=>!R[k].x && (!q || (R[k].n+" "+R[k].p).toLowerCase().includes(q))).sort((a,c)=>R[a].n.localeCompare(R[c].n,"fr")).forEach(k=>{
-        const bt=el("button",k===cur?"cur":""); bt.type="button"; bt.append(el("span","n",R[k].n),el("span","tag"+(R[k].p==="Végétarien"?" veg":""),R[k].p)); bt.onclick=()=>apply(k); list.appendChild(bt)})};
-    s.oninput=fill; fill();
-  });
-}
-
-// ---------- Nouvelle semaine ----------
-function generateWeek(){
-  const recent=new Set(); [-7,-14].forEach(d=>{const pw=week(key(addDays(parseKey(current),d))); if(pw) pw.soirs.forEach(v=>typeof v==="string"&&recent.add(v))});
-  const pool=Object.keys(R).filter(k=>!R[k].x); for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]]}
-  const fresh=pool.filter(k=>!recent.has(k)).concat(pool.filter(k=>recent.has(k)));
-  const picks=[], need={"Végétarien":1,"Léger":1};
-  Object.keys(need).forEach(p=>{const k=fresh.find(k=>R[k].p===p&&!picks.includes(k)); if(k) picks.push(k)});
-  fresh.forEach(k=>{if(picks.length<5&&!picks.includes(k)) picks.push(k)});
-  const soirs=[null,null,null,null,null,null,null]; picks.forEach((k,i)=>soirs[i]=k);
-  const prevEx=(week(key(addDays(parseKey(current),-7)))||{}).extras||[];
-  return {soirs, extras:[prevEx.includes("gateau")?"soiree":"gateau"]};
-}
-
-// ---------- Enregistrement ----------
-// Site public en lecture seule : les menus se changent dans semaines.json.
-function save(){render()}
-
-// ---------- PDF ----------
-const CP1252="€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ";
-const pdfText=s=>String(s).replace(/[   ]/g," ").replace(/≈/g,"env.").replace(/[‐‑]/g,"-").replace(/./gu,ch=>ch.charCodeAt(0)<256||CP1252.includes(ch)?ch:"");
-async function makePdf(){
-  if(!window.jspdf){status("Le module PDF n'a pas chargé. Rechargez la page.");return}
-  const w=week(current), mon=parseKey(current); const {jsPDF}=window.jspdf; const doc=new jsPDF({unit:"mm",format:"a4"});
-  const W=210,M=16,B=282, ink=[29,42,36], mute=[93,107,99], basil=[47,122,79], saf=[184,110,0], line=[219,227,220];
-  let y;
-  const T=(s,x,yy,o)=>doc.text(Array.isArray(s)?s.map(pdfText):pdfText(s),x,yy,o);
-  const head=(title,sub)=>{y=20; doc.setFont("helvetica","bold"); doc.setFontSize(9); doc.setTextColor(...basil); T("REPAS DE LA MAISON",M,y);
-    y+=9; doc.setTextColor(...ink); doc.setFontSize(20); T(title,M,y); y+=7; doc.setFont("helvetica","normal"); doc.setFontSize(11); doc.setTextColor(...mute); T(sub,M,y); y+=8};
-  const need=h=>{if(y+h>B){doc.addPage(); y=20}};
-  const sub=rangeLabel(mon).replace(/^du/,"Du")+"  ·  "+nbPers()+" personnes, "+fmt(portions())+" portions par repas";
-  // Page 1 : la semaine
-  head("Les menus de la semaine",sub);
-  doc.setDrawColor(...ink); doc.setLineWidth(.5); doc.line(M,y,W-M,y);
-  w.soirs.forEach((v,i)=>{const r=recipe(v), date=addDays(mon,i);
-    doc.setFontSize(12); const nm=doc.splitTextToSize(pdfText(r?r.n:"Soir libre"),W-2*M-36);
-    const info=r&&r.id?[r.d?"Dessert : "+r.d:"",r.t,r.k?"env. "+r.k+" kcal":""].filter(Boolean).join("  ·  "):"";
-    const h=nm.length*5.2+(info?5:0)+8; need(h); const yy=y+6.5;
-    doc.setFont("helvetica","bold"); doc.setFontSize(12); doc.setTextColor(...saf); T(DAYS[i],M,yy);
-    doc.setFont("helvetica","normal"); doc.setFontSize(9); doc.setTextColor(...mute); T(date.getDate()+" "+MONTHS[date.getMonth()],M,yy+4.5);
-    doc.setFont("helvetica",r?"bold":"italic"); doc.setFontSize(12); doc.setTextColor(...(r?ink:mute)); T(nm,M+36,yy);
-    if(info){doc.setFont("helvetica","normal"); doc.setFontSize(9); doc.setTextColor(...mute); T(info,M+36,yy+nm.length*5.2)}
-    y+=h; doc.setDrawColor(...line); doc.setLineWidth(.3); doc.line(M,y,W-M,y)});
-  const ex=(w.extras||[]).map(recipe).filter(Boolean);
-  if(ex.length){y+=8; need(14); doc.setFont("helvetica","bold"); doc.setFontSize(11); doc.setTextColor(...basil); T("EN PLUS CETTE SEMAINE",M,y); y+=6;
-    ex.forEach(r=>{doc.setFont("helvetica","normal"); doc.setFontSize(11); doc.setTextColor(...ink); T("- "+r.n,M,y); y+=6})}
-  // Page 2 : courses
-  doc.addPage(); head("Liste de courses","Semaine "+rangeLabel(mon)+"  ·  "+fmt(portions())+" portions par repas");
-  const list=shoppingList(w), tot=list.reduce((s,g)=>s+g.items.reduce((a,i)=>a+i.prix,0),0);
-  doc.setFontSize(10); doc.setTextColor(...mute); T("Total estimé : "+eur(tot)+". Pas comptés (placard) : "+PLACARD+".",M,y,{maxWidth:W-2*M}); y+=10;
-  const top=y, gap=10, cw=(W-2*M-gap)/2; let col=0, cy=top;
-  list.forEach(g=>{const h=8+g.items.length*6;
-    if(cy+h>B){ if(col===0){col=1;cy=top} else {doc.addPage(); col=0; cy=20} }
-    const x=M+col*(cw+gap); doc.setFont("helvetica","bold"); doc.setFontSize(10); doc.setTextColor(...basil); T(g.label.toUpperCase(),x,cy);
-    doc.setDrawColor(...basil); doc.setLineWidth(.5); doc.line(x,cy+2,x+cw,cy+2); cy+=8;
-    g.items.forEach(it=>{doc.setDrawColor(...mute); doc.setLineWidth(.3); doc.rect(x,cy-3.2,3.4,3.4);
-      doc.setFont("helvetica","normal"); doc.setFontSize(10); doc.setTextColor(...ink);
-      const qw=Math.min(cw*0.42,doc.getTextWidth(pdfText(it.q))+1); T(doc.splitTextToSize(pdfText(it.name),cw-8-qw)[0],x+6,cy);
-      doc.setTextColor(...mute); T(it.q,x+cw,cy,{align:"right"}); cy+=6}); cy+=5});
-  // Une page par recette
-  mealsOf(w).filter(r=>r.id).forEach(r=>{
-    doc.addPage(); y=20; doc.setFont("helvetica","bold"); doc.setFontSize(9); doc.setTextColor(...basil);
-    const d=w.soirs.indexOf(r.id); T((d>=0?DAYS[d].toUpperCase()+" SOIR":r.p.toUpperCase()),M,y); y+=8;
-    doc.setFontSize(17); doc.setTextColor(...ink); const tl=doc.splitTextToSize(pdfText(r.n),W-2*M); T(tl,M,y); y+=tl.length*7;
-    doc.setFont("helvetica","normal"); doc.setFontSize(10); doc.setTextColor(...mute);
-    T([r.t,r.k?"env. "+r.k+" kcal":"",r.d?"Dessert : "+r.d:""].filter(Boolean).join("  ·  "),M,y); y+=9;
-    doc.setFont("helvetica","bold"); doc.setFontSize(10); doc.setTextColor(...basil); T("INGRÉDIENTS POUR "+fmt(portions())+" PORTIONS",M,y); y+=6;
-    doc.setFont("helvetica","normal"); doc.setFontSize(10.5); doc.setTextColor(...ink);
-    const ings=ingF(r), half=Math.ceil(ings.length/2), cw2=(W-2*M-10)/2;
-    ings.forEach(([,n,q],k)=>{const x=M+(k<half?0:cw2+10), yy=y+(k%half)*5.6; T(n,x,yy); doc.setTextColor(...mute); T(q,x+cw2,yy,{align:"right"}); doc.setTextColor(...ink)});
-    y+=half*5.6+5;
-    if(r.mat){doc.setFont("helvetica","bold"); doc.setFontSize(10); doc.setTextColor(...basil); T("MATÉRIEL",M,y); y+=5.5;
-      doc.setFont("helvetica","normal"); doc.setFontSize(10.5); doc.setTextColor(...ink); const ml=doc.splitTextToSize(pdfText(r.mat),W-2*M); T(ml,M,y); y+=ml.length*5+5}
-    doc.setFont("helvetica","bold"); doc.setFontSize(10); doc.setTextColor(...basil); T("ÉTAPES",M,y); y+=6;
-    if(Math.abs(fac()-1)>0.01){doc.setFont("helvetica","italic"); doc.setFontSize(9); doc.setTextColor(...mute); T("Les étapes donnent les quantités pour 6 portions : multipliez-les par "+fmt(fac())+".",M,y); y+=6}
-    doc.setFont("helvetica","normal"); doc.setFontSize(10.5);
-    r.e.forEach((s,k)=>{const ls=doc.splitTextToSize(pdfText(s),W-2*M-8); need(ls.length*5+2.5);
-      doc.setTextColor(...saf); doc.setFont("helvetica","bold"); T(String(k+1),M,y); doc.setFont("helvetica","normal"); doc.setTextColor(...ink); T(ls,M+8,y); y+=ls.length*5+2.5});
-  });
-  doc.save("menus-semaine-"+current+".pdf"); status("PDF téléchargé");
-}
-
-// ---------- Navigation ----------
-function go(n){current=key(addDays(parseKey(current),7*n)); store.set("rdm-week",current); render()}
-$("prev").onclick=()=>go(-1); $("next").onclick=()=>go(1);
-$("todayBtn").onclick=()=>{current=key(thisMonday); store.set("rdm-week",current); render()};
-$("tabMenu").onclick=()=>{tab="menu";render()}; $("tabShop").onclick=()=>{tab="shop";render()};
-$("pdfBtn").onclick=()=>{$("pdfBtn").disabled=true; makePdf().catch(()=>status("Le PDF n'a pas pu être créé.")).finally(()=>$("pdfBtn").disabled=false)};
-
-$("view").appendChild(el("p","note","Chargement des menus…"));
-Promise.all(["recettes.json","semaines.json"].map(f=>fetch(f,{cache:"no-cache"}).then(r=>{if(!r.ok) throw new Error(f); return r.json()})))
-  .then(([rec,st])=>{R=rec; STATE=st; render()})
-  .catch(()=>{$("view").innerHTML=""; $("view").appendChild(el("p","note","Les menus n'ont pas pu être chargés. Vérifiez la connexion puis rechargez la page."))});
+document.querySelector(".tabs").addEventListener("click",e=>{const b=e.target.closest("button");if(b)showTab(b.dataset.tab)});
+showTab("semaine");
+renderFavs();
+(async()=>{
+  const db=window.claude&&window.claude.use?await window.claude.use("db"):null;
+  if(!db){favLocal=true;noteFav("Vos favorites et ajouts sont enregistrés dans ce navigateur seulement.");return}
+  favDb=db;
+  let premierF=true, premierA=true;
+  try{db.doc("config/foyer").onSnapshot(s=>{if(s&&s.exists){const d=s.data()||{};setFoyer({adultes:d.adultes,enfants:d.enfants,menus:d.menus},true)}},()=>{});}catch(e){}
+  db.collection("favoris").onSnapshot(snap=>{
+    if(snap.metadata.fromCache&&snap.empty)return;
+    if(premierF&&snap.empty&&favs.size){
+      premierF=false;
+      [...favs.entries()].forEach(([id,v])=>db.collection("favoris").doc(id).set({...toDb(v),ajoute:new Date().toISOString()}).catch(()=>{}));
+      return;
+    }
+    if(!snap.metadata.fromCache)premierF=false;
+    const next=new Map();
+    snap.docs.forEach(d=>next.set(d.id,fromDb(d.data()||{})));
+    favs=next;saveLocal();renderFavs();
+    noteFav("Vos favorites et ajouts sont enregistrés, et je peux les consulter pour préparer les commandes.");
+  },()=>{favLocal=true;noteFav("Vos favorites et ajouts sont enregistrés dans ce navigateur seulement.")});
+  db.collection("ajouts").onSnapshot(snap=>{
+    if(snap.metadata.fromCache&&snap.empty)return;
+    if(premierA&&snap.empty&&ajouts.size){
+      premierA=false;
+      [...ajouts.entries()].forEach(([id,a])=>db.collection("ajouts").doc(id).set({nom:a.nom,qte:a.qte,ajoute:new Date().toISOString()}).catch(()=>{}));
+      return;
+    }
+    if(!snap.metadata.fromCache)premierA=false;
+    const next=new Map();
+    snap.docs.forEach(d=>{const v=d.data()||{};next.set(d.id,{nom:v.nom||"",qte:v.qte||""})});
+    ajouts=next;saveLocal();renderBasket();
+  },()=>{});
 })();
+document.getElementById("send").addEventListener("click",async()=>{
+  const n=document.getElementById("sent"), b=buildList();
+  n.hidden=false;
+  if(!favDb){n.textContent="Envoi impossible : connectez-vous pour enregistrer la sélection. Vous pouvez utiliser « Copier la liste ».";return}
+  if(!b.sel.length&&!ajouts.size){n.textContent="Cochez d'abord au moins un menu.";return}
+  touched=true;
+  const data={statut:"a_commander",foyer:{...FOYER,portions:portions()},menus:b.sel.map(m=>({id:m.id,nom:m.nom})),oeufs:b.oeufs,total:Math.round(b.tot*100)/100,
+    lignes:b.lignes.map(x=>({rayon:x.r,nom:x.n,quantites:x.q.join(" + "),prix:Math.round(x.p*100)/100})),
+    ajouts:[...ajouts.values()].map(a=>({nom:a.nom,qte:a.qte})),envoye:new Date().toISOString()};
+  try{await syncChain;await favDb.doc("commande/courante").set(data);lastKey="";n.textContent="Sélection envoyée. Dites « commande » à Claude pour qu'il remplisse le panier Carrefour."}
+  catch(e){n.textContent="L'envoi a échoué. Réessayez, ou copiez la liste."}
+});
+// ===== Panier Carrefour, via le connecteur Carrefour du visiteur =====
+const CF="Carrefour", LAD="LAD";
+const KW={"Hauts de cuisse de poulet désossés":"cuisses poulet","Filets de poulet":"filet poulet","Steaks hachés 5 %":"steak haché","Haricots verts extra-fins":"haricots verts extra fins","Crème fraîche légère 15 %":"crème légère","Filets de colin d'Alaska":"colin","Aneth ou persil":"aneth","Bœuf haché 5 %":"viande hachée 5%","Tomates concassées":"pulpe de tomates","Maïs":"maïs doux","Pommes":"pommes sachet","Citrons":"citron jaune","Œufs plein air":"oeufs plein air","Salade et tomates":"salade","Citron vert et gingembre":"citron vert","Thon au naturel":"thon naturel","Poêlée de légumes pour wok":"poêlée wok","Légumes pour potage":"légumes potage","Ananas au sirop léger":"ananas sirop léger","Galettes de sarrasin":"galettes sarrasin","Tranches d'échine de porc":"échine de porc","Lait de coco":"lait de coco","Pain complet":"pain complet","Yaourts nature":"yaourt nature","Clémentines":"clémentines","Oignons":"oignons","Pommes de terre":"pommes de terre","Escalopes de poulet fermier Label Rouge":"escalopes poulet label rouge","Pavés de saumon Label Rouge ou bio":"pavés saumon label rouge","Faux filet de bœuf Charolais Label Rouge":"faux filet boeuf charolais","Dos de cabillaud MSC":"dos cabillaud","Magrets de canard IGP Sud Ouest":"magret canard","Crevettes décortiquées crues ASC ou bio":"crevettes décortiquées crues","Filets de poulet fermier Label Rouge":"filets poulet fermier label rouge","Jambon blanc supérieur Label Rouge ou sans nitrite":"jambon blanc supérieur","Steaks de thon albacore MSC":"steak thon albacore","Jambon cru de pays ou San Daniele":"jambon cru","Saucisse de Morteau IGP":"saucisse morteau","Lentilles vertes du Puy AOP":"lentilles vertes du puy","Moules de bouchot AOP":"moules bouchot","Pâte feuilletée pur beurre":"pâte feuilletée pur beurre","Bûche de chèvre":"bûche chèvre","Mozzarella di bufala":"mozzarella di bufala","Parmesan AOP":"parmesan","Beurre demi sel":"beurre demi sel","Pâtes à pizza fraîches":"pâte à pizza","Pommes de terre grenailles":"pommes de terre grenaille","Bouillon de volaille":"bouillon volaille","Mangue en morceaux":"mangue morceaux surgelés","Nouilles asiatiques":"nouilles chinoises","Frites au four":"frites au four","Graines de sésame":"graines sésame","Épinards en branches":"épinards branches surgelés","Patates douces":"patates douces","Champignons de Paris":"champignons de paris"};
+let cf={cartId:null,fsid:null,store:null,minimum:null,lien:null,lignes:[],tot:null,frais:null,kw:{},top:{}}, cfReady=false, cfBusy=false, cfDbRef=null;
+let mcpP=null;
+const getMcp=()=>mcpP||(mcpP=window.claude&&window.claude.use?window.claude.use("mcp"):Promise.resolve(null));
+const $=id=>document.getElementById(id);
+const amt=m=>m&&typeof m.unscaled_amount==="number"?m.unscaled_amount/Math.pow(10,m.scale||0):null;
+async function cfCall(tool,input){
+  const mcp=await getMcp();
+  if(!mcp)throw {code:"not_granted"};
+  const r=await mcp.callTool(CF,tool,input,{cache:false});
+  let p=r&&r.payload;
+  if(typeof p==="string"){try{p=JSON.parse(p)}catch(e){}}
+  return p&&typeof p==="object"?p:{};
+}
+function cfErr(e){
+  const c=e&&e.code;
+  if(c==="needs_reauth")return "Votre connexion Carrefour a expiré. Reconnectez Carrefour dans claude.ai, Paramètres, Connecteurs.";
+  if(c==="server_not_connected"||c==="selection_required")return "Le connecteur Carrefour n'est pas ajouté à votre compte. Ajoutez-le dans claude.ai, Paramètres, Connecteurs.";
+  if(c==="not_in_manifest"||c==="approval_required"||c==="consent_required")return "Cette page n'a pas encore l'autorisation d'utiliser Carrefour. Autorisez-la quand claude.ai le demande, ou dans le menu Autorisations de l'artefact.";
+  if(c==="not_granted"||c==="capability_disabled"||c==="capability_removed")return "Le panier Carrefour marche seulement quand vous ouvrez cette page dans claude.ai, connecté à votre compte.";
+  if(c==="server_unavailable"||c==="upstream_error")return "Carrefour ne répond pas pour l'instant. Réessayez dans une minute.";
+  if(c==="blocked_by_policy")return "Votre organisation bloque cette action Carrefour.";
+  if(c==="tool_error")return "Carrefour a refusé l'opération. "+String(e.message||"").slice(0,180);
+  return "Erreur Carrefour"+(c?" ("+c+")":"")+". Réessayez.";
+}
+function etat(t,warn){const n=$("cf-etat");n.textContent=t||"";n.className=warn?"note warn":"note"}
+function busy(on){cfBusy=on;document.querySelectorAll('[data-view="carrefour"] button').forEach(b=>{b.disabled=on})}
+async function cfStore(){
+  if(cfReady&&cf.fsid)return;
+  await cfCall("set_pickup_mode",{pickup_mode:LAD});
+  const a=await cfCall("auto_select_delivery_location",{query:$("cf-adresse").value.trim()});
+  const s=a.auto_selected_store;
+  if(!s)throw {code:"tool_error",message:"Aucun magasin Carrefour ne livre cette adresse."};
+  const sv=(s.services||[]).find(x=>x.storeService==="HOME_DELIVERY")||(s.services||[])[0]||{};
+  cf.fsid=sv.facility_service_id||s.id;
+  await cfCall("set_store",{store:{id:s.id,name:s.name,city:s.city,facility_service_id:cf.fsid}});
+  cf.store=s.name+(s.city?", "+s.city:"");
+  if(typeof a.min_order_amount==="number")cf.minimum=a.min_order_amount;
+  cfReady=true;
+}
+// Grammage ou nombre d'unités, pour calculer combien de paquets prendre
+const UNIT={kg:1000,g:1,l:1000,cl:10,ml:1};
+function mesure(t){const m=String(t||"").toLowerCase().replace(",",".").match(/(\d+(?:\.\d+)?)\s*(kg|g|cl|ml|l)\b/);return m?parseFloat(m[1])*UNIT[m[2]]:0}
+function besoin(qs){let g=0,n=0;qs.forEach(q=>{const v=mesure(q);if(v)g+=v;else{const m=String(q).match(/^(\d+)/);if(m)n+=parseInt(m[1],10)}});return {g,n}}
+function paquet(p){
+  const t=String((p.packaging||"")+" "+(p.format||"")).toLowerCase();
+  const x=t.match(/(\d+)\s*x\s*\d/)||t.match(/les\s+(\d+)\s/)||t.match(/de\s+(\d+)\s*pi[eè]ces/);
+  const n=x?parseInt(x[1],10):(/la pi[eè]ce/.test(t)?1:0);
+  const g=mesure(t);
+  return {n,g:g?g*(n||1):0};
+}
+function qteFor(qs,p){
+  const b=besoin(qs),k=paquet(p);
+  if(b.g&&k.g)return Math.max(1,Math.ceil(b.g/k.g-0.15));
+  if(b.n&&k.n)return Math.max(1,Math.ceil(b.n/k.n));
+  return 1;
+}
+function cfApply(p){
+  if(p.cart_id)cf.cartId=p.cart_id;
+  if(p.cart_in_carrefour_link)cf.lien=p.cart_in_carrefour_link;
+  const b=p.cart&&p.cart.baskets&&p.cart.baskets[0];
+  if(p.cart){
+    cf.lignes=(b&&b.offers||[]).map(o=>({gtin:o.gtin,nom:o.name,qte:o.quantity,max:o.purchasing_max||20,pack:o.packaging||"",prix:amt(o.prices&&o.prices.line_price),img:(o.pictures&&o.pictures[0]&&o.pictures[0].path)||""}));
+    cf.tot=amt(p.total_with_bags_deposit)??(b?amt(b.products_total_price):0);
+    cf.frais=p.delivery_fee?(p.delivery_fee.isFree?0:amt(p.delivery_fee.amount)):(b?amt(b.services_total_price):null);
+  }
+  const perdus=(p.unavailable_products||[]).map(x=>x.name||x.label||x.gtin).filter(Boolean);
+  const refus=(p.rejected_gtins||[]).length;
+  const msgs=[];
+  if(perdus.length)msgs.push("Carrefour a retiré ces produits, plus disponibles : "+perdus.join(", ")+".");
+  if(refus)msgs.push(refus+" produit(s) n'ont pas pu entrer dans le panier.");
+  return msgs;
+}
+function cfRender(extra){
+  const L=cf.lignes;
+  $("tab-cf").textContent=L.length?`(${L.length})`:"";
+  const tot=cf.tot||0, min=cf.minimum;
+  $("cf-totaux").innerHTML=L.length?`<div><strong>${L.reduce((s,l)=>s+l.qte,0)}</strong><span>articles</span></div><div><strong>${eur(tot)}</strong><span>produits</span></div>${cf.frais!=null?`<div><strong>${eur(cf.frais)}</strong><span>livraison</span></div><div><strong>${eur(tot+cf.frais)}</strong><span>total estimé</span></div>`:""}`:"";
+  let al=(extra||[]).map(m=>`<p class="cf-warn">${esc(m)}</p>`).join("");
+  if(L.length&&min&&tot<min)al+=`<p class="cf-warn">Il manque ${eur(min-tot)} pour atteindre le minimum de livraison de ${eur(min)}. Ajoutez un produit ci-dessous.</p>`;
+  $("cf-alerte").innerHTML=al;
+  $("cf-lignes").innerHTML=L.length?L.map(l=>`<div class="cf-ligne" data-g="${esc(l.gtin)}">
+    ${l.img?`<img src="${esc(l.img)}" alt="" loading="lazy">`:"<span></span>"}
+    <div class="cf-nom">${esc(l.nom)}${l.pack?`<small>${esc(l.pack)}</small>`:""}${cf.top[l.gtin]||(isAnimal(l.nom)&&scoreQ(l.nom)>=20)?`<span class="top">Haut de gamme</span>`:""}</div>
+    <div class="cf-prix">${l.prix!=null?eur(l.prix):""}</div>
+    <div class="cf-actions">
+      <span class="qte"><button type="button" data-cf="moins" aria-label="Un de moins">−</button><span>${l.qte}</span><button type="button" data-cf="plus" aria-label="Un de plus">+</button></span>
+      <button type="button" class="lien" data-cf="changer">Changer de produit</button>
+      <button type="button" class="lien" data-cf="retirer">Retirer</button>
+    </div></div>`).join(""):'<p class="empty">Le panier est vide. Cochez des menus, puis appuyez sur « Remplir le panier avec ma liste ».</p>';
+  const a=$("cf-lien");
+  if(cf.lien&&L.length){a.href=cf.lien;a.hidden=false}else a.hidden=true;
+  if(cf.store&&!$("cf-etat").textContent)etat("Livraison depuis "+cf.store+".");
+}
+function cfSave(){
+  if(!cfDbRef)return;
+  cfDbRef.set({cartId:cf.cartId,fsid:cf.fsid,store:cf.store,minimum:cf.minimum,lien:cf.lien,lignes:cf.lignes,tot:cf.tot,frais:cf.frais,kw:cf.kw,top:cf.top,maj:new Date().toISOString()}).catch(()=>{});
+}
+async function cfRun(label,fn){
+  if(cfBusy)return;
+  busy(true);etat(label);
+  try{const msgs=await fn();cfRender(msgs);cfSave();etat(cf.store?"Livraison depuis "+cf.store+".":"")}
+  catch(e){etat(cfErr(e),true)}
+  finally{busy(false)}
+}
+// Produits d'origine animale : on prend le haut de gamme Carrefour
+const ANIMAL=/saumon|cabillaud|canard|magret|moule|ricotta|parmesan|chèvre|beurre|escalope|faux filet|poulet|dinde|b(œ|oe)uf|bœuf|steak|haché|porc|échine|saucisse|chorizo|jambon|colin|lieu|crevette|thon|poisson|boulette|œuf|oeuf|crème|yaourt|fromage|feta|emmental|mozzarella|lait(?! de coco)/i;
+const isAnimal=n=>ANIMAL.test(n)&&!/lait de coco/i.test(n);
+const PREMIUM_PLUS=[[/label rouge/i,60],[/fermier/i,25],[/\b(aop|aoc|igp)\b/i,35],[/\bbio\b/i,30],[/reflets de france/i,20],[/carrefour original/i,15],[/\bmsc\b/i,20],[/\bdos de\b/i,15],[/charolais|limousin|blonde d'aquitaine/i,25],[/loué|loue\b/i,15],[/plein air/i,10],[/le march[eé]|fili[eè]re qualit[eé]/i,12],[/fa[cç]on bouch[eè]re/i,8],[/\bextra\b/i,5]];
+const PREMIUM_MOINS=[[/petit prix/i,-80],[/\bsimpl\b/i,-60],[/classic'/i,-15],[/pan[ée]s?\b/i,-40],[/sauce|parisienne|proven[cç]ale|oseille|fish/i,-40],[/0 ?% ?mg/i,-10]];
+function scoreQ(label){let s=0;PREMIUM_PLUS.concat(PREMIUM_MOINS).forEach(([r,v])=>{if(r.test(label))s+=v});return s}
+const norm=s=>String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/œ/g,"oe");
+function pertinent(label,kw){const mots=norm(kw).split(/\s+/).filter(m=>m.length>3&&!/label|rouge|bio|charolais|fermier/.test(m));if(!mots.length)return 1;return mots.filter(m=>norm(label).includes(m.replace(/s$/,""))).length}
+async function meilleur(kw,nom){
+  const reqs=[kw,kw+" label rouge",kw+" bio"];
+  if(/b(œ|oe)uf|haché|steak/i.test(nom))reqs.push(kw.replace(/ ?\d+ ?%/,"")+" charolais");
+  const lots=await Promise.all(reqs.map(q=>chercher(q,15).catch(()=>[])));
+  const vus=new Map();lots.flat().forEach(p=>{if(p&&p.gtin&&!vus.has(p.gtin))vus.set(p.gtin,p)});
+  const ok=[...vus.values()].map(p=>({p,m:pertinent(p.label,kw),s:scoreQ(p.label)})).filter(x=>x.m>0);
+  ok.sort((a,b)=>(b.m-a.m)||(b.s-a.s));
+  return ok.map(x=>x.p);
+}
+async function chercher(kw,limit){
+  const r=await cfCall("search_products",{keyword:kw,limit:limit||5,facility_service_id:cf.fsid,service_type:LAD});
+  return (r.products||[]).filter(p=>p&&p.gtin);
+}
+$("cf-remplir").addEventListener("click",()=>{
+  const b=buildList();
+  const items=b.lignes.map(x=>({kw:KW[x.n]||x.n.toLowerCase().replace(/\s*%/g,"%"),qs:x.q,nom:x.n,animal:isAnimal(x.n)}))
+    .concat([...ajouts.values()].map(a=>({kw:a.nom,qs:[a.qte||"1"],libre:true,nom:a.nom,animal:isAnimal(a.nom)})));
+  if(!items.length){etat("Cochez d'abord au moins un menu dans l'onglet Menus.",true);return}
+  const bt=$("cf-remplir");
+  if(cf.lignes.length&&!bt.dataset.ok){bt.dataset.ok="1";bt.textContent="Appuyez encore pour remplacer le panier actuel";setTimeout(()=>{delete bt.dataset.ok;bt.textContent="Remplir le panier avec ma liste"},6000);return}
+  delete bt.dataset.ok;bt.textContent="Remplir le panier avec ma liste";
+  cfRun("Recherche des produits chez Carrefour…",async()=>{
+    await cfStore();
+    const trouves=[],manquants=[];
+    for(let i=0;i<items.length;i+=4){
+      const lot=items.slice(i,i+4);
+      etat(`Recherche des produits chez Carrefour… ${Math.min(i+4,items.length)} sur ${items.length}`);
+      const res=await Promise.all(lot.map(it=>(it.animal?meilleur(it.kw,it.nom):chercher(it.kw,3)).catch(()=>[])));
+      res.forEach((ps,j)=>{const it=lot[j];if(ps[0]){const q=it.libre?Math.max(1,parseInt(it.qs[0],10)||1):qteFor(it.qs,ps[0]);trouves.push({gtin:ps[0].gtin,quantity:Math.min(q,20),packaging:ps[0].packaging||undefined,kw:it.kw,top:it.animal})}else manquants.push(it.kw)});
+    }
+    const vus=new Map();trouves.forEach(t=>{const v=vus.get(t.gtin);if(v)v.quantity=Math.min(20,v.quantity+t.quantity);else vus.set(t.gtin,t)});
+    if(!vus.size)throw {code:"tool_error",message:"Aucun produit trouvé."};
+    cf.kw={};cf.top={};vus.forEach(t=>{cf.kw[t.gtin]=t.kw;if(t.top)cf.top[t.gtin]=1});
+    etat("Ajout au panier…");
+    const p=await cfCall("add_to_cart",{facility_service_id:cf.fsid,service_type:LAD,store_name:cf.store||undefined,products:[...vus.values()].map(t=>({gtin:t.gtin,quantity:t.quantity,packaging:t.packaging}))});
+    const msgs=cfApply(p);
+    if(manquants.length)msgs.unshift("Pas trouvé chez Carrefour : "+manquants.join(", ")+". Cherchez-les ci-dessous avec un autre mot.");
+    return msgs;
+  });
+});
+$("cf-voir").addEventListener("click",()=>{
+  if(!cf.cartId){etat("Aucun panier pour l'instant. Appuyez sur « Remplir le panier avec ma liste ».",true);return}
+  cfRun("Lecture du panier…",async()=>{await cfStore();return cfApply(await cfCall("get_cart",{cart_id:cf.cartId,facility_service_id:cf.fsid,service_type:LAD}))});
+});
+$("cf-lignes").addEventListener("click",e=>{
+  const btn=e.target.closest("[data-cf]");if(!btn||cfBusy)return;
+  const row=btn.closest(".cf-ligne"),g=row.dataset.g,l=cf.lignes.find(x=>x.gtin===g);if(!l)return;
+  const act=btn.dataset.cf;
+  if(act==="plus"||act==="moins"){
+    const q=l.qte+(act==="plus"?1:-1);
+    if(q>l.max)return;
+    cfRun("Mise à jour…",async()=>{await cfStore();
+      return cfApply(q<1?await cfCall("remove_from_cart",{gtin:g,cart_id:cf.cartId,facility_service_id:cf.fsid,service_type:LAD})
+        :await cfCall("add_to_cart",{cart_id:cf.cartId,facility_service_id:cf.fsid,service_type:LAD,products:[{gtin:g,quantity:q}]}))});
+  }else if(act==="retirer"){
+    cfRun("Retrait du produit…",async()=>{await cfStore();return cfApply(await cfCall("remove_from_cart",{gtin:g,cart_id:cf.cartId,facility_service_id:cf.fsid,service_type:LAD}))});
+  }else if(act==="changer"){
+    const open=row.querySelector(".cf-alts");if(open){open.remove();return}
+    cfRun("Recherche d'autres produits…",async()=>{await cfStore();
+      const kw=cf.kw[g]||l.nom.split(" ").slice(0,3).join(" ");
+      const ps=(isAnimal(l.nom)||cf.top[g]?await meilleur(kw,l.nom):await chercher(kw,8)).filter(p=>p.gtin!==g).slice(0,8);
+      const box=document.createElement("div");box.className="cf-alts";
+      box.innerHTML=ps.length?ps.map(p=>`<div class="cf-alt"><span>${esc(p.label)} <small class="note">${esc(p.packaging||"")}</small></span><span class="cf-prix">${eur(p.discounted_price??p.price??0)} <button type="button" data-swap="${esc(p.gtin)}" data-from="${esc(g)}">Prendre</button></span></div>`).join(""):'<p class="note">Pas d\'autre produit trouvé. Utilisez la recherche plus bas.</p>';
+      requestAnimationFrame(()=>{const r=document.querySelector(`.cf-ligne[data-g="${CSS.escape(g)}"]`);if(r)r.appendChild(box)});
+      return [];
+    });
+  }
+});
+$("cf-lignes").addEventListener("click",e=>{
+  const b=e.target.closest("[data-swap]");if(!b||cfBusy)return;
+  const neuf=b.dataset.swap,ancien=b.dataset.from,l=cf.lignes.find(x=>x.gtin===ancien);if(!l)return;
+  cfRun("Remplacement du produit…",async()=>{await cfStore();
+    await cfCall("remove_from_cart",{gtin:ancien,cart_id:cf.cartId,facility_service_id:cf.fsid,service_type:LAD});
+    const p=await cfCall("add_to_cart",{cart_id:cf.cartId,facility_service_id:cf.fsid,service_type:LAD,products:[{gtin:neuf,quantity:l.qte}]});
+    cf.kw[neuf]=cf.kw[ancien];delete cf.kw[ancien];if(cf.top[ancien]){cf.top[neuf]=1;delete cf.top[ancien]}
+    return cfApply(p);
+  });
+});
+$("cf-cherche").addEventListener("submit",e=>{
+  e.preventDefault();
+  const q=$("cf-q").value.trim();if(!q)return;
+  cfRun("Recherche…",async()=>{await cfStore();
+    const ps=await chercher(q,8);
+    $("cf-resultats").innerHTML=ps.length?ps.map(p=>`<div class="cf-alt"><span>${esc(p.label)} <small class="note">${esc(p.packaging||"")}</small></span><span class="cf-prix">${eur(p.discounted_price??p.price??0)} <button type="button" data-add="${esc(p.gtin)}" data-kw="${esc(q)}">Ajouter</button></span></div>`).join(""):'<p class="note">Rien trouvé. Essayez un mot plus simple.</p>';
+    return null;
+  });
+});
+$("cf-resultats").addEventListener("click",e=>{
+  const b=e.target.closest("[data-add]");if(!b||cfBusy)return;
+  const g=b.dataset.add,ex=cf.lignes.find(x=>x.gtin===g);
+  cfRun("Ajout au panier…",async()=>{await cfStore();
+    const input={facility_service_id:cf.fsid,service_type:LAD,products:[{gtin:g,quantity:ex?ex.qte+1:1}]};
+    if(cf.cartId)input.cart_id=cf.cartId;
+    const p=await cfCall("add_to_cart",input);
+    cf.kw[g]=b.dataset.kw;$("cf-resultats").innerHTML="";$("cf-q").value="";
+    return cfApply(p);
+  });
+});
+// cfRender avec null garde les alertes : on n'efface que si on a des messages
+const _cfRender=cfRender;cfRender=function(m){if(m===null)return;_cfRender(m)};
+(async()=>{
+  const db=window.claude&&window.claude.use?await window.claude.use("db"):null;
+  if(!db)return;
+  cfDbRef=db.doc("commande/carrefour");
+  try{
+    const s=await cfDbRef.get();
+    if(s.exists){const d=s.data()||{};
+      Object.assign(cf,{cartId:d.cartId||null,fsid:d.fsid||null,store:d.store||null,minimum:d.minimum??null,lien:d.lien||null,lignes:Array.isArray(d.lignes)?d.lignes:[],tot:d.tot??null,frais:d.frais??null,kw:d.kw||{},top:d.top||{}});
+      _cfRender([]);
+      if(d.maj)etat("Panier enregistré le "+new Date(d.maj).toLocaleString("fr-FR",{dateStyle:"short",timeStyle:"short"})+". Appuyez sur « Actualiser le panier » pour voir les prix du jour.");
+    }
+  }catch(e){}
+})();
+function fallback(t){const pre=document.createElement("pre");pre.textContent=t;pre.style.whiteSpace="pre-wrap";document.getElementById("list").appendChild(pre);const r=document.createRange();r.selectNodeContents(pre);const s=getSelection();s.removeAllRanges();s.addRange(r)}
 </script>
-</body>
-</html>
+</body></html>
