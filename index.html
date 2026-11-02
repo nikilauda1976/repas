@@ -958,7 +958,7 @@ renderFavs();
   },()=>{});
 })();
 // Hors de Claude : ouvrir Claude avec la commande déjà écrite (le connecteur Carrefour remplit le panier)
-const DANS_CLAUDE=!!(window.claude&&window.claude.use);
+const DANS_CLAUDE=!!(window.claude&&window.claude.use)&&!/github\.io$/.test(location.hostname);
 if(!DANS_CLAUDE){const c=document.getElementById("cf-claude");if(c)c.hidden=false;const r=document.querySelector("#cf-remplir")&&document.querySelector("#cf-remplir").closest(".ajout");if(r)r.hidden=true}
 function messageCommande(){
   const b=buildList();
@@ -979,9 +979,8 @@ async function commanderAvecClaude(note){
 document.querySelectorAll(".claude-go:not(#send)").forEach(b=>b.addEventListener("click",()=>commanderAvecClaude(document.getElementById("cf-etat"))));
 document.getElementById("send").addEventListener("click",async()=>{
   const n=document.getElementById("sent"), b=buildList();
-  if(!DANS_CLAUDE){commanderAvecClaude(n);return}
+  if(!DANS_CLAUDE||!favDb){commanderAvecClaude(n);return}
   n.hidden=false;
-  if(!favDb){n.textContent="Envoi impossible : connectez-vous pour enregistrer la sélection. Vous pouvez utiliser « Copier la liste ».";return}
   if(!b.sel.length&&!ajouts.size){n.textContent="Cochez d'abord au moins un menu.";return}
   touched=true;
   const data={statut:"a_commander",foyer:{...FOYER,portions:portions()},menus:b.sel.map(m=>({id:m.id,nom:m.nom})),oeufs:b.oeufs,total:Math.round(b.tot*100)/100,
