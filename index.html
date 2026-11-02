@@ -239,7 +239,7 @@ button:disabled{opacity:.55;cursor:progress}
     </div>
     <p class="note" id="ajout-note" hidden></p>
   </form>
-  <button type="button" id="send">Envoyer à Claude pour commander</button>
+  <button type="button" id="send" class="claude-go">Remplir mon panier Carrefour avec Claude</button>
   <p class="note" id="sent" hidden></p>
   <button type="button" id="copy">Copier la liste</button>
   <p class="note" id="copied" hidden>Liste copiée. Vous pouvez la coller dans le site du supermarché ou m'envoyer vos choix dans le fil.</p>
@@ -257,6 +257,10 @@ button:disabled{opacity:.55;cursor:progress}
       <button type="button" id="cf-remplir">Remplir le panier avec ma liste</button>
       <button type="button" id="cf-voir" class="ghost">Actualiser le panier</button>
     </div>
+  </div>
+  <div class="cf-claude" id="cf-claude" hidden>
+    <p class="note">Ici, hors de Claude, le panier ne peut pas se remplir tout seul. Appuyez sur le bouton : Claude s'ouvre avec votre liste déjà écrite. Envoyez le message, Claude remplit le panier et vous donne le lien pour payer sur carrefour.fr.</p>
+    <button type="button" class="claude-go">Remplir mon panier Carrefour avec Claude</button>
   </div>
   <p class="note" id="cf-etat" role="status"></p>
   <div class="totals" id="cf-totaux"></div>
@@ -953,8 +957,29 @@ renderFavs();
     ajouts=next;saveLocal();renderBasket();
   },()=>{});
 })();
+// Hors de Claude : ouvrir Claude avec la commande déjà écrite (le connecteur Carrefour remplit le panier)
+const DANS_CLAUDE=!!(window.claude&&window.claude.use);
+if(!DANS_CLAUDE){const c=document.getElementById("cf-claude");if(c)c.hidden=false;const r=document.querySelector("#cf-remplir")&&document.querySelector("#cf-remplir").closest(".ajout");if(r)r.hidden=true}
+function messageCommande(){
+  const b=buildList();
+  const lignes=b.lignes.map(x=>"- "+x.n+" : "+x.q.join(" + ")).concat([...ajouts.values()].map(a=>"- "+a.nom+(a.qte?" : "+a.qte:"")));
+  return "Avec le connecteur Carrefour, remplis mon panier Carrefour en livraison à domicile (demande-moi mon adresse si tu ne l'as pas). "+
+    "Pour la viande, le poisson, les œufs et les produits laitiers, prends le haut de gamme Carrefour (Label Rouge, AOP, bio, MSC, fermier, Charolais) et écarte les premiers prix. "+
+    "Adapte le nombre de paquets aux grammages. Ensuite, donne-moi le lien pour finaliser la commande sur carrefour.fr.\n\n"+
+    "Menus de la semaine ("+fmt(portions())+" portions par repas) : "+b.sel.map(m=>m.nom).join(" ; ")+"\n\nListe de courses :\n"+lignes.join("\n");
+}
+async function commanderAvecClaude(note){
+  const b=buildList();
+  if(!b.lignes.length&&!ajouts.size){if(note){note.hidden=false;note.textContent="Cochez d'abord au moins un menu."}return}
+  const msg=messageCommande();
+  try{await navigator.clipboard.writeText(msg)}catch(e){}
+  window.open("https://claude.ai/new?q="+encodeURIComponent(msg),"_blank","noopener");
+  if(note){note.hidden=false;note.textContent="Claude s'ouvre avec votre liste. Envoyez le message. Si le champ est vide, collez la liste : elle est déjà copiée."}
+}
+document.querySelectorAll(".claude-go:not(#send)").forEach(b=>b.addEventListener("click",()=>commanderAvecClaude(document.getElementById("cf-etat"))));
 document.getElementById("send").addEventListener("click",async()=>{
   const n=document.getElementById("sent"), b=buildList();
+  if(!DANS_CLAUDE){commanderAvecClaude(n);return}
   n.hidden=false;
   if(!favDb){n.textContent="Envoi impossible : connectez-vous pour enregistrer la sélection. Vous pouvez utiliser « Copier la liste ».";return}
   if(!b.sel.length&&!ajouts.size){n.textContent="Cochez d'abord au moins un menu.";return}
