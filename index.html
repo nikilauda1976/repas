@@ -135,6 +135,19 @@ button:disabled{opacity:.55;cursor:progress}
 .ailleurs-opts small{font-weight:400;color:var(--muted)}
 .rayon.dehors h4{color:var(--saffron)}
 .dehors-titre{margin:18px 0 0;padding-top:12px;border-top:2px solid var(--saffron)}
+.rec-liste{display:flex;flex-direction:column;gap:18px}
+.recette{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.recette .meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px;color:var(--muted)}
+.recette .cols{margin-top:0}
+.cf-s{font-size:13px;font-weight:600;color:var(--basil);margin-left:8px;white-space:nowrap}
+@media print{
+  body{background:#fff;color:#000}
+  body::before,.tabs,header,[data-view]:not([data-view="recettes"]),#rec-print,.ajout-row{display:none!important}
+  section[data-view="recettes"]{display:flex!important}
+  .wrap{padding:0;max-width:none}
+  .recette{break-inside:avoid-page;border:0;border-top:2px solid #000;border-radius:0;padding:12px 0}
+  .recette+.recette{break-before:page}
+}
 .cta{display:inline-block;background:var(--saffron);color:var(--surface);font-weight:700;text-decoration:none;border-radius:8px;padding:12px 16px;width:fit-content}
 @media (max-width:620px){
   .cols,.tips{grid-template-columns:1fr}
@@ -169,6 +182,7 @@ button:disabled{opacity:.55;cursor:progress}
   <button type="button" role="tab" data-tab="liste" aria-selected="false">Ma liste <span id="tab-count"></span></button>
   <button type="button" role="tab" data-tab="carrefour" aria-selected="false">Panier Carrefour <span id="tab-cf"></span></button>
   <button type="button" role="tab" data-tab="commande" aria-selected="false">Commande</button>
+  <button type="button" role="tab" data-tab="recettes" aria-selected="false">Recettes <span id="tab-rec"></span></button>
 </nav>
 <details class="basics" data-view="semaine">
   <summary>Les gestes de base, à lire une fois avant de commencer</summary>
@@ -258,6 +272,14 @@ button:disabled{opacity:.55;cursor:progress}
   </form>
   <a id="cf-lien" class="cta" href="#" target="_blank" rel="noopener" hidden>Finaliser sur Carrefour.fr</a>
   <p class="note">Les prix et la disponibilité viennent directement de Carrefour. Le paiement et le choix du créneau se font sur Carrefour.fr, jamais ici. Pour ouvrir le panier sur votre compte, connectez-vous sur le site Carrefour avant de cliquer.</p>
+</section>
+
+<section data-view="recettes" class="recettes-semaine">
+  <span class="eyebrow">Ma semaine</span>
+  <h2>Les recettes de mes menus</h2>
+  <p class="lead" id="rec-lead">Toutes les recettes des menus que vous avez choisis, avec les ingrédients pour votre foyer, le matériel et les étapes.</p>
+  <div class="ajout-row"><button type="button" id="rec-print">Imprimer ou enregistrer en PDF</button></div>
+  <div id="rec-liste" class="rec-liste"></div>
 </section>
 
 <section data-view="commande">
@@ -756,16 +778,37 @@ function renderBasket(){
   const n=sel.length+ajouts.size;
   document.getElementById("tab-count").textContent=n?`(${n})`:"";
   const by={};lignes.forEach(x=>(by[x.r]=by[x.r]||[]).push(x));
-  let html=Object.keys(by).sort().map(r=>`<div class="rayon"><h4>${esc(r)}</h4><ul>${by[r].map(x=>`<li${/^[œŒ]ufs/.test(x.n)?' class="oeufs"':""}><span>${esc(x.n)} (${x.q.map(esc).join(" + ")})</span><span>${eur(x.p)}</span></li>`).join("")}</ul></div>`).join("");
+  const cfS=n=>`<a class="cf-s" href="https://www.carrefour.fr/s?q=${encodeURIComponent(n.replace(/\s*\(.*?\)/g,"").replace(/ ou .*$/,""))}" target="_blank" rel="noopener" aria-label="Chercher ${esc(n)} sur Carrefour">Carrefour ↗</a>`;
+  let html=Object.keys(by).sort().map(r=>`<div class="rayon"><h4>${esc(r)}</h4><ul>${by[r].map(x=>`<li${/^[œŒ]ufs/.test(x.n)?' class="oeufs"':""}><span>${esc(x.n)} (${x.q.map(esc).join(" + ")})${cfS(x.n)}</span><span>${eur(x.p)}</span></li>`).join("")}</ul></div>`).join("");
   if(dehors.length){const bd={};dehors.forEach(x=>(bd[x.r]=bd[x.r]||[]).push(x));
     html+=`<h3 class="dehors-titre">À acheter moi-même ailleurs</h3>`+GROUPES.map(([g,lab])=>bd[g]?`<div class="rayon dehors"><h4>Ailleurs · ${esc(lab)}</h4><ul>${bd[g].map(x=>`<li><span>${esc(x.n)} (${x.q.map(esc).join(" + ")})</span><span>${eur(x.p)}</span></li>`).join("")}</ul></div>`:"").join("")}
   if(ajouts.size)html+=`<div class="rayon"><h4>Ajouts manuels</h4><ul>${[...ajouts.entries()].map(([id,a])=>`<li><span>${esc(a.nom)}${a.qte?` (${esc(a.qte)})`:""}</span><span><button type="button" class="x" data-del="${esc(id)}" aria-label="Retirer ${esc(a.nom)}">×</button></span></li>`).join("")}</ul></div>`;
   document.getElementById("list").innerHTML=html||'<p class="empty">Cochez un ou plusieurs menus, ou ajoutez un produit ci-dessous.</p>';
   syncCommande(b);
+  renderRecettes(b.sel);
 }
+function renderRecettes(sel){
+  const box=document.getElementById("rec-liste"); if(!box)return;
+  document.getElementById("tab-rec").textContent=sel.length?`(${sel.length})`:"";
+  document.getElementById("rec-print").hidden=!sel.length;
+  if(!sel.length){box.innerHTML='<p class="empty">Aucun menu choisi pour l\'instant. Cochez « Je choisis ce menu » dans l\'onglet Menus : la recette apparaîtra ici.</p>';return}
+  const mult=Math.abs(fac()-1)>0.01;
+  box.innerHTML=sel.map((m,k)=>`<article class="recette" id="r-${esc(m.id)}">
+   <span class="eyebrow">Recette ${k+1} sur ${sel.length} · ${esc(m.profil)}</span>
+   <h3>${esc(m.nom)}</h3>
+   <div class="meta">${m.dessert?`<span>Dessert : ${esc(m.dessert)}</span>`:""}<span>${esc(m.temps)}</span>${m.kcal?`<span class="kcal">≈ ${m.kcal} kcal ${m.id==="gateau"?"par part":"par personne"}</span>`:""}<span>${eur(total(m))} le repas</span></div>
+   <div class="cols">
+    <div><h4 class="sub">Ingrédients${mult?` pour ${fmt(portions())} portions`:""}</h4><ul>${ingF(m).map(i=>`<li class="ing">${esc(i[1])}, ${esc(i[2])}</li>`).join("")}</ul>
+     ${m.materiel?`<h4 class="sub">Matériel</h4><p class="note">${esc(m.materiel)}</p>`:""}</div>
+    <div><h4 class="sub">Étapes</h4>${mult?`<p class="note">Les étapes donnent les quantités pour 6 portions : multipliez-les par ${fmt(fac())}.</p>`:""}<ol class="etapes">${(m.etapes||[]).map(s=>`<li>${esc(s)}</li>`).join("")}</ol></div>
+   </div>
+   ${m.jeunes||m.seniors?`<div class="tips">${m.jeunes?`<div class="tip"><b>Pour les 18 et 22 ans</b>${esc(m.jeunes)}</div>`:""}${m.seniors?`<div class="tip"><b>Pour les plus de 50 ans</b>${esc(m.seniors)}</div>`:""}</div>`:""}
+  </article>`).join("");
+}
+document.getElementById("rec-print").addEventListener("click",()=>window.print());
 function listText(){
   const {sel,oeufs}=buildList();
-  return "Menus choisis : "+sel.map(m=>m.nom).join(" ; ")+"\nŒufs à commander : "+oeufs+"\n\n"+[...document.querySelectorAll("#list .rayon")].map(r=>r.querySelector("h4").textContent+"\n"+[...r.querySelectorAll("li")].map(li=>"- "+li.firstElementChild.textContent).join("\n")).join("\n\n");
+  return "Menus choisis : "+sel.map(m=>m.nom).join(" ; ")+"\nŒufs à commander : "+oeufs+"\n\n"+[...document.querySelectorAll("#list .rayon")].map(r=>r.querySelector("h4").textContent+"\n"+[...r.querySelectorAll("li")].map(li=>"- "+li.firstElementChild.textContent.replace(/\s*Carrefour ↗$/,"")).join("\n")).join("\n\n");
 }
 function renderCards(){
   const act=document.querySelector("#filters button[aria-pressed=true]");
