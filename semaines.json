@@ -1,0 +1,36 @@
+{
+ "foyer": {
+  "adultes": 6,
+  "enfants": 0
+ },
+ "weeks": {
+  "2026-11-02": {
+   "soirs": [
+    "chili",
+    "wok",
+    "galettes",
+    "pates-thon",
+    "soupe-croque",
+    null,
+    null
+   ],
+   "extras": [
+    "gateau"
+   ]
+  },
+  "2026-11-09": {
+   "soirs": [
+    "n-cabillaud",
+    "n-dahl",
+    "n-crevettes",
+    "n-risotto",
+    "n-morteau",
+    null,
+    null
+   ],
+   "extras": [
+    "soiree"
+   ]
+  }
+ }
+}

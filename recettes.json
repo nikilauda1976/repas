@@ -1,0 +1,2139 @@
+{
+ "poulet": {
+  "n": "Poulet au paprika, riz et haricots verts",
+  "d": "Clémentines",
+  "t": "25 min",
+  "p": "Riche en protéines",
+  "k": 760,
+  "x": 0,
+  "nv": 0,
+  "i": [
+   [
+    "Viande",
+    "Hauts de cuisse de poulet désossés",
+    "1,2 kg",
+    9
+   ],
+   [
+    "Épicerie",
+    "Riz basmati",
+    "500 g",
+    1.5
+   ],
+   [
+    "Surgelés",
+    "Haricots verts extra-fins",
+    "1 kg",
+    2.2
+   ],
+   [
+    "Fruits et légumes",
+    "Oignons",
+    "2",
+    0.4
+   ],
+   [
+    "Frais",
+    "Crème fraîche légère 15 %",
+    "20 cl",
+    0.9
+   ],
+   [
+    "Fruits et légumes",
+    "Clémentines",
+    "1 kg",
+    2.5
+   ]
+  ],
+  "mat": "1 grande casserole, 1 grande poêle (ou sauteuse) avec couvercle, 1 passoire, 1 planche, 1 couteau, 1 cuillère en bois",
+  "e": [
+   "Riz : remplissez la grande casserole aux trois quarts d'eau, ajoutez 1 cuillère à café de sel, couvrez et mettez sur feu fort. Quand l'eau fait de grosses bulles (environ 8 min), versez les 500 g de riz, retirez le couvercle et laissez cuire 11 min (regardez le temps sur le paquet). Égouttez dans la passoire.",
+   "Pendant que l'eau chauffe : épluchez les 2 oignons (coupez les deux bouts, retirez la peau marron), coupez-les en deux puis en fines lamelles.",
+   "Sur la planche, coupez le poulet en lanières de la taille d'un doigt. Lavez-vous les mains et la planche à l'eau chaude savonneuse juste après (viande crue).",
+   "Mettez la poêle sur feu moyen-fort avec 2 cuillères à soupe d'huile. Attendez 1 min que l'huile chauffe, ajoutez les oignons et remuez 3 min jusqu'à ce qu'ils deviennent transparents.",
+   "Ajoutez le poulet, 2 cuillères à café de paprika, 1 pincée de sel et de poivre. Remuez de temps en temps pendant 8 à 10 min. Le poulet est cuit quand il est blanc à l'intérieur (coupez un morceau pour vérifier, il ne doit plus être rose).",
+   "Baissez à feu doux, versez la crème (20 cl), mélangez et laissez 5 min.",
+   "Haricots verts : dans une autre casserole d'eau bouillante salée, plongez-les encore surgelés 8 min, puis égouttez. Ajoutez un filet d'huile et un peu de sel.",
+   "Servez : riz, poulet avec sa sauce, haricots verts. Dessert : 2 clémentines par personne."
+  ]
+ },
+ "colin": {
+  "n": "Colin en papillote citron-aneth, pommes de terre et carottes",
+  "d": "Yaourt nature et un filet de miel",
+  "t": "25 min",
+  "p": "Léger",
+  "k": 560,
+  "x": 0,
+  "nv": 0,
+  "i": [
+   [
+    "Surgelés",
+    "Filets de colin d'Alaska",
+    "1 kg",
+    7.9
+   ],
+   [
+    "Fruits et légumes",
+    "Pommes de terre",
+    "2 kg",
+    2.6
+   ],
+   [
+    "Fruits et légumes",
+    "Carottes",
+    "1 kg",
+    1.3
+   ],
+   [
+    "Fruits et légumes",
+    "Citrons",
+    "2",
+    0.8
+   ],
+   [
+    "Surgelés",
+    "Aneth ou persil",
+    "1 sachet",
+    1
+   ],
+   [
+    "Frais",
+    "Yaourts nature",
+    "8",
+    1.6
+   ]
+  ],
+  "mat": "1 grande casserole avec couvercle et un panier vapeur (ou une passoire métallique qui tient dessus), 1 plaque de four, papier cuisson, 1 éplucheur",
+  "e": [
+   "Allumez le four à 200 °C (chaleur tournante si possible) pour qu'il chauffe pendant que vous préparez.",
+   "Épluchez les pommes de terre et les carottes avec l'éplucheur, rincez-les. Coupez les pommes de terre en morceaux de la taille d'une noix et les carottes en rondelles de l'épaisseur d'un doigt.",
+   "Mettez 3 cm d'eau dans la casserole, posez le panier vapeur dessus avec les légumes, couvrez et mettez sur feu fort. Comptez 20 min à partir du moment où ça fume. C'est cuit quand un couteau entre sans forcer.",
+   "Pendant ce temps, découpez 6 grands rectangles de papier cuisson (environ 30 × 40 cm). Posez 1 ou 2 filets de colin (encore surgelés, c'est normal) au milieu de chaque feuille.",
+   "Sur chaque filet : 2 rondelles de citron, 1 pincée d'aneth, 1 pincée de sel, un peu de poivre, 1 cuillère à café d'huile.",
+   "Fermez chaque papillote : ramenez les deux grands côtés au-dessus du poisson, pliez-les ensemble plusieurs fois, puis roulez les deux bouts comme un bonbon. Posez-les sur la plaque.",
+   "Enfournez 15 min (20 min si les filets étaient très épais). Le poisson est cuit quand il est blanc opaque et se défait à la fourchette. Attention à la vapeur brûlante en ouvrant.",
+   "Servez une papillote par personne avec les légumes, un filet d'huile et le reste du citron. Dessert : un yaourt avec une cuillère de miel."
+  ]
+ },
+ "chili": {
+  "n": "Chili con carne, riz",
+  "d": "Pommes",
+  "t": "25 min",
+  "p": "Riche en protéines",
+  "k": 660,
+  "x": 0,
+  "nv": 0,
+  "i": [
+   [
+    "Viande",
+    "Bœuf haché 5 %",
+    "500 g",
+    5.5
+   ],
+   [
+    "Épicerie",
+    "Haricots rouges",
+    "2 boîtes",
+    1.8
+   ],
+   [
+    "Épicerie",
+    "Tomates concassées",
+    "2 boîtes",
+    1.6
+   ],
+   [
+    "Épicerie",
+    "Maïs",
+    "1 boîte",
+    0.9
+   ],
+   [
+    "Fruits et légumes",
+    "Poivrons",
+    "2",
+    1.8
+   ],
+   [
+    "Fruits et légumes",
+    "Oignons",
+    "2",
+    0.4
+   ],
+   [
+    "Épicerie",
+    "Riz basmati",
+    "500 g",
+    1.5
+   ],
+   [
+    "Fruits et légumes",
+    "Pommes",
+    "1,5 kg",
+    2.7
+   ]
+  ],
+  "mat": "1 grande casserole pour le riz, 1 grande cocotte ou sauteuse, 1 passoire, 1 ouvre-boîte, 1 planche, 1 couteau",
+  "e": [
+   "Lancez le riz comme d'habitude : grande casserole d'eau salée, quand ça bout versez 500 g de riz, 11 min, égouttez.",
+   "Épluchez et coupez les 2 oignons en petits dés. Lavez les 2 poivrons, coupez-les en deux, retirez la queue, les graines blanches et les filaments, puis coupez en petits carrés.",
+   "Cocotte sur feu moyen avec 2 cuillères à soupe d'huile. Ajoutez oignons et poivrons, remuez 5 min.",
+   "Ajoutez la viande hachée. Écrasez-la avec la cuillère en bois pour qu'elle se défasse en miettes. Remuez 5 min jusqu'à ce qu'il n'y ait plus de rose.",
+   "Ouvrez les boîtes. Versez les haricots rouges et le maïs dans la passoire et rincez-les sous l'eau froide.",
+   "Ajoutez dans la cocotte : les 2 boîtes de tomates, les haricots, le maïs, 2 cuillères à café de cumin, 1 cuillère à café de paprika, 1 cuillère à café de sel, du poivre.",
+   "Mélangez, baissez à feu doux et laissez mijoter 12 min à petits bouillons en remuant de temps en temps pour que ça n'attache pas au fond. Goûtez et rajoutez du sel si besoin.",
+   "Servez une louche de riz et une ou deux louches de chili. Dessert : une pomme."
+  ]
+ },
+ "curry": {
+  "n": "Curry de lentilles corail, épinards et œufs",
+  "d": "Bananes",
+  "t": "25 min",
+  "p": "Végétarien",
+  "k": 950,
+  "x": 0,
+  "nv": 0,
+  "i": [
+   [
+    "Épicerie",
+    "Lentilles corail",
+    "500 g",
+    2.2
+   ],
+   [
+    "Épicerie",
+    "Lait de coco",
+    "2 × 40 cl",
+    3
+   ],
+   [
+    "Surgelés",
+    "Épinards hachés",
+    "1 kg",
+    2.1
+   ],
+   [
+    "Épicerie",
+    "Tomates concassées",
+    "1 boîte",
+    0.8
+   ],
+   [
+    "Frais",
+    "Œufs plein air",
+    "12",
+    3.6
+   ],
+   [
+    "Boulangerie",
+    "Pain complet",
+    "500 g",
+    1.8
+   ],
+   [
+    "Fruits et légumes",
+    "Oignons",
+    "1",
+    0.2
+   ],
+   [
+    "Fruits et légumes",
+    "Bananes",
+    "1 kg",
+    1.9
+   ]
+  ],
+  "mat": "1 casserole moyenne pour les œufs, 1 grande cocotte ou casserole, 1 passoire fine, 1 cuillère en bois, 1 ouvre-boîte",
+  "e": [
+   "Œufs durs : mettez 10 œufs dans la casserole, couvrez d'eau froide, mettez sur feu fort. Quand l'eau bout, comptez 9 min. Videz l'eau chaude et remplissez d'eau froide. Écalez-les (enlevez la coquille) quand ils ont refroidi.",
+   "Rincez les 500 g de lentilles corail dans la passoire fine sous l'eau froide, jusqu'à ce que l'eau soit presque claire.",
+   "Épluchez l'oignon et coupez-le en petits dés.",
+   "Cocotte sur feu moyen avec 2 cuillères à soupe d'huile. Ajoutez l'oignon 3 min, puis 2 cuillères à soupe de curry en poudre et remuez 30 secondes (ça sent fort, c'est normal).",
+   "Ajoutez les lentilles, les 2 boîtes de lait de coco, la boîte de tomates, 50 cl d'eau (un grand bol) et 1 cuillère à café de sel. Mélangez.",
+   "Quand ça bout, baissez à feu doux et laissez cuire 15 min en remuant souvent : les lentilles collent facilement au fond. Si c'est trop épais, ajoutez un peu d'eau.",
+   "5 min avant la fin, ajoutez les épinards surgelés directement et mélangez jusqu'à ce qu'ils soient fondus.",
+   "Servez dans des bols, avec 2 demi-œufs durs dessus et une tranche de pain complet. Dessert : une banane."
+  ]
+ },
+ "wok": {
+  "n": "Wok de dinde, nouilles et légumes",
+  "d": "Kiwis",
+  "t": "20 min",
+  "p": "Riche en protéines",
+  "k": 590,
+  "x": 0,
+  "nv": 0,
+  "i": [
+   [
+    "Viande",
+    "Émincé de dinde",
+    "800 g",
+    7.6
+   ],
+   [
+    "Épicerie",
+    "Nouilles aux œufs",
+    "500 g",
+    1.9
+   ],
+   [
+    "Surgelés",
+    "Poêlée de légumes pour wok",
+    "1 kg",
+    2.6
+   ],
+   [
+    "Épicerie",
+    "Sauce soja",
+    "25 cl",
+    1.4
+   ],
+   [
+    "Fruits et légumes",
+    "Gingembre frais",
+    "1 morceau",
+    0.6
+   ],
+   [
+    "Fruits et légumes",
+    "Kiwis",
+    "10",
+    2.5
+   ]
+  ],
+  "mat": "1 grande casserole, 1 wok ou très grande poêle, 1 passoire, 1 râpe (ou couteau), 1 cuillère en bois",
+  "e": [
+   "Mettez une grande casserole d'eau sur feu fort. Pendant ce temps, épluchez le morceau de gingembre (grattez la peau avec une petite cuillère) et râpez-en l'équivalent d'1 cuillère à soupe. Écrasez ou hachez 2 gousses d'ail.",
+   "Quand l'eau bout, plongez les nouilles 4 min (ou le temps du paquet), égouttez et passez-les sous l'eau froide pour qu'elles ne collent pas.",
+   "Wok sur feu fort avec 2 cuillères à soupe d'huile. Attendez 1 min qu'il soit bien chaud.",
+   "Ajoutez la dinde, le gingembre et l'ail. Remuez sans arrêt 5 min jusqu'à ce que la viande soit dorée et blanche à l'intérieur.",
+   "Ajoutez les légumes surgelés directement, remuez 6 min à feu fort.",
+   "Ajoutez les nouilles et 6 cuillères à soupe de sauce soja. Mélangez bien 2 min pour tout réchauffer. Pas besoin de sel : la sauce soja est déjà salée.",
+   "Servez aussitôt. Dessert : un kiwi coupé en deux, à manger à la petite cuillère."
+  ]
+ },
+ "frittata": {
+  "n": "Frittata courgettes-feta, salade verte",
+  "d": "Poires",
+  "t": "25 min",
+  "p": "Végétarien",
+  "k": 560,
+  "x": 0,
+  "nv": 0,
+  "i": [
+   [
+    "Frais",
+    "Œufs plein air",
+    "12",
+    3.6
+   ],
+   [
+    "Fruits et légumes",
+    "Courgettes",
+    "1 kg",
+    2.5
+   ],
+   [
+    "Frais",
+    "Feta",
+    "200 g",
+    2.2
+   ],
+   [
+    "Fruits et légumes",
+    "Salade verte",
+    "1",
+    1
+   ],
+   [
+    "Boulangerie",
+    "Pain complet",
+    "500 g",
+    1.8
+   ],
+   [
+    "Fruits et légumes",
+    "Poires",
+    "1 kg",
+    2.6
+   ]
+  ],
+  "mat": "1 grande poêle qui va au four (sans manche en plastique), 1 saladier, 1 fourchette, 1 planche, 1 couteau",
+  "e": [
+   "Allumez le gril du four (position « grill »).",
+   "Lavez les courgettes, coupez les deux bouts et coupez-les en rondelles fines (épaisseur d'une pièce de 2 €).",
+   "Poêle sur feu moyen avec 2 cuillères à soupe d'huile. Ajoutez les courgettes avec 1 pincée de sel, remuez de temps en temps 8 min jusqu'à ce qu'elles soient tendres et un peu dorées.",
+   "Dans le saladier, cassez les 12 œufs. Battez-les à la fourchette 1 min. Ajoutez 1 pincée de sel, du poivre et la feta émiettée avec les doigts.",
+   "Versez les œufs sur les courgettes, répartissez avec la cuillère. Baissez à feu doux, couvrez (une assiette fait l'affaire) et laissez 5 min sans toucher.",
+   "Mettez la poêle 6 à 8 min sous le gril, en haut du four. Le dessus doit être gonflé et doré. Sortez-la avec des gants : le manche est brûlant.",
+   "Pendant ce temps, lavez la salade, essorez-la et assaisonnez-la (3 c. à soupe d'huile, 1 c. à soupe de vinaigre, 1 c. à café de moutarde, sel).",
+   "Coupez la frittata en 6 parts comme un gâteau. Servez avec la salade et du pain. Dessert : une poire."
+  ]
+ },
+ "pates-thon": {
+  "n": "Pâtes complètes au thon, tomates et olives",
+  "d": "Clémentines",
+  "t": "20 min",
+  "p": "Léger",
+  "k": 830,
+  "x": 0,
+  "nv": 0,
+  "i": [
+   [
+    "Épicerie",
+    "Pâtes complètes",
+    "1 kg",
+    2.2
+   ],
+   [
+    "Épicerie",
+    "Thon au naturel",
+    "3 boîtes",
+    6
+   ],
+   [
+    "Épicerie",
+    "Tomates concassées",
+    "2 boîtes",
+    1.6
+   ],
+   [
+    "Épicerie",
+    "Olives noires",
+    "1 bocal",
+    1.2
+   ],
+   [
+    "Fruits et légumes",
+    "Salade verte",
+    "1",
+    1
+   ],
+   [
+    "Fruits et légumes",
+    "Clémentines",
+    "1 kg",
+    2.5
+   ]
+  ],
+  "mat": "1 grande casserole, 1 poêle ou sauteuse, 1 passoire, 1 ouvre-boîte",
+  "e": [
+   "Grande casserole d'eau sur feu fort avec 1 cuillère à soupe de sel. Quand ça bout, versez 1 kg de pâtes et comptez le temps du paquet (souvent 10 à 12 min). Remuez une fois au début pour qu'elles ne collent pas.",
+   "Pendant ce temps, épluchez et hachez finement 2 gousses d'ail.",
+   "Sauteuse sur feu moyen avec 2 cuillères à soupe d'huile d'olive. Ajoutez l'ail 1 min sans le laisser brunir (il deviendrait amer).",
+   "Ajoutez les 2 boîtes de tomates, 1 pincée de sel, du poivre, 1 cuillère à café d'herbes de Provence. Laissez réduire 10 min à feu doux : la sauce épaissit.",
+   "Égouttez le thon (ouvrez la boîte en laissant le couvercle dessus et pressez pour vider le jus). Émiettez-le à la fourchette dans la sauce avec les olives. Laissez 3 min.",
+   "Égouttez les pâtes, remettez-les dans la grande casserole, versez la sauce et mélangez.",
+   "Servez avec la salade assaisonnée. Dessert : 2 clémentines."
+  ]
+ },
+ "boulettes": {
+  "n": "Boulettes de bœuf à la tomate, semoule et courgettes",
+  "d": "Yaourt nature",
+  "t": "25 min",
+  "p": "Riche en protéines",
+  "k": 1010,
+  "x": 0,
+  "nv": 0,
+  "i": [
+   [
+    "Surgelés",
+    "Boulettes de bœuf",
+    "1 kg",
+    7
+   ],
+   [
+    "Épicerie",
+    "Semoule moyenne",
+    "1 kg",
+    1.6
+   ],
+   [
+    "Épicerie",
+    "Tomates concassées",
+    "2 boîtes",
+    1.6
+   ],
+   [
+    "Fruits et légumes",
+    "Courgettes",
+    "1 kg",
+    2.5
+   ],
+   [
+    "Frais",
+    "Yaourts nature",
+    "8",
+    1.6
+   ]
+  ],
+  "mat": "1 grande sauteuse avec couvercle, 1 saladier, 1 bouilloire ou casserole, 1 fourchette",
+  "e": [
+   "Sauteuse sur feu moyen avec 1 cuillère à soupe d'huile. Mettez les boulettes encore surgelées et faites-les rouler 5 min pour qu'elles dorent de tous les côtés.",
+   "Pendant ce temps, lavez les courgettes et coupez-les en petits cubes.",
+   "Ajoutez dans la sauteuse les courgettes, les 2 boîtes de tomates, 1 cuillère à café de cumin, 1 pincée de sel. Couvrez et laissez cuire 15 min à feu doux. Les boulettes sont cuites quand elles sont chaudes au cœur (coupez-en une).",
+   "Semoule, 5 min avant la fin : faites bouillir 1 litre d'eau. Versez 750 g de semoule dans le saladier avec 1 cuillère à café de sel et 2 cuillères à soupe d'huile. Versez l'eau bouillante dessus juste pour couvrir, posez une assiette sur le saladier et attendez 5 min.",
+   "Égrainez la semoule à la fourchette (grattez pour séparer les grains).",
+   "Servez semoule, boulettes et sauce. Dessert : un yaourt nature."
+  ]
+ },
+ "galettes": {
+  "n": "Galettes de sarrasin jambon, œuf, fromage",
+  "d": "Pommes",
+  "t": "20 min",
+  "p": "Riche en protéines",
+  "k": 700,
+  "x": 0,
+  "nv": 0,
+  "i": [
+   [
+    "Frais",
+    "Galettes de sarrasin",
+    "12",
+    3.5
+   ],
+   [
+    "Frais",
+    "Jambon blanc",
+    "8 tranches",
+    3.5
+   ],
+   [
+    "Frais",
+    "Œufs plein air",
+    "12",
+    3.6
+   ],
+   [
+    "Frais",
+    "Emmental râpé",
+    "200 g",
+    2
+   ],
+   [
+    "Fruits et légumes",
+    "Salade verte",
+    "1",
+    1
+   ],
+   [
+    "Fruits et légumes",
+    "Pommes",
+    "1,5 kg",
+    2.7
+   ]
+  ],
+  "mat": "1 grande poêle antiadhésive avec couvercle, 1 spatule large, 1 saladier pour la salade",
+  "e": [
+   "Préparez tout avant de commencer : galettes, œufs, jambon coupé en deux, fromage râpé. Lavez et assaisonnez la salade.",
+   "Poêle sur feu moyen avec une noisette de beurre ou un peu d'huile étalée avec un essuie-tout.",
+   "Posez une galette (face la plus claire vers le bas). Attendez 30 secondes qu'elle chauffe.",
+   "Cassez 1 œuf au centre et étalez le blanc avec le dos d'une cuillère sans crever le jaune. Ajoutez une demi-tranche de jambon et une poignée de fromage autour du jaune.",
+   "Couvrez 2 à 3 min : le blanc doit devenir blanc, le jaune reste coulant.",
+   "Avec la spatule, repliez les 4 bords vers le centre pour faire un carré. Glissez sur une assiette.",
+   "Recommencez pour les autres galettes. Gardez les premières au four à 80 °C pour qu'elles restent chaudes.",
+   "Servez avec la salade. Dessert : une pomme."
+  ]
+ },
+ "soupe-croque": {
+  "n": "Velouté de légumes et croque-monsieur",
+  "d": "Kiwis",
+  "t": "25 min",
+  "p": "Léger",
+  "k": 700,
+  "x": 0,
+  "nv": 0,
+  "i": [
+   [
+    "Surgelés",
+    "Légumes pour potage",
+    "1 kg",
+    2
+   ],
+   [
+    "Fruits et légumes",
+    "Pommes de terre",
+    "1 kg",
+    1.3
+   ],
+   [
+    "Boulangerie",
+    "Pain de mie",
+    "2 paquets",
+    3
+   ],
+   [
+    "Frais",
+    "Jambon blanc",
+    "8 tranches",
+    3.5
+   ],
+   [
+    "Frais",
+    "Emmental râpé",
+    "200 g",
+    2
+   ],
+   [
+    "Fruits et légumes",
+    "Kiwis",
+    "10",
+    2.5
+   ]
+  ],
+  "mat": "1 grande casserole, 1 mixeur plongeant, 1 plaque de four, papier cuisson, 1 éplucheur",
+  "e": [
+   "Allumez le four à 200 °C.",
+   "Épluchez les pommes de terre et coupez-les en morceaux. Mettez-les dans la grande casserole avec les légumes surgelés, 1,5 litre d'eau et 1 cube de bouillon. Couvrez et mettez sur feu fort. Quand ça bout, baissez à feu moyen et comptez 20 min.",
+   "Croques : posez 12 tranches de pain de mie sur la plaque recouverte de papier cuisson. Sur chacune de 6 tranches : 1 tranche de jambon pliée, une poignée de fromage. Fermez avec une autre tranche, puis un peu de fromage dessus.",
+   "Recommencez avec le reste du pain pour avoir 12 croques. Enfournez 10 min jusqu'à ce que le fromage soit doré.",
+   "Quand les légumes sont tendres (un couteau entre sans résistance), retirez du feu. Plongez le mixeur jusqu'au fond avant de l'allumer (sinon ça éclabousse) et mixez 2 min.",
+   "Goûtez, salez et poivrez si besoin. Servez un bol de soupe et les croques. Dessert : un kiwi."
+  ]
+ },
+ "pois-chiches": {
+  "n": "Poêlée de pois chiches, chorizo et poivrons, riz",
+  "d": "Oranges",
+  "t": "20 min",
+  "p": "Riche en protéines",
+  "k": 640,
+  "x": 0,
+  "nv": 0,
+  "i": [
+   [
+    "Épicerie",
+    "Pois chiches",
+    "2 boîtes",
+    1.8
+   ],
+   [
+    "Frais",
+    "Chorizo",
+    "200 g",
+    2.5
+   ],
+   [
+    "Fruits et légumes",
+    "Poivrons",
+    "3",
+    2.7
+   ],
+   [
+    "Épicerie",
+    "Tomates concassées",
+    "1 boîte",
+    0.8
+   ],
+   [
+    "Épicerie",
+    "Riz basmati",
+    "500 g",
+    1.5
+   ],
+   [
+    "Fruits et légumes",
+    "Oranges",
+    "1,5 kg",
+    3
+   ]
+  ],
+  "mat": "1 grande casserole, 1 grande poêle, 1 passoire, 1 ouvre-boîte, 1 couteau",
+  "e": [
+   "Lancez le riz : eau salée bouillante, 500 g de riz, 11 min, égouttez.",
+   "Coupez le chorizo en fines rondelles et retirez la peau si elle est épaisse. Lavez les 3 poivrons, retirez queue et graines, coupez en lanières.",
+   "Poêle sur feu moyen, sans huile : mettez le chorizo 2 min, il rend sa propre graisse rouge.",
+   "Ajoutez les poivrons et remuez 8 min jusqu'à ce qu'ils soient tendres.",
+   "Versez les pois chiches dans la passoire, rincez-les. Ajoutez-les dans la poêle avec la boîte de tomates et 1 pincée de sel. Laissez mijoter 8 min à feu doux.",
+   "Servez sur le riz. Dessert : une orange."
+  ]
+ },
+ "porc-moutarde": {
+  "n": "Porc à la moutarde, purée et brocolis",
+  "d": "Yaourt nature",
+  "t": "25 min",
+  "p": "Riche en protéines",
+  "k": 920,
+  "x": 0,
+  "nv": 0,
+  "i": [
+   [
+    "Viande",
+    "Tranches d'échine de porc",
+    "1,2 kg",
+    7.5
+   ],
+   [
+    "Fruits et légumes",
+    "Pommes de terre",
+    "2 kg",
+    2.6
+   ],
+   [
+    "Surgelés",
+    "Brocolis",
+    "1 kg",
+    2.2
+   ],
+   [
+    "Frais",
+    "Crème fraîche légère 15 %",
+    "20 cl",
+    0.9
+   ],
+   [
+    "Frais",
+    "Yaourts nature",
+    "8",
+    1.6
+   ]
+  ],
+  "mat": "1 grande casserole, 1 presse-purée ou fourchette, 1 casserole moyenne, 1 grande poêle, 1 éplucheur",
+  "e": [
+   "Épluchez les 2 kg de pommes de terre, coupez-les en 4. Mettez-les dans la grande casserole, couvrez d'eau froide, 1 cuillère à soupe de sel, feu fort. Comptez 18 min après l'ébullition : un couteau doit entrer tout seul.",
+   "Brocolis : casserole moyenne d'eau salée bouillante, plongez-les surgelés 8 min, égouttez.",
+   "Poêle sur feu moyen-fort avec 1 cuillère à soupe d'huile. Salez et poivrez les tranches de porc, posez-les dans la poêle chaude (en deux fois si elles ne tiennent pas). Cuisez 4 à 5 min de chaque côté sans les bouger. Elles sont cuites quand le jus qui sort est clair, pas rose.",
+   "Retirez la viande sur une assiette. Dans la poêle, à feu doux, versez la crème et 1 cuillère à soupe de moutarde, grattez le fond avec la cuillère en bois, mélangez 1 min. Remettez la viande dedans.",
+   "Purée : égouttez les pommes de terre, remettez-les dans la casserole chaude, écrasez-les. Ajoutez 20 cl de lait chaud et une noix de beurre, sel, muscade si vous en avez. Mélangez fort.",
+   "Servez porc et sauce, purée, brocolis. Dessert : un yaourt nature."
+  ]
+ },
+ "riz-cantonais": {
+  "n": "Riz cantonais aux crevettes et œufs",
+  "d": "Ananas",
+  "t": "25 min",
+  "p": "Riche en protéines",
+  "k": 690,
+  "x": 0,
+  "nv": 0,
+  "i": [
+   [
+    "Surgelés",
+    "Crevettes décortiquées",
+    "400 g",
+    5
+   ],
+   [
+    "Épicerie",
+    "Riz basmati",
+    "500 g",
+    1.5
+   ],
+   [
+    "Frais",
+    "Œufs plein air",
+    "12",
+    3.6
+   ],
+   [
+    "Surgelés",
+    "Petits pois",
+    "1 kg",
+    1.8
+   ],
+   [
+    "Frais",
+    "Dés de jambon",
+    "200 g",
+    2
+   ],
+   [
+    "Épicerie",
+    "Ananas au sirop léger",
+    "1 boîte",
+    1.5
+   ]
+  ],
+  "mat": "1 grande casserole, 1 wok ou grande poêle, 1 bol, 1 fourchette, 1 plat",
+  "e": [
+   "Riz : eau salée bouillante, 500 g de riz, 11 min, égouttez puis étalez-le dans un grand plat pour qu'il refroidisse et sèche un peu (il collera moins).",
+   "Laissez les crevettes et les petits pois surgelés dans une passoire sous l'eau tiède 5 min pour les décongeler.",
+   "Omelette : battez 6 œufs dans un bol avec 1 pincée de sel. Wok sur feu moyen avec 1 cuillère à soupe d'huile, versez les œufs, laissez prendre 2 min sans remuer, puis retournez-la comme une crêpe 1 min. Mettez sur une planche, roulez et coupez en fines lanières.",
+   "Wok sur feu fort avec 2 cuillères à soupe d'huile. Ajoutez crevettes, petits pois et dés de jambon, remuez 5 min. Les crevettes doivent être bien roses.",
+   "Ajoutez le riz et 4 cuillères à soupe de sauce soja. Remuez 3 min sans arrêt, puis ajoutez les lanières d'omelette.",
+   "Servez. Dessert : quelques tranches d'ananas égouttées."
+  ]
+ },
+ "wraps": {
+  "n": "Wraps de poulet et crudités",
+  "d": "Fromage blanc",
+  "t": "20 min",
+  "p": "Riche en protéines",
+  "k": 680,
+  "x": 0,
+  "nv": 0,
+  "i": [
+   [
+    "Épicerie",
+    "Tortillas de blé",
+    "2 × 8",
+    3
+   ],
+   [
+    "Viande",
+    "Filets de poulet",
+    "800 g",
+    8
+   ],
+   [
+    "Fruits et légumes",
+    "Salade et tomates",
+    "1 + 4",
+    2.5
+   ],
+   [
+    "Frais",
+    "Fromage blanc",
+    "1 kg",
+    1.8
+   ]
+  ],
+  "mat": "1 grande poêle, 1 bol, 1 planche, 1 couteau",
+  "e": [
+   "Sauce : dans un bol, mélangez 300 g de fromage blanc, le jus d'un demi-citron, 1 pincée de sel, du poivre et des herbes (ciboulette ou persil). Mettez au frigo.",
+   "Lavez la salade et les tomates. Coupez la salade en lanières et les tomates en petits dés.",
+   "Coupez le poulet en lanières fines. Lavez-vous les mains et la planche juste après.",
+   "Poêle sur feu moyen-fort avec 2 cuillères à soupe d'huile. Ajoutez le poulet, 1 cuillère à café de paprika, 1 de cumin, 1 pincée de sel. Remuez 8 min jusqu'à ce qu'il soit doré et blanc à l'intérieur.",
+   "Réchauffez les tortillas une par une 20 secondes dans une poêle sèche (ou 30 secondes au micro-ondes).",
+   "Montez : 1 cuillère de sauce au centre de la tortilla, du poulet, de la salade, des tomates. Repliez le bas, puis roulez les côtés.",
+   "Dessert : le reste du fromage blanc avec un peu de sucre ou de miel."
+  ]
+ },
+ "saucisses": {
+  "n": "Saucisses de Toulouse aux lentilles et carottes",
+  "d": "Clémentines",
+  "t": "25 min",
+  "p": "Riche en protéines",
+  "k": 790,
+  "x": 0,
+  "nv": 0,
+  "i": [
+   [
+    "Viande",
+    "Saucisses de Toulouse",
+    "6",
+    5.5
+   ],
+   [
+    "Épicerie",
+    "Lentilles vertes",
+    "500 g",
+    2
+   ],
+   [
+    "Fruits et légumes",
+    "Carottes",
+    "1 kg",
+    1.3
+   ],
+   [
+    "Fruits et légumes",
+    "Oignons",
+    "2",
+    0.4
+   ],
+   [
+    "Fruits et légumes",
+    "Clémentines",
+    "1 kg",
+    2.5
+   ]
+  ],
+  "mat": "1 grande casserole, 1 grande poêle avec couvercle, 1 passoire, 1 éplucheur",
+  "e": [
+   "Rincez les 500 g de lentilles vertes dans la passoire. Épluchez les carottes et coupez-les en rondelles. Épluchez les oignons et coupez-les en quatre.",
+   "Mettez lentilles, carottes et oignons dans la casserole, couvrez de 3 fois leur volume d'eau froide (environ 1,5 l), ajoutez 1 feuille de laurier et 1 pincée de thym. Pas de sel maintenant : il durcit les lentilles.",
+   "Feu fort jusqu'à ébullition, puis feu doux 20 à 25 min. Goûtez : elles doivent être tendres. Salez à la fin et égouttez s'il reste de l'eau.",
+   "Saucisses : piquez-les 3 ou 4 fois avec une fourchette (elles n'éclateront pas). Poêle sur feu moyen avec un filet d'huile, posez les saucisses, couvrez. Tournez-les toutes les 3 min pendant 15 min. Elles sont cuites quand elles sont bien dorées et que l'intérieur n'est plus rose.",
+   "Servez une saucisse sur une louche de lentilles. Dessert : 2 clémentines."
+  ]
+ },
+ "lieu": {
+  "n": "Lieu noir à la provençale, boulgour",
+  "d": "Poires",
+  "t": "25 min",
+  "p": "Léger",
+  "k": 600,
+  "x": 0,
+  "nv": 0,
+  "i": [
+   [
+    "Surgelés",
+    "Filets de lieu noir",
+    "1 kg",
+    8
+   ],
+   [
+    "Épicerie",
+    "Boulgour",
+    "500 g",
+    1.6
+   ],
+   [
+    "Fruits et légumes",
+    "Courgettes",
+    "1 kg",
+    2.5
+   ],
+   [
+    "Épicerie",
+    "Tomates concassées",
+    "1 boîte",
+    0.8
+   ],
+   [
+    "Fruits et légumes",
+    "Citrons",
+    "2",
+    0.8
+   ],
+   [
+    "Fruits et légumes",
+    "Poires",
+    "1 kg",
+    2.6
+   ]
+  ],
+  "mat": "1 casserole moyenne, 1 grande sauteuse avec couvercle, 1 planche, 1 couteau",
+  "e": [
+   "Boulgour : mettez 500 g de boulgour dans la casserole avec 1 litre d'eau et 1 cuillère à café de sel. Feu fort jusqu'à ébullition, puis feu doux à couvert 12 min. Il a bu toute l'eau quand c'est prêt.",
+   "Lavez les courgettes et coupez-les en petits cubes.",
+   "Sauteuse sur feu moyen avec 2 cuillères à soupe d'huile d'olive. Ajoutez les courgettes 5 min.",
+   "Ajoutez la boîte de tomates, 1 cuillère à café d'herbes de Provence, sel, poivre. Mélangez.",
+   "Posez les filets de lieu (même surgelés) sur les légumes, ajoutez quelques rondelles de citron. Couvrez et laissez cuire 10 min à feu doux (15 min si surgelés). Le poisson est cuit quand il est blanc et se défait à la fourchette.",
+   "Servez boulgour, légumes et poisson. Dessert : une poire."
+  ]
+ },
+ "burgers": {
+  "n": "Burgers maison et salade",
+  "d": "Pommes",
+  "t": "20 min",
+  "p": "Riche en protéines",
+  "k": 650,
+  "x": 0,
+  "nv": 0,
+  "i": [
+   [
+    "Viande",
+    "Steaks hachés 5 %",
+    "10 × 100 g",
+    9
+   ],
+   [
+    "Boulangerie",
+    "Pains à burger",
+    "6",
+    1.6
+   ],
+   [
+    "Fruits et légumes",
+    "Salade et tomates",
+    "1 + 4",
+    2.5
+   ],
+   [
+    "Frais",
+    "Fromage en tranches",
+    "10",
+    1.5
+   ],
+   [
+    "Fruits et légumes",
+    "Pommes",
+    "1,5 kg",
+    2.7
+   ]
+  ],
+  "mat": "1 grande poêle, 1 planche, 1 couteau, 1 grille-pain ou le four",
+  "e": [
+   "Préparez la garniture : lavez la salade et prenez les feuilles entières, coupez les tomates en rondelles fines.",
+   "Coupez les pains en deux et faites-les dorer 2 min face coupée dans une poêle sèche ou 3 min au four à 200 °C.",
+   "Poêle sur feu fort avec un filet d'huile. Posez les steaks (en plusieurs fois). Cuisez 3 min sans les toucher, retournez avec une spatule, salez et poivrez, 2 à 3 min de plus.",
+   "Juste avant la fin, posez 1 tranche de fromage sur chaque steak pour qu'elle fonde.",
+   "Montez : pain du bas, 1 cuillère de moutarde ou de ketchup, salade, steak avec fromage, tomate, pain du haut.",
+   "Servez avec le reste de la salade. Dessert : une pomme."
+  ]
+ },
+ "gnocchis": {
+  "n": "Gnocchis poêlés aux légumes et mozzarella",
+  "d": "Poires",
+  "t": "20 min",
+  "p": "Végétarien",
+  "k": 720,
+  "x": 0,
+  "nv": 0,
+  "i": [
+   [
+    "Frais",
+    "Gnocchis",
+    "3 × 500 g",
+    3.6
+   ],
+   [
+    "Surgelés",
+    "Poêlée méditerranéenne",
+    "1 kg",
+    2.5
+   ],
+   [
+    "Frais",
+    "Mozzarella",
+    "3 × 125 g",
+    2.4
+   ],
+   [
+    "Fruits et légumes",
+    "Tomates cerises",
+    "250 g",
+    1.5
+   ],
+   [
+    "Fruits et légumes",
+    "Poires",
+    "1 kg",
+    2.6
+   ]
+  ],
+  "mat": "1 très grande poêle (ou deux poêles), 1 spatule, 1 couteau",
+  "e": [
+   "Poêle sur feu moyen-fort avec 2 cuillères à soupe d'huile d'olive. Versez les gnocchis directement du paquet, sans les cuire à l'eau.",
+   "Laissez-les dorer 8 min en les retournant toutes les 2 min. Ils doivent être dorés et un peu croustillants.",
+   "Ajoutez la poêlée de légumes surgelée, mélangez et laissez cuire 8 min en remuant.",
+   "Coupez les tomates cerises en deux et la mozzarella en petits cubes.",
+   "Ajoutez tomates et mozzarella, mélangez 2 min hors du feu : la mozzarella doit commencer à fondre.",
+   "Salez, poivrez, ajoutez quelques feuilles de basilic. Servez. Dessert : une poire."
+  ]
+ },
+ "soupe-thai": {
+  "n": "Soupe thaï au poulet, coco et nouilles de riz",
+  "d": "Bananes",
+  "t": "25 min",
+  "p": "Léger",
+  "k": 700,
+  "x": 0,
+  "nv": 0,
+  "i": [
+   [
+    "Viande",
+    "Filets de poulet",
+    "600 g",
+    6
+   ],
+   [
+    "Épicerie",
+    "Lait de coco",
+    "2 × 40 cl",
+    3
+   ],
+   [
+    "Épicerie",
+    "Nouilles de riz",
+    "400 g",
+    1.8
+   ],
+   [
+    "Fruits et légumes",
+    "Champignons de Paris",
+    "500 g",
+    2
+   ],
+   [
+    "Fruits et légumes",
+    "Citron vert et gingembre",
+    "1 + 1",
+    1.2
+   ],
+   [
+    "Fruits et légumes",
+    "Bananes",
+    "1 kg",
+    1.9
+   ]
+  ],
+  "mat": "1 grande casserole (faitout), 1 planche, 1 couteau, 1 râpe, 1 louche",
+  "e": [
+   "Coupez le poulet en lamelles très fines (cela cuit plus vite). Lavez-vous les mains et la planche.",
+   "Rincez les champignons rapidement sous l'eau, coupez le bout terreux du pied et émincez-les en lamelles. Épluchez et râpez 1 cuillère à soupe de gingembre.",
+   "Dans la casserole : les 2 boîtes de lait de coco, 1 litre d'eau, 1 cube de bouillon de volaille, le gingembre. Feu fort jusqu'à ébullition.",
+   "Ajoutez poulet et champignons, baissez à feu moyen et laissez 10 min. Le poulet doit être blanc.",
+   "Ajoutez les nouilles de riz cassées en deux, 4 min (ou le temps du paquet).",
+   "Hors du feu, pressez le citron vert dedans, ajoutez 2 cuillères à soupe de sauce soja. Goûtez et ajustez.",
+   "Servez à la louche dans des bols. Dessert : une banane."
+  ]
+ },
+ "shakshuka": {
+  "n": "Shakshuka, œufs pochés tomates-poivrons",
+  "d": "Yaourt nature",
+  "t": "25 min",
+  "p": "Végétarien",
+  "k": 700,
+  "x": 0,
+  "nv": 0,
+  "i": [
+   [
+    "Frais",
+    "Œufs plein air",
+    "18",
+    5.4
+   ],
+   [
+    "Épicerie",
+    "Tomates concassées",
+    "3 boîtes",
+    2.4
+   ],
+   [
+    "Fruits et légumes",
+    "Poivrons",
+    "3",
+    2.7
+   ],
+   [
+    "Fruits et légumes",
+    "Oignons",
+    "1",
+    0.2
+   ],
+   [
+    "Frais",
+    "Feta",
+    "200 g",
+    2.2
+   ],
+   [
+    "Boulangerie",
+    "Pain complet",
+    "500 g",
+    1.8
+   ],
+   [
+    "Frais",
+    "Yaourts nature",
+    "8",
+    1.6
+   ]
+  ],
+  "mat": "1 très grande poêle ou sauteuse avec couvercle, 1 planche, 1 couteau, 1 cuillère",
+  "e": [
+   "Épluchez l'oignon, coupez-le en petits dés. Lavez les poivrons, retirez queue et graines, coupez-les en lanières fines.",
+   "Sauteuse sur feu moyen avec 3 cuillères à soupe d'huile d'olive. Ajoutez oignon et poivrons, 1 cuillère à café de cumin et 1 de paprika. Remuez 8 min jusqu'à ce que ce soit tendre.",
+   "Versez les 3 boîtes de tomates, 1 cuillère à café de sel, du poivre. Laissez mijoter 8 min à feu doux : la sauce épaissit.",
+   "Avec le dos d'une cuillère, creusez des petits trous dans la sauce. Cassez un œuf dans chaque trou (faites-le d'abord dans un verre si vous avez peur de crever le jaune). Faites-le en deux fois si tout ne rentre pas.",
+   "Couvrez et laissez 6 à 8 min à feu doux. Le blanc doit être bien blanc et le jaune encore un peu tremblant.",
+   "Émiettez la feta dessus. Servez directement dans la poêle avec le pain pour saucer. Dessert : un yaourt nature."
+  ]
+ },
+ "n-escalopes": {
+  "n": "Escalopes de poulet fermier, sauce crème champignons, tagliatelles",
+  "d": "Poires",
+  "t": "25 min",
+  "p": "Riche en protéines",
+  "k": 790,
+  "x": 0,
+  "nv": 1,
+  "i": [
+   [
+    "Viande",
+    "Escalopes de poulet fermier Label Rouge",
+    "1,2 kg",
+    13.5
+   ],
+   [
+    "Épicerie",
+    "Tagliatelles",
+    "600 g",
+    1.8
+   ],
+   [
+    "Fruits et légumes",
+    "Champignons de Paris",
+    "600 g",
+    3
+   ],
+   [
+    "Frais",
+    "Crème fraîche épaisse",
+    "30 cl",
+    1.6
+   ],
+   [
+    "Fruits et légumes",
+    "Échalotes",
+    "3",
+    0.9
+   ],
+   [
+    "Fruits et légumes",
+    "Poires",
+    "1 kg",
+    2.8
+   ]
+  ],
+  "mat": "1 grande casserole, 1 grande poêle, 1 passoire, 1 planche, 1 couteau",
+  "e": [
+   "Faites bouillir une grande casserole d'eau salée. Versez les tagliatelles et laissez cuire le temps du paquet, environ 9 min. Égouttez.",
+   "Épluchez les échalotes et émincez-les. Coupez le pied des champignons et tranchez-les.",
+   "Dans la poêle, faites chauffer 1 cuillère à soupe d'huile à feu moyen-fort. Faites dorer les escalopes 4 min de chaque côté avec du sel et du poivre. Sortez-les sur une assiette.",
+   "Dans la même poêle, ajoutez les échalotes et les champignons. Laissez cuire 6 min en remuant, jusqu'à ce que l'eau s'évapore.",
+   "Versez la crème, remettez les escalopes, laissez frémir 3 min. Le poulet est cuit quand il n'est plus rose à l'intérieur.",
+   "Servez sur les tagliatelles. Dessert : une poire."
+  ]
+ },
+ "n-saumon": {
+  "n": "Saumon à la moutarde et au miel, riz et brocolis",
+  "d": "Yaourt nature",
+  "t": "25 min",
+  "p": "Riche en protéines",
+  "k": 720,
+  "x": 0,
+  "nv": 1,
+  "i": [
+   [
+    "Poissonnerie",
+    "Pavés de saumon Label Rouge ou bio",
+    "1,1 kg",
+    19
+   ],
+   [
+    "Épicerie",
+    "Riz basmati",
+    "500 g",
+    1.5
+   ],
+   [
+    "Surgelés",
+    "Brocolis",
+    "1 kg",
+    2.6
+   ],
+   [
+    "Épicerie",
+    "Moutarde de Dijon",
+    "1",
+    1.2
+   ],
+   [
+    "Épicerie",
+    "Miel",
+    "1",
+    3.2
+   ],
+   [
+    "Frais",
+    "Yaourts nature",
+    "8",
+    1.6
+   ]
+  ],
+  "mat": "1 plat allant au four, 1 casserole, 1 passoire, 1 petit bol",
+  "e": [
+   "Allumez le four à 200 °C.",
+   "Mélangez dans le bol 3 cuillères à soupe de moutarde, 2 cuillères à soupe de miel et 1 cuillère à soupe d'huile.",
+   "Posez les pavés dans le plat, étalez le mélange dessus. Enfournez 12 à 15 min. Le saumon est cuit quand il se détache en pétales.",
+   "Faites cuire le riz 11 min dans une casserole d'eau salée. Égouttez.",
+   "Cuisez les brocolis surgelés 8 min à la vapeur ou dans l'eau bouillante.",
+   "Servez avec un peu de jus de cuisson sur le riz."
+  ]
+ },
+ "n-faux-filet": {
+  "n": "Faux filet de bœuf poêlé, pommes de terre grenailles et haricots verts",
+  "d": "Pommes",
+  "t": "25 min",
+  "p": "Riche en protéines",
+  "k": 780,
+  "x": 0,
+  "nv": 1,
+  "i": [
+   [
+    "Viande",
+    "Faux filet de bœuf Charolais Label Rouge",
+    "1,2 kg",
+    28
+   ],
+   [
+    "Fruits et légumes",
+    "Pommes de terre grenailles",
+    "1,5 kg",
+    4.2
+   ],
+   [
+    "Surgelés",
+    "Haricots verts extra fins",
+    "1 kg",
+    2.2
+   ],
+   [
+    "Frais",
+    "Beurre demi sel",
+    "1",
+    2.1
+   ],
+   [
+    "Fruits et légumes",
+    "Ail",
+    "1",
+    0.6
+   ],
+   [
+    "Fruits et légumes",
+    "Pommes",
+    "1,5 kg",
+    3.4
+   ]
+  ],
+  "mat": "2 poêles, 1 casserole, 1 planche, 1 couteau, des pinces ou une fourchette",
+  "e": [
+   "Sortez la viande du frigo dès que vous arrivez en cuisine.",
+   "Coupez les grenailles en deux. Mettez-les dans une poêle avec 2 cuillères à soupe d'huile, couvrez et laissez cuire 15 min à feu moyen en remuant de temps en temps.",
+   "Faites cuire les haricots verts 8 min à la vapeur ou dans l'eau bouillante salée.",
+   "Chauffez la deuxième poêle à feu vif. Salez et poivrez la viande. Posez-la sans huile ou avec une noix de beurre. Comptez 3 min de chaque côté pour une viande rosée, 4 min pour bien cuite.",
+   "Laissez reposer la viande 3 min sous une assiette. Coupez en tranches.",
+   "Ajoutez 2 gousses d'ail écrasées et une noix de beurre aux grenailles pour la dernière minute. Servez."
+  ]
+ },
+ "n-cabillaud": {
+  "n": "Cabillaud poêlé, purée de patates douces et épinards",
+  "d": "Clémentines",
+  "t": "25 min",
+  "p": "Léger",
+  "k": 560,
+  "x": 0,
+  "nv": 1,
+  "i": [
+   [
+    "Poissonnerie",
+    "Dos de cabillaud MSC",
+    "1,1 kg",
+    19.5
+   ],
+   [
+    "Fruits et légumes",
+    "Patates douces",
+    "1,5 kg",
+    4.2
+   ],
+   [
+    "Surgelés",
+    "Épinards en branches",
+    "1 kg",
+    2.4
+   ],
+   [
+    "Frais",
+    "Beurre demi sel",
+    "1",
+    2.1
+   ],
+   [
+    "Fruits et légumes",
+    "Citrons",
+    "2",
+    0.8
+   ],
+   [
+    "Fruits et légumes",
+    "Clémentines",
+    "1 kg",
+    2.5
+   ]
+  ],
+  "mat": "1 grande casserole, 1 poêle, 1 fourchette ou un presse purée",
+  "e": [
+   "Épluchez les patates douces et coupez-les en cubes. Plongez-les dans l'eau bouillante salée 15 min.",
+   "Mettez les épinards surgelés dans une casserole avec un couvercle, à feu doux, 10 min. Salez, ajoutez une noix de beurre.",
+   "Séchez le cabillaud avec du papier absorbant. Salez et poivrez.",
+   "Chauffez la poêle avec 1 cuillère à soupe d'huile. Posez le poisson côté peau et laissez cuire 4 min sans y toucher. Retournez, 3 min de plus.",
+   "Égouttez les patates douces, écrasez-les avec une fourchette, une noix de beurre et du sel.",
+   "Servez le poisson avec un quartier de citron."
+  ]
+ },
+ "n-magret": {
+  "n": "Magret de canard au miel, pommes de terre sautées et salade",
+  "d": "Poires",
+  "t": "25 min",
+  "p": "Riche en protéines",
+  "k": 840,
+  "x": 0,
+  "nv": 1,
+  "i": [
+   [
+    "Viande",
+    "Magrets de canard IGP Sud Ouest",
+    "4",
+    20
+   ],
+   [
+    "Fruits et légumes",
+    "Pommes de terre",
+    "1,5 kg",
+    2
+   ],
+   [
+    "Fruits et légumes",
+    "Salade",
+    "2",
+    1.8
+   ],
+   [
+    "Épicerie",
+    "Miel",
+    "1",
+    3.2
+   ],
+   [
+    "Épicerie",
+    "Vinaigre balsamique",
+    "1",
+    2.3
+   ],
+   [
+    "Fruits et légumes",
+    "Poires",
+    "1 kg",
+    2.8
+   ]
+  ],
+  "mat": "1 grande poêle, 1 poêle, 1 planche, 1 couteau aiguisé",
+  "e": [
+   "Coupez les pommes de terre en dés de 2 cm. Mettez-les dans la poêle avec 2 cuillères à soupe d'huile, couvrez, 15 min à feu moyen, en remuant souvent.",
+   "Avec le couteau, quadrillez la peau des magrets en faisant des petites entailles, sans toucher à la chair.",
+   "Posez les magrets côté peau dans une poêle froide, mettez sur feu moyen. Laissez 8 min, la graisse fond. Retournez et cuisez 4 min. Jetez la graisse dans une tasse.",
+   "Arrosez de 2 cuillères à soupe de miel pendant 1 min. Laissez reposer 5 min sous une assiette.",
+   "Préparez la salade avec 3 cuillères à soupe d'huile, 1 de vinaigre, sel et poivre.",
+   "Tranchez les magrets en lamelles fines et servez."
+  ]
+ },
+ "n-crevettes": {
+  "n": "Crevettes à l'ail et au persil, linguine au citron",
+  "d": "Ananas",
+  "t": "20 min",
+  "p": "Léger",
+  "k": 640,
+  "x": 0,
+  "nv": 1,
+  "i": [
+   [
+    "Poissonnerie",
+    "Crevettes décortiquées crues ASC ou bio",
+    "900 g",
+    22
+   ],
+   [
+    "Épicerie",
+    "Linguine",
+    "600 g",
+    1.8
+   ],
+   [
+    "Fruits et légumes",
+    "Ail",
+    "1",
+    0.6
+   ],
+   [
+    "Fruits et légumes",
+    "Persil",
+    "1",
+    1.2
+   ],
+   [
+    "Fruits et légumes",
+    "Citrons",
+    "3",
+    1.2
+   ],
+   [
+    "Épicerie",
+    "Ananas au sirop léger",
+    "1",
+    2.2
+   ]
+  ],
+  "mat": "1 grande casserole, 1 grande poêle, 1 passoire, 1 râpe",
+  "e": [
+   "Faites bouillir l'eau salée et cuisez les linguine 9 min. Gardez un verre d'eau de cuisson avant d'égoutter.",
+   "Pelez 4 gousses d'ail et écrasez-les. Hachez le persil.",
+   "Chauffez 3 cuillères à soupe d'huile dans la poêle à feu moyen. Ajoutez l'ail 30 secondes, sans le brûler.",
+   "Ajoutez les crevettes (décongelées si besoin) et cuisez 3 à 4 min, jusqu'à ce qu'elles soient roses.",
+   "Mélangez les pâtes dans la poêle avec le jus de 2 citrons, le zeste d'un citron, le persil et un peu d'eau de cuisson.",
+   "Servez tout de suite."
+  ]
+ },
+ "n-tarte": {
+  "n": "Tarte fine tomates et chèvre, salade verte",
+  "d": "Fromage blanc et miel",
+  "t": "25 min",
+  "p": "Végétarien",
+  "k": 690,
+  "x": 0,
+  "nv": 1,
+  "i": [
+   [
+    "Frais",
+    "Pâte feuilletée pur beurre",
+    "3",
+    5.4
+   ],
+   [
+    "Frais",
+    "Bûche de chèvre",
+    "400 g",
+    5.5
+   ],
+   [
+    "Fruits et légumes",
+    "Tomates",
+    "1,2 kg",
+    4.2
+   ],
+   [
+    "Fruits et légumes",
+    "Salade",
+    "2",
+    1.8
+   ],
+   [
+    "Épicerie",
+    "Herbes de Provence",
+    "1",
+    1.2
+   ],
+   [
+    "Frais",
+    "Fromage blanc",
+    "1 kg",
+    2.6
+   ],
+   [
+    "Épicerie",
+    "Miel",
+    "1",
+    3.2
+   ]
+  ],
+  "mat": "2 plaques de four, du papier cuisson, 1 planche, 1 couteau",
+  "e": [
+   "Allumez le four à 200 °C.",
+   "Déroulez les pâtes sur du papier cuisson, posez-les sur les plaques. Piquez-les avec une fourchette.",
+   "Coupez les tomates en rondelles fines, le chèvre en tranches.",
+   "Disposez les tomates sur les pâtes en laissant 2 cm de bord. Ajoutez le chèvre, un filet d'huile, les herbes, sel et poivre.",
+   "Enfournez 20 min, jusqu'à ce que les bords soient dorés.",
+   "Servez avec la salade assaisonnée."
+  ]
+ },
+ "n-dahl": {
+  "n": "Dahl de lentilles corail, riz et coriandre",
+  "d": "Yaourts à la mangue",
+  "t": "25 min",
+  "p": "Végétarien",
+  "k": 680,
+  "x": 0,
+  "nv": 1,
+  "i": [
+   [
+    "Épicerie",
+    "Lentilles corail",
+    "600 g",
+    2.8
+   ],
+   [
+    "Épicerie",
+    "Lait de coco",
+    "2",
+    3
+   ],
+   [
+    "Épicerie",
+    "Riz basmati",
+    "500 g",
+    1.5
+   ],
+   [
+    "Épicerie",
+    "Tomates concassées",
+    "2",
+    2
+   ],
+   [
+    "Fruits et légumes",
+    "Oignons",
+    "2",
+    0.4
+   ],
+   [
+    "Fruits et légumes",
+    "Ail",
+    "1",
+    0.6
+   ],
+   [
+    "Épicerie",
+    "Curry en poudre",
+    "1",
+    1.5
+   ],
+   [
+    "Frais",
+    "Yaourts nature",
+    "8",
+    1.6
+   ],
+   [
+    "Surgelés",
+    "Mangue en morceaux",
+    "400 g",
+    3
+   ]
+  ],
+  "mat": "1 grande casserole, 1 casserole, 1 planche, 1 couteau, 1 cuillère en bois",
+  "e": [
+   "Épluchez et hachez les oignons et 3 gousses d'ail. Faites-les revenir 4 min dans 2 cuillères à soupe d'huile.",
+   "Ajoutez 2 cuillères à soupe de curry, remuez 30 secondes.",
+   "Versez les lentilles rincées, les tomates, le lait de coco et 40 cl d'eau. Salez.",
+   "Laissez cuire 15 à 18 min à feu doux en remuant de temps en temps. Les lentilles doivent s'écraser.",
+   "Pendant ce temps, cuisez le riz 11 min dans l'eau salée.",
+   "Servez avec de la coriandre fraîche. Dessert : yaourt et mangue."
+  ]
+ },
+ "n-courgettes": {
+  "n": "Pâtes à la ricotta, aux courgettes et au citron",
+  "d": "Fraises ou fruit de saison",
+  "t": "20 min",
+  "p": "Végétarien",
+  "k": 640,
+  "x": 0,
+  "nv": 1,
+  "i": [
+   [
+    "Épicerie",
+    "Pâtes coquillettes ou penne",
+    "700 g",
+    2.1
+   ],
+   [
+    "Frais",
+    "Ricotta",
+    "500 g",
+    3.4
+   ],
+   [
+    "Fruits et légumes",
+    "Courgettes",
+    "1,2 kg",
+    3.2
+   ],
+   [
+    "Fruits et légumes",
+    "Citrons",
+    "2",
+    0.8
+   ],
+   [
+    "Frais",
+    "Parmesan AOP",
+    "100 g",
+    3.5
+   ],
+   [
+    "Fruits et légumes",
+    "Fruits de saison",
+    "1 kg",
+    3
+   ]
+  ],
+  "mat": "1 grande casserole, 1 poêle, 1 râpe, 1 passoire",
+  "e": [
+   "Faites cuire les pâtes dans l'eau salée selon le paquet. Gardez un verre d'eau de cuisson.",
+   "Râpez les courgettes grossièrement. Faites-les revenir 6 min dans la poêle avec 2 cuillères à soupe d'huile, sel et poivre.",
+   "Dans un saladier, mélangez la ricotta, le zeste et le jus d'un citron, la moitié du parmesan.",
+   "Égouttez les pâtes, versez-les dans le saladier avec les courgettes. Ajoutez un peu d'eau de cuisson pour rendre la sauce crémeuse.",
+   "Servez avec le reste de parmesan."
+  ]
+ },
+ "n-brochettes": {
+  "n": "Brochettes de poulet fermier au yaourt et aux épices, semoule et concombre",
+  "d": "Pastèque ou fruit de saison",
+  "t": "25 min",
+  "p": "Riche en protéines",
+  "k": 700,
+  "x": 0,
+  "nv": 1,
+  "i": [
+   [
+    "Viande",
+    "Filets de poulet fermier Label Rouge",
+    "1,2 kg",
+    16.5
+   ],
+   [
+    "Frais",
+    "Yaourts nature",
+    "6",
+    1.2
+   ],
+   [
+    "Épicerie",
+    "Semoule moyenne",
+    "500 g",
+    1.3
+   ],
+   [
+    "Fruits et légumes",
+    "Concombres",
+    "2",
+    1.6
+   ],
+   [
+    "Épicerie",
+    "Paprika et cumin",
+    "1",
+    2.2
+   ],
+   [
+    "Fruits et légumes",
+    "Citrons",
+    "2",
+    0.8
+   ],
+   [
+    "Fruits et légumes",
+    "Fruits de saison",
+    "1 kg",
+    3
+   ]
+  ],
+  "mat": "1 plat, 12 piques en bois, 1 poêle ou plaque de four, 1 saladier",
+  "e": [
+   "Coupez le poulet en cubes de 3 cm. Mélangez avec 4 yaourts, 2 cuillères à café de paprika, 1 de cumin, le jus d'un citron, sel et poivre. Laissez 10 min.",
+   "Piquez le poulet sur les piques en bois.",
+   "Faites cuire 10 à 12 min dans la poêle huilée, en retournant. Comptez 2 min de plus si les cubes sont gros.",
+   "Versez 500 g de semoule dans un saladier, ajoutez 500 ml d'eau bouillante salée, couvrez 5 min, égrenez à la fourchette.",
+   "Coupez le concombre en dés, mélangez-le avec 2 yaourts, du sel et du citron."
+  ]
+ },
+ "n-risotto": {
+  "n": "Risotto aux champignons et au jambon blanc supérieur",
+  "d": "Pommes",
+  "t": "25 min",
+  "p": "Riche en protéines",
+  "k": 760,
+  "x": 0,
+  "nv": 1,
+  "i": [
+   [
+    "Épicerie",
+    "Riz arborio",
+    "500 g",
+    2.5
+   ],
+   [
+    "Fruits et légumes",
+    "Champignons de Paris",
+    "700 g",
+    3.5
+   ],
+   [
+    "Charcuterie",
+    "Jambon blanc supérieur Label Rouge ou sans nitrite",
+    "6 tranches",
+    5.8
+   ],
+   [
+    "Frais",
+    "Parmesan AOP",
+    "100 g",
+    3.5
+   ],
+   [
+    "Épicerie",
+    "Bouillon de volaille",
+    "2 l",
+    2.8
+   ],
+   [
+    "Fruits et légumes",
+    "Oignons",
+    "2",
+    0.4
+   ],
+   [
+    "Fruits et légumes",
+    "Pommes",
+    "1,5 kg",
+    3.4
+   ]
+  ],
+  "mat": "1 grande casserole ou sauteuse, 1 casserole pour le bouillon, 1 louche",
+  "e": [
+   "Faites chauffer 2 litres de bouillon dans une casserole, laissez-le chaud.",
+   "Émincez les oignons, tranchez les champignons, coupez le jambon en lamelles.",
+   "Dans la grande casserole, faites revenir oignons et champignons 6 min dans 2 cuillères à soupe d'huile.",
+   "Ajoutez le riz et remuez 2 min. Versez une louche de bouillon, remuez jusqu'à absorption. Recommencez pendant 18 min.",
+   "Hors du feu, ajoutez le jambon et la moitié du parmesan, mélangez.",
+   "Servez avec le reste de parmesan."
+  ]
+ },
+ "n-thon": {
+  "n": "Thon mi cuit au sésame, nouilles sautées et légumes",
+  "d": "Ananas",
+  "t": "20 min",
+  "p": "Léger",
+  "k": 650,
+  "x": 0,
+  "nv": 1,
+  "i": [
+   [
+    "Poissonnerie",
+    "Steaks de thon albacore MSC",
+    "900 g",
+    24
+   ],
+   [
+    "Épicerie",
+    "Nouilles asiatiques",
+    "500 g",
+    2.8
+   ],
+   [
+    "Surgelés",
+    "Poêlée de légumes pour wok",
+    "1 kg",
+    3.2
+   ],
+   [
+    "Épicerie",
+    "Graines de sésame",
+    "1",
+    1.8
+   ],
+   [
+    "Épicerie",
+    "Sauce soja",
+    "1",
+    2
+   ],
+   [
+    "Épicerie",
+    "Ananas au sirop léger",
+    "1",
+    2.2
+   ]
+  ],
+  "mat": "1 poêle, 1 wok ou grande poêle, 1 casserole, 1 assiette creuse",
+  "e": [
+   "Faites cuire les nouilles selon le paquet, environ 4 min. Égouttez.",
+   "Versez les graines de sésame dans une assiette. Passez les steaks de thon dedans pour les enrober.",
+   "Chauffez une poêle avec 1 cuillère à soupe d'huile à feu vif. Saisissez le thon 1 min 30 par face. Il reste rose à l'intérieur.",
+   "Dans le wok, faites cuire la poêlée de légumes 8 min avec 2 cuillères à soupe d'huile.",
+   "Ajoutez les nouilles et 3 cuillères à soupe de sauce soja, mélangez 2 min.",
+   "Tranchez le thon et posez-le sur les nouilles."
+  ]
+ },
+ "n-pizza": {
+  "n": "Pizzas maison au jambon cru, mozzarella et roquette",
+  "d": "Glace vanille",
+  "t": "25 min",
+  "p": "Riche en protéines",
+  "k": 780,
+  "x": 0,
+  "nv": 1,
+  "i": [
+   [
+    "Frais",
+    "Pâtes à pizza fraîches",
+    "3",
+    5.4
+   ],
+   [
+    "Frais",
+    "Mozzarella di bufala",
+    "500 g",
+    8.5
+   ],
+   [
+    "Charcuterie",
+    "Jambon cru de pays ou San Daniele",
+    "200 g",
+    7.5
+   ],
+   [
+    "Frais",
+    "Roquette",
+    "200 g",
+    2.4
+   ],
+   [
+    "Épicerie",
+    "Coulis de tomates",
+    "2",
+    2.2
+   ],
+   [
+    "Surgelés",
+    "Glace vanille",
+    "1",
+    3.5
+   ]
+  ],
+  "mat": "2 plaques de four, du papier cuisson, 1 cuillère",
+  "e": [
+   "Allumez le four à 220 °C.",
+   "Déroulez les pâtes sur du papier cuisson. Étalez le coulis dessus, salez, poivrez.",
+   "Déchirez la mozzarella en morceaux et répartissez-la.",
+   "Enfournez 12 à 15 min, jusqu'à ce que les bords soient dorés.",
+   "Posez le jambon cru et la roquette à la sortie du four.",
+   "Coupez en parts et servez."
+  ]
+ },
+ "n-morteau": {
+  "n": "Saucisse de Morteau IGP, lentilles vertes et moutarde",
+  "d": "Poires",
+  "t": "25 min",
+  "p": "Riche en protéines",
+  "k": 760,
+  "x": 0,
+  "nv": 1,
+  "i": [
+   [
+    "Charcuterie",
+    "Saucisse de Morteau IGP",
+    "3",
+    16.5
+   ],
+   [
+    "Épicerie",
+    "Lentilles vertes du Puy AOP",
+    "600 g",
+    4.8
+   ],
+   [
+    "Fruits et légumes",
+    "Carottes",
+    "600 g",
+    0.9
+   ],
+   [
+    "Fruits et légumes",
+    "Oignons",
+    "2",
+    0.4
+   ],
+   [
+    "Épicerie",
+    "Moutarde de Dijon",
+    "1",
+    1.2
+   ],
+   [
+    "Fruits et légumes",
+    "Poires",
+    "1 kg",
+    2.8
+   ]
+  ],
+  "mat": "1 grande casserole, 1 poêle, 1 planche, 1 couteau",
+  "e": [
+   "Rincez les lentilles. Mettez-les dans la casserole avec 1,5 litre d'eau froide, 1 oignon piqué en deux et les carottes en rondelles. Ne salez pas encore.",
+   "Portez à ébullition, puis laissez frémir 20 min.",
+   "Piquez les saucisses avec une fourchette. Faites-les dorer 10 min dans la poêle, à feu moyen, en les tournant.",
+   "Salez les lentilles à la fin de la cuisson. Égouttez.",
+   "Servez avec les saucisses en tranches et de la moutarde."
+  ]
+ },
+ "n-moules": {
+  "n": "Moules de bouchot marinières et frites au four",
+  "d": "Compote",
+  "t": "25 min",
+  "p": "Riche en protéines",
+  "k": 760,
+  "x": 0,
+  "nv": 1,
+  "i": [
+   [
+    "Poissonnerie",
+    "Moules de bouchot AOP",
+    "3 kg",
+    16.5
+   ],
+   [
+    "Surgelés",
+    "Frites au four",
+    "1,5 kg",
+    4.5
+   ],
+   [
+    "Fruits et légumes",
+    "Échalotes",
+    "4",
+    1.2
+   ],
+   [
+    "Frais",
+    "Beurre demi sel",
+    "1",
+    2.1
+   ],
+   [
+    "Fruits et légumes",
+    "Persil",
+    "1",
+    1.2
+   ],
+   [
+    "Épicerie",
+    "Vin blanc sec",
+    "1",
+    3.5
+   ],
+   [
+    "Épicerie",
+    "Compote de pommes",
+    "1",
+    2.2
+   ]
+  ],
+  "mat": "1 grande casserole avec couvercle, 1 plaque de four, 1 passoire",
+  "e": [
+   "Allumez le four selon le paquet de frites, environ 220 °C. Enfournez les frites sur une plaque.",
+   "Lavez les moules à l'eau froide. Jetez celles qui restent ouvertes quand vous les tapez.",
+   "Émincez les échalotes. Faites-les fondre 3 min dans la casserole avec une noix de beurre.",
+   "Ajoutez les moules et 20 cl de vin blanc. Couvrez, feu fort, 6 à 8 min en secouant la casserole.",
+   "Jetez les moules restées fermées. Ajoutez le persil haché et du poivre.",
+   "Servez avec les frites."
+  ]
+ },
+ "gateau": {
+  "n": "Gâteau moelleux aux pommes et à la cannelle",
+  "d": "",
+  "t": "15 min + 35 min au four",
+  "p": "Gâteau de la semaine",
+  "k": 350,
+  "x": 1,
+  "nv": 0,
+  "i": [
+   [
+    "Épicerie",
+    "Farine de blé",
+    "1 kg",
+    0.9
+   ],
+   [
+    "Épicerie",
+    "Sucre en poudre",
+    "1 kg",
+    1.2
+   ],
+   [
+    "Frais",
+    "Œufs plein air",
+    "6",
+    1.8
+   ],
+   [
+    "Frais",
+    "Yaourt nature",
+    "1",
+    0.2
+   ],
+   [
+    "Fruits et légumes",
+    "Pommes",
+    "1 kg",
+    1.8
+   ],
+   [
+    "Épicerie",
+    "Levure chimique",
+    "1 sachet",
+    0.3
+   ],
+   [
+    "Épicerie",
+    "Cannelle en poudre",
+    "1 pot",
+    1.2
+   ]
+  ],
+  "mat": "1 moule rond de 24 cm environ, 1 saladier, 1 fouet ou fourchette, 1 couteau, 1 éplucheur, le pot du yaourt (il sert de verre doseur)",
+  "e": [
+   "Allumez le four à 180 °C. Beurrez le moule avec un peu de beurre étalé avec les doigts, puis saupoudrez 1 cuillère à soupe de farine et secouez pour qu'elle colle partout.",
+   "Videz le yaourt dans le saladier. Rincez et séchez le pot : il sert de mesure pour la suite.",
+   "Ajoutez 3 œufs et 2 pots de sucre. Fouettez 1 min jusqu'à ce que ce soit mousseux.",
+   "Ajoutez 3 pots de farine, le sachet de levure et 1 cuillère à café de cannelle. Mélangez jusqu'à ce qu'il n'y ait plus de grumeaux.",
+   "Ajoutez 1/2 pot d'huile et mélangez encore.",
+   "Épluchez 3 pommes, coupez-les en quatre, retirez le cœur dur et les pépins, puis coupez en fines lamelles. Ajoutez la moitié des pommes dans la pâte et mélangez.",
+   "Versez la pâte dans le moule. Posez le reste des lamelles sur le dessus en rond, et saupoudrez 1 cuillère à soupe de sucre.",
+   "Enfournez 35 min au milieu du four. Il est cuit quand un couteau planté au centre ressort sec, sans pâte collée. Sinon, remettez 5 min.",
+   "Laissez refroidir 10 min avant de démouler. Il se garde 3 jours sous un torchon : parfait pour les goûters et les petits-déjeuners."
+  ]
+ },
+ "soiree": {
+  "n": "Soirée crêpes salées et sucrées",
+  "d": "",
+  "t": "20 min de pâte + cuisson à table",
+  "p": "Soirée de la semaine",
+  "k": 1200,
+  "x": 1,
+  "nv": 0,
+  "i": [
+   [
+    "Épicerie",
+    "Farine de blé",
+    "1 kg",
+    0.9
+   ],
+   [
+    "Frais",
+    "Œufs plein air",
+    "12",
+    3.6
+   ],
+   [
+    "Frais",
+    "Lait demi-écrémé",
+    "2 l",
+    2.2
+   ],
+   [
+    "Frais",
+    "Jambon blanc",
+    "8 tranches",
+    3.5
+   ],
+   [
+    "Frais",
+    "Emmental râpé",
+    "200 g",
+    2
+   ],
+   [
+    "Fruits et légumes",
+    "Champignons de Paris",
+    "500 g",
+    2
+   ],
+   [
+    "Épicerie",
+    "Pâte à tartiner",
+    "400 g",
+    2.5
+   ],
+   [
+    "Fruits et légumes",
+    "Bananes",
+    "1 kg",
+    1.9
+   ]
+  ],
+  "mat": "1 grand saladier, 1 fouet, 1 louche, 1 ou 2 poêles antiadhésives (ou une crêpière électrique posée sur la table), 1 spatule, 1 petite poêle pour les champignons",
+  "e": [
+   "Pâte (à faire 1 h avant si possible, elle sera meilleure) : dans le saladier, mettez 500 g de farine et 1 pincée de sel. Creusez un trou au milieu et cassez-y 6 œufs.",
+   "Fouettez au centre en ajoutant le lait petit à petit (1 litre en tout), d'abord doucement. Si vous versez tout d'un coup, il y aura des grumeaux. Ajoutez 2 cuillères à soupe d'huile. La pâte doit être fluide comme une crème liquide.",
+   "Garnitures : rincez et émincez les champignons, faites-les revenir 8 min dans une poêle avec un peu d'huile et de sel. Coupez le jambon en lanières, les bananes en rondelles. Disposez tout dans des bols sur la table.",
+   "Cuisson : poêle sur feu moyen-fort, graissez-la avec un essuie-tout imbibé d'huile. Versez une petite louche de pâte et tournez la poêle pour l'étaler en couche fine.",
+   "Quand les bords se décollent et dorent (environ 1 min), retournez avec la spatule et laissez 30 secondes de l'autre côté.",
+   "Crêpe salée « complète » : sur la crêpe retournée, cassez un œuf, ajoutez jambon, fromage et champignons, couvrez 2 min, puis repliez les bords.",
+   "Crêpe sucrée : tartinez de pâte à tartiner, ajoutez des rondelles de banane, ou simplement sucre et un filet de citron.",
+   "L'idée de la soirée : chacun compose sa crêpe. Les jeunes peuvent apprendre à la retourner en la faisant sauter. Comptez 4 crêpes par personne."
+  ]
+ }
+}
