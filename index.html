@@ -126,6 +126,15 @@ button:disabled{opacity:.55;cursor:progress}
 .cf-alt button{padding:6px 10px;font-size:14px}
 .top{display:inline-block;margin-top:3px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--saffron);background:var(--saffron-soft);border-radius:999px;padding:1px 8px}
 .cf-warn{background:var(--saffron-soft);color:var(--ink);border-radius:8px;padding:8px 12px;font-size:14px}
+.ailleurs{border:1px solid var(--line);border-radius:12px;padding:10px 14px 12px;margin:0;display:flex;flex-direction:column;gap:8px}
+.ailleurs legend{font-family:var(--display);font-weight:700;font-size:17px;padding:0 6px}
+.ailleurs-opts{display:flex;flex-wrap:wrap;gap:8px}
+.ailleurs-opts label{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--bg);font-size:15px;font-weight:600;cursor:pointer}
+.ailleurs-opts label:has(input:checked){background:var(--saffron-soft);border-color:var(--saffron);color:var(--saffron)}
+.ailleurs-opts input{width:18px;height:18px;accent-color:var(--saffron);margin:0}
+.ailleurs-opts small{font-weight:400;color:var(--muted)}
+.rayon.dehors h4{color:var(--saffron)}
+.dehors-titre{margin:18px 0 0;padding-top:12px;border-top:2px solid var(--saffron)}
 .cta{display:inline-block;background:var(--saffron);color:var(--surface);font-weight:700;text-decoration:none;border-radius:8px;padding:12px 16px;width:fit-content}
 @media (max-width:620px){
   .cols,.tips{grid-template-columns:1fr}
@@ -200,6 +209,11 @@ button:disabled{opacity:.55;cursor:progress}
 <section class="basket" data-view="liste" aria-live="polite">
   <h2>Ma liste de courses</h2>
   <div class="totals" id="totals"></div>
+  <fieldset class="ailleurs" id="ailleurs">
+    <legend>Ce que j'achète moi-même ailleurs</legend>
+    <p class="note">Cochez un rayon : il sort de la liste et du panier Carrefour, et passe dans une liste à part, en bas.</p>
+    <div class="ailleurs-opts" id="ailleurs-opts"></div>
+  </fieldset>
   <div id="list"></div>
   <form id="ajout-form" class="ajout">
     <h3>Ajouter autre chose à la commande</h3>
@@ -692,11 +706,33 @@ function card(m,p="m-"){
 const isExtra=m=>m.profil==="Gâteau de la semaine"||m.profil==="Soirée de la semaine";
 const chosenRecipes=()=>[...chosen].map(id=>REG.get(id)).filter(Boolean);
 const nbOeufs=sel=>sel.reduce((n,m)=>n+ingF(m).reduce((s,i)=>s+(/^[œŒ]ufs/.test(i[1])?(parseInt(i[2],10)||0):0),0),0);
+// Rayons que la famille achète elle-même ailleurs (marché, boucher, poissonnier) : gardés sur l'appareil
+const POISSON=/saumon|cabillaud|colin|lieu|thon|crevette|moule|poisson|truite|merlu|dorade|sardine|maquereau/i;
+const groupe=(r,n)=>r==="Poissonnerie"||(r!=="Épicerie"&&POISSON.test(n))?"Poissonnerie":r;
+const GROUPES=[["Fruits et légumes","Fruits et légumes"],["Viande","Boucherie"],["Poissonnerie","Poissonnerie"],["Frais","Crèmerie et frais"],["Boulangerie","Boulangerie"],["Surgelés","Surgelés"],["Épicerie","Épicerie"]];
+let ailleurs=new Set();
+try{const s=JSON.parse(localStorage.getItem("menus-ailleurs")||"null");if(Array.isArray(s))ailleurs=new Set(s)}catch(e){}
 function buildList(){
   const sel=chosenRecipes(), repas=sel.filter(m=>!isExtra(m)), map=new Map();
-  sel.forEach(m=>ingF(m).forEach(([r,n,q,p])=>{const k=r+"|"+n;const x=map.get(k)||{r,n,q:[],p:0};x.q.push(q);x.p+=p;map.set(k,x)}));
-  return {sel,repas,lignes:[...map.values()],tot:sel.reduce((s,m)=>s+total(m),0),totRepas:repas.reduce((s,m)=>s+total(m),0),oeufs:nbOeufs(sel)};
+  sel.forEach(m=>ingF(m).forEach(([r,n,q,p])=>{const g=groupe(r,n),k=g+"|"+n;const x=map.get(k)||{r:g,n,q:[],p:0};x.q.push(q);x.p+=p;map.set(k,x)}));
+  const toutes=[...map.values()], lignes=toutes.filter(x=>!ailleurs.has(x.r)), dehors=toutes.filter(x=>ailleurs.has(x.r));
+  const oeufs=lignes.reduce((s,x)=>s+(/^[œŒ]ufs/.test(x.n)?x.q.reduce((a,q)=>a+(parseInt(q,10)||0),0):0),0);
+  const sum=a=>a.reduce((s,x)=>s+x.p,0);
+  return {sel,repas,lignes,dehors,tot:sum(lignes),totDehors:sum(dehors),totRepas:repas.reduce((s,m)=>s+total(m),0),oeufs};
 }
+function renderAilleurs(){
+  const box=document.getElementById("ailleurs-opts"); if(!box)return;
+  const present=new Set(); chosenRecipes().forEach(m=>m.ing.forEach(([r,n])=>present.add(groupe(r,n))));
+  const sig=[...present].sort().join("|");
+  if(box.dataset.sig===sig)return; box.dataset.sig=sig;
+  box.innerHTML=GROUPES.map(([g,lab])=>`<label><input type="checkbox" id="ail-${esc(g.replace(/[^a-z]/gi,""))}" data-g="${esc(g)}"${ailleurs.has(g)?" checked":""}>${esc(lab)}${present.size&&!present.has(g)?' <small>(rien cette semaine)</small>':""}</label>`).join("");
+}
+document.getElementById("ailleurs-opts").addEventListener("change",e=>{
+  const g=e.target&&e.target.dataset.g; if(!g)return;
+  if(e.target.checked)ailleurs.add(g); else ailleurs.delete(g);
+  try{localStorage.setItem("menus-ailleurs",JSON.stringify([...ailleurs]))}catch(err){}
+  touched=true; renderBasket();
+});
 let syncTimer=null, syncChain=Promise.resolve();
 // Écrit la commande en cours pour que Claude puisse la relire (une seule fois par changement)
 function syncCommande(b){
@@ -713,13 +749,16 @@ function syncCommande(b){
   },800);
 }
 function renderBasket(){
-  const b=buildList(), {sel,repas,lignes,tot,totRepas,oeufs}=b;
-  document.getElementById("totals").innerHTML=`<div><strong>${repas.length} / ${FOYER.menus}</strong><span>menus choisis</span></div><div><strong>${sel.length-repas.length}</strong><span>extras</span></div><div><strong>${oeufs}</strong><span>œufs à commander</span></div><div><strong>${eur(tot)}</strong><span>courses estimées</span></div><div><strong>${repas.length?eur(totRepas/repas.length/nbPers()):"–"}</strong><span>par personne et par repas</span></div>`;
+  const b=buildList(), {sel,repas,lignes,dehors,tot,totDehors,totRepas,oeufs}=b;
+  renderAilleurs();
+  document.getElementById("totals").innerHTML=`<div><strong>${repas.length} / ${FOYER.menus}</strong><span>menus choisis</span></div><div><strong>${sel.length-repas.length}</strong><span>extras</span></div><div><strong>${oeufs}</strong><span>œufs à commander</span></div><div><strong>${eur(tot)}</strong><span>${dehors.length?"courses à commander":"courses estimées"}</span></div>${dehors.length?`<div><strong>${eur(totDehors)}</strong><span>achetés ailleurs</span></div>`:""}<div><strong>${repas.length?eur(totRepas/repas.length/nbPers()):"–"}</strong><span>par personne et par repas</span></div>`;
   document.getElementById("chip-menus").innerHTML=`<b>${repas.length}</b> sur ${FOYER.menus} menus choisis`;
   const n=sel.length+ajouts.size;
   document.getElementById("tab-count").textContent=n?`(${n})`:"";
   const by={};lignes.forEach(x=>(by[x.r]=by[x.r]||[]).push(x));
   let html=Object.keys(by).sort().map(r=>`<div class="rayon"><h4>${esc(r)}</h4><ul>${by[r].map(x=>`<li${/^[œŒ]ufs/.test(x.n)?' class="oeufs"':""}><span>${esc(x.n)} (${x.q.map(esc).join(" + ")})</span><span>${eur(x.p)}</span></li>`).join("")}</ul></div>`).join("");
+  if(dehors.length){const bd={};dehors.forEach(x=>(bd[x.r]=bd[x.r]||[]).push(x));
+    html+=`<h3 class="dehors-titre">À acheter moi-même ailleurs</h3>`+GROUPES.map(([g,lab])=>bd[g]?`<div class="rayon dehors"><h4>Ailleurs · ${esc(lab)}</h4><ul>${bd[g].map(x=>`<li><span>${esc(x.n)} (${x.q.map(esc).join(" + ")})</span><span>${eur(x.p)}</span></li>`).join("")}</ul></div>`:"").join("")}
   if(ajouts.size)html+=`<div class="rayon"><h4>Ajouts manuels</h4><ul>${[...ajouts.entries()].map(([id,a])=>`<li><span>${esc(a.nom)}${a.qte?` (${esc(a.qte)})`:""}</span><span><button type="button" class="x" data-del="${esc(id)}" aria-label="Retirer ${esc(a.nom)}">×</button></span></li>`).join("")}</ul></div>`;
   document.getElementById("list").innerHTML=html||'<p class="empty">Cochez un ou plusieurs menus, ou ajoutez un produit ci-dessous.</p>';
   syncCommande(b);
