@@ -172,6 +172,7 @@ button:disabled{opacity:.55;cursor:progress}
     <span class="chip" id="chip-menus"><b>0</b> sur 15 menus choisis</span>
     <span class="chip">Fruits et légumes <b>de saison</b> (novembre)</span>
     <span class="chip"><b>Sans sucre ajouté</b> : desserts aux fruits entiers</span>
+    <span class="chip">Produits bien notés <b>Nutri-Score, NOVA, Yuka</b></span>
     <span class="chip"><b>20-25 min</b> de préparation</span>
     <span class="chip">Budget <b>3 à 4 €</b> par personne</span>
     <span class="chip">Plat + accompagnement + dessert</span>
@@ -210,6 +211,16 @@ button:disabled{opacity:.55;cursor:progress}
     <dt>S'il faut un peu de douceur</dt><dd>Des dattes, quelques pommes ou une petite cuillère de miel, en petite quantité. Jamais de sirop de glucose ou de maïs.</dd>
     <dt>Quand manger sucré</dt><dd>Pendant le repas plutôt qu'en grignotage, et jamais après le brossage du soir : c'est la fréquence qui abîme les dents, plus que la quantité.</dd>
     <dt>Les fibres</dt><dd>Légumineuses (lentilles, pois chiches, haricots), légumes, pain et céréales complets : ils rassasient et ralentissent l'absorption du sucre.</dd>
+  </dl>
+</details>
+<details class="basics" data-view="semaine">
+  <summary>Bien choisir les produits : Nutri-Score, NOVA et Yuka</summary>
+  <dl>
+    <dt>Nutri-Score</dt><dd>On vise A ou B. La note va de A (vert) à E (rouge) et juge le sucre, le sel, les graisses saturées, les fibres et les protéines. Les fromages AOP, le beurre et l'huile restent souvent en C ou D par nature : on les garde, en petite quantité.</dd>
+    <dt>NOVA</dt><dd>On vise 1 ou 2, au plus 3. NOVA mesure la transformation : 1 = brut (légumes, viande, œufs), 2 = ingrédient de cuisine (huile, farine), 3 = transformé simple (pain, fromage, conserve), 4 = ultra-transformé (additifs, arômes, émulsifiants). On évite le NOVA 4.</dd>
+    <dt>Yuka</dt><dd>On vise « bon » ou « excellent », soit au moins 50 sur 100, idéalement 75. Yuka regarde la nutrition, les additifs et le bio. On refuse les produits notés en rouge.</dd>
+    <dt>Ce que ça change dans nos recettes</dt><dd>Charcuterie sans nitrite, boulettes et frites faites maison, comté à la place du fromage fondu, bouillon bio sans exhausteur de goût, maïs et coulis sans sucre ajouté, poêlées surgelées nature sans sauce.</dd>
+    <dt>En magasin</dt><dd>Scannez avec Yuka ou Open Food Facts. Le plus simple : une liste d'ingrédients courte, que vous comprenez tous. Les fruits, légumes, viandes et poissons frais n'ont pas de note : ils sont la meilleure base.</dd>
   </dl>
 </details>
 <div class="filters" id="filters" data-view="semaine" role="group" aria-label="Filtrer les menus"></div>
@@ -344,7 +355,7 @@ const MENUS=[
   etapes:["Cuire pommes de terre et carottes en rondelles 20 min à la vapeur.","Poser le poisson sur du papier cuisson avec citron, aneth, sel, poivre, un filet d'huile.","Fermer les papillotes, 15 min au four à 200 °C.","Servir avec un trait de citron."],
   jeunes:"Ajouter un œuf dur ou une deuxième portion de poisson.",seniors:"Le plat idéal : beaucoup de légumes, peu de gras."},
  {id:"chili",nom:"Chili con carne à la courge butternut, riz",dessert:"Pommes",temps:"30 min",profil:"Riche en protéines",
-  ing:[["Viande","Bœuf haché 5 %","500 g",5.50],["Épicerie","Haricots rouges","2 boîtes",1.80],["Épicerie","Tomates concassées","2 boîtes",1.60],["Épicerie","Maïs","1 boîte",0.90],["Fruits et légumes","Courge butternut","1 kg",2.50],["Fruits et légumes","Oignons","2",0.40],["Épicerie","Riz basmati","500 g",1.50],["Fruits et légumes","Pommes","1,5 kg",2.70]],
+  ing:[["Viande","Bœuf haché 5 %","500 g",5.50],["Épicerie","Haricots rouges","2 boîtes",1.80],["Épicerie","Tomates concassées","2 boîtes",1.60],["Épicerie","Maïs doux sans sucre ajouté","1 boîte",1.00],["Fruits et légumes","Courge butternut","1 kg",2.50],["Fruits et légumes","Oignons","2",0.40],["Épicerie","Riz basmati","500 g",1.50],["Fruits et légumes","Pommes","1,5 kg",2.70]],
   etapes:["Lancer le riz.","Faire revenir oignons et butternut en petits cubes 5 min, puis la viande 5 min.","Ajouter tomates, haricots rouges égouttés, maïs, cumin et paprika.","Laisser mijoter 15 min, jusqu'à ce que la courge soit tendre."],
   jeunes:"Les haricots rouges doublent l'apport en protéines.",seniors:"Une petite louche de riz, le reste en chili riche en courge."},
  {id:"curry",nom:"Curry de lentilles corail, épinards et œufs",dessert:"Clémentines",temps:"25 min",profil:"Végétarien",
@@ -352,7 +363,7 @@ const MENUS=[
   etapes:["Cuire 10 œufs durs (10 min).","Faire revenir l'oignon avec 2 c. à soupe de curry.","Ajouter lentilles, lait de coco, tomates et 50 cl d'eau, cuire 15 min.","Ajouter les épinards 5 min avant la fin, servir avec les œufs coupés en deux."],
   jeunes:"Deux œufs chacun pour un plein de protéines.",seniors:"Rassasiant grâce aux lentilles, sans être lourd."},
  {id:"wok",nom:"Wok de dinde, nouilles et légumes",dessert:"Kiwis",temps:"20 min",profil:"Riche en protéines",
-  ing:[["Viande","Émincé de dinde","800 g",7.60],["Épicerie","Nouilles aux œufs","500 g",1.90],["Surgelés","Poêlée de légumes pour wok","1 kg",2.60],["Épicerie","Sauce soja","25 cl",1.40],["Fruits et légumes","Gingembre frais","1 morceau",0.60],["Fruits et légumes","Kiwis","10",2.50]],
+  ing:[["Viande","Émincé de dinde","800 g",7.60],["Épicerie","Nouilles aux œufs","500 g",1.90],["Surgelés","Poêlée de légumes pour wok, nature sans sauce","1 kg",2.60],["Épicerie","Sauce soja","25 cl",1.40],["Fruits et légumes","Gingembre frais","1 morceau",0.60],["Fruits et légumes","Kiwis","10",2.50]],
   etapes:["Cuire les nouilles 4 min, égoutter.","Saisir la dinde 5 min à feu vif avec gingembre et ail râpés.","Ajouter les légumes 6 min.","Mélanger nouilles et sauce soja, 2 min de plus."],
   jeunes:"Dinde maigre et riche en protéines.",seniors:"Plus de légumes, moitié moins de nouilles."},
  {id:"frittata",nom:"Frittata poireaux-feta, mâche",dessert:"Poires",temps:"25 min",profil:"Végétarien",
@@ -363,36 +374,36 @@ const MENUS=[
   ing:[["Épicerie","Pâtes complètes","1 kg",2.20],["Épicerie","Thon au naturel","3 boîtes",6.00],["Épicerie","Tomates concassées","2 boîtes",1.60],["Épicerie","Olives noires","1 bocal",1.20],["Fruits et légumes","Salade verte","1",1.00],["Fruits et légumes","Clémentines","1 kg",2.50]],
   etapes:["Cuire les pâtes.","Faire revenir l'ail, ajouter les tomates et laisser réduire 10 min.","Ajouter thon émietté et olives, 3 min.","Mélanger aux pâtes."],
   jeunes:"Les pâtes complètes et le thon tiennent au corps.",seniors:"Petite assiette de pâtes et une grande salade."},
- {id:"boulettes",nom:"Boulettes de bœuf à la tomate, semoule et carottes",dessert:"Yaourt nature",temps:"30 min",profil:"Riche en protéines",
-  ing:[["Surgelés","Boulettes de bœuf","1 kg",7.00],["Épicerie","Semoule moyenne","1 kg",1.60],["Épicerie","Tomates concassées","2 boîtes",1.60],["Fruits et légumes","Carottes","1 kg",1.30],["Frais","Yaourts nature","8",1.60]],
-  etapes:["Dorer les boulettes 5 min.","Ajouter tomates, carottes en fines rondelles, cumin, mijoter 20 min.","Préparer la semoule à l'eau bouillante, 5 min."],
+ {id:"boulettes",nom:"Boulettes de bœuf maison à la tomate, semoule et carottes",dessert:"Yaourt nature",temps:"35 min",profil:"Riche en protéines",
+  ing:[["Viande","Bœuf haché 5 % Charolais","1 kg",12.00],["Épicerie","Semoule complète","1 kg",2.20],["Épicerie","Tomates concassées","2 boîtes",1.60],["Fruits et légumes","Carottes","1 kg",1.30],["Fruits et légumes","Oignons","1",0.20],["Frais","Yaourts nature","8",1.60]],
+  etapes:["Former 36 boulettes avec le bœuf, l'oignon râpé et le cumin.","Les dorer 5 min.","Ajouter tomates, carottes en fines rondelles, mijoter 20 min.","Préparer la semoule à l'eau bouillante, 5 min."],
   jeunes:"Six boulettes chacun.",seniors:"Plus de sauce aux carottes, peu de semoule."},
  {id:"galettes",nom:"Galettes de sarrasin jambon, œuf, fromage",dessert:"Pommes",temps:"20 min",profil:"Riche en protéines",
-  ing:[["Frais","Galettes de sarrasin","12",3.50],["Frais","Jambon blanc","8 tranches",3.50],["Frais","Œufs plein air","12",3.60],["Frais","Emmental râpé","200 g",2.00],["Fruits et légumes","Salade verte","1",1.00],["Fruits et légumes","Pommes","1,5 kg",2.70]],
+  ing:[["Frais","Galettes de sarrasin","12",3.50],["Frais","Jambon blanc supérieur sans nitrite","8 tranches",4.20],["Frais","Œufs plein air","12",3.60],["Frais","Emmental français au lait cru, à râper","200 g",2.40],["Fruits et légumes","Salade verte","1",1.00],["Fruits et légumes","Pommes","1,5 kg",2.70]],
   etapes:["Chauffer une galette à la poêle.","Casser un œuf au centre, ajouter jambon et fromage.","Replier les bords, 3 min à couvert.","Recommencer, servir avec la salade."],
   jeunes:"Deux galettes complètes.",seniors:"Une galette et de la salade."},
  {id:"soupe-croque",nom:"Velouté de légumes et croque-monsieur",dessert:"Kiwis",temps:"25 min",profil:"Léger",
-  ing:[["Surgelés","Légumes pour potage","1 kg",2.00],["Fruits et légumes","Pommes de terre","1 kg",1.30],["Boulangerie","Pain de campagne au levain, en tranches","1 kg",4.20],["Frais","Jambon blanc","8 tranches",3.50],["Frais","Emmental râpé","200 g",2.00],["Fruits et légumes","Kiwis","10",2.50]],
+  ing:[["Surgelés","Légumes pour potage","1 kg",2.00],["Fruits et légumes","Pommes de terre","1 kg",1.30],["Boulangerie","Pain de campagne au levain, en tranches","1 kg",4.20],["Frais","Jambon blanc supérieur sans nitrite","8 tranches",4.20],["Frais","Emmental français au lait cru, à râper","200 g",2.40],["Fruits et légumes","Kiwis","10",2.50]],
   etapes:["Cuire légumes et pommes de terre 20 min dans 1,5 l d'eau.","Pendant ce temps, monter les croques et les passer 10 min au four.","Mixer la soupe."],
   jeunes:"Deux croques chacun.",seniors:"Un grand bol de soupe et un croque."},
- {id:"pois-chiches",nom:"Poêlée de pois chiches, chorizo et patate douce, riz",dessert:"Oranges",temps:"25 min",profil:"Riche en protéines",
-  ing:[["Épicerie","Pois chiches","2 boîtes",1.80],["Frais","Chorizo","200 g",2.50],["Fruits et légumes","Patates douces","1 kg",2.60],["Épicerie","Tomates concassées","1 boîte",0.80],["Épicerie","Riz basmati","500 g",1.50],["Fruits et légumes","Oranges","1,5 kg",3.00]],
-  etapes:["Lancer le riz.","Faire revenir le chorizo en rondelles, puis la patate douce en cubes 12 min à couvert.","Ajouter pois chiches et tomates, mijoter 8 min."],
-  jeunes:"Pois chiches et chorizo, un bon mélange de protéines.",seniors:"Peu de chorizo, beaucoup de patate douce."},
+ {id:"pois-chiches",nom:"Poêlée de pois chiches, poulet au paprika fumé et patate douce, riz",dessert:"Oranges",temps:"25 min",profil:"Riche en protéines",
+  ing:[["Épicerie","Pois chiches","2 boîtes",1.80],["Viande","Filets de poulet fermier Label Rouge","600 g",9.00],["Fruits et légumes","Patates douces","1 kg",2.60],["Épicerie","Tomates concassées","1 boîte",0.80],["Épicerie","Riz basmati","500 g",1.50],["Fruits et légumes","Oranges","1,5 kg",3.00]],
+  etapes:["Lancer le riz.","Dorer le poulet en dés avec le paprika fumé, puis la patate douce en cubes 12 min à couvert.","Ajouter pois chiches et tomates, mijoter 8 min."],
+  jeunes:"Pois chiches et poulet, un bon mélange de protéines.",seniors:"Moins de poulet, beaucoup de patate douce."},
  {id:"porc-moutarde",nom:"Porc à la moutarde, purée et brocolis",dessert:"Yaourt nature",temps:"25 min",profil:"Riche en protéines",
   ing:[["Viande","Tranches d'échine de porc","1,2 kg",7.50],["Fruits et légumes","Pommes de terre","2 kg",2.60],["Surgelés","Brocolis","1 kg",2.20],["Frais","Crème fraîche légère 15 %","20 cl",0.90],["Frais","Yaourts nature","8",1.60]],
   etapes:["Cuire les pommes de terre en morceaux 18 min, puis écraser en purée.","Cuire les brocolis 8 min à la vapeur.","Saisir le porc 4 min par face, ajouter crème et 1 c. à soupe de moutarde."],
   jeunes:"Une tranche de porc chacun, bien servie.",seniors:"Moitié purée, moitié brocolis."},
  {id:"riz-cantonais",nom:"Riz cantonais aux crevettes et œufs",dessert:"Clémentines",temps:"25 min",profil:"Riche en protéines",
-  ing:[["Surgelés","Crevettes décortiquées","400 g",5.00],["Épicerie","Riz basmati","500 g",1.50],["Frais","Œufs plein air","12",3.60],["Surgelés","Petits pois","1 kg",1.80],["Frais","Dés de jambon","200 g",2.00],["Fruits et légumes","Clémentines","1 kg",2.50]],
+  ing:[["Surgelés","Crevettes décortiquées","400 g",5.00],["Épicerie","Riz basmati","500 g",1.50],["Frais","Œufs plein air","12",3.60],["Surgelés","Petits pois","1 kg",1.80],["Frais","Dés de jambon supérieur sans nitrite","200 g",2.60],["Fruits et légumes","Clémentines","1 kg",2.50]],
   etapes:["Cuire le riz, l'étaler pour qu'il refroidisse un peu.","Faire une omelette fine, la couper en lanières.","Sauter crevettes, petits pois et jambon 5 min.","Ajouter le riz et l'omelette, 3 min avec un peu de soja."],
   jeunes:"Crevettes, œufs et jambon : trois protéines.",seniors:"Plus de petits pois, moins de riz."},
  {id:"wraps",nom:"Wraps de poulet, carottes et chou rouge râpés",dessert:"Fromage blanc nature et pomme",temps:"20 min",profil:"Riche en protéines",
-  ing:[["Épicerie","Tortillas de blé complet","2 × 8",3.40],["Viande","Filets de poulet","800 g",8.00],["Fruits et légumes","Carottes","500 g",0.70],["Fruits et légumes","Chou rouge","1 petit",1.50],["Fruits et légumes","Citrons","1",0.40],["Frais","Fromage blanc","1 kg",1.80],["Fruits et légumes","Pommes","1 kg",1.80]],
+  ing:[["Épicerie","Tortillas de blé complet, liste d'ingrédients courte","2 × 8",3.40],["Viande","Filets de poulet","800 g",8.00],["Fruits et légumes","Carottes","500 g",0.70],["Fruits et légumes","Chou rouge","1 petit",1.50],["Fruits et légumes","Citrons","1",0.40],["Frais","Fromage blanc","1 kg",1.80],["Fruits et légumes","Pommes","1 kg",1.80]],
   etapes:["Couper le poulet en lanières, saisir 8 min avec paprika et cumin.","Râper carottes et chou rouge, assaisonner au citron.","Préparer une sauce avec un tiers du fromage blanc, citron, herbes.","Garnir les tortillas chaudes de poulet, crudités et sauce."],
   jeunes:"Trois wraps bien garnis.",seniors:"Deux wraps avec beaucoup de crudités."},
  {id:"saucisses",nom:"Saucisses de Toulouse aux lentilles et carottes",dessert:"Clémentines",temps:"25 min",profil:"Riche en protéines",
-  ing:[["Viande","Saucisses de Toulouse","6",5.50],["Épicerie","Lentilles vertes","500 g",2.00],["Fruits et légumes","Carottes","1 kg",1.30],["Fruits et légumes","Oignons","2",0.40],["Fruits et légumes","Clémentines","1 kg",2.50]],
+  ing:[["Viande","Saucisses de Toulouse Label Rouge sans nitrite","6",7.50],["Épicerie","Lentilles vertes","500 g",2.00],["Fruits et légumes","Carottes","1 kg",1.30],["Fruits et légumes","Oignons","2",0.40],["Fruits et légumes","Clémentines","1 kg",2.50]],
   etapes:["Cuire lentilles, carottes en rondelles et oignon 20 min dans l'eau avec thym et laurier.","Dorer les saucisses 15 min à la poêle.","Servir les saucisses sur les lentilles."],
   jeunes:"Lentilles et saucisse, très rassasiant.",seniors:"Une demi-saucisse et une bonne assiette de lentilles."},
  {id:"lieu",nom:"Lieu noir sur fondue de poireaux, boulgour",dessert:"Poires",temps:"25 min",profil:"Léger",
@@ -400,11 +411,11 @@ const MENUS=[
   etapes:["Cuire le boulgour 12 min.","Faire fondre les poireaux émincés 10 min, ajouter la crème.","Poser le poisson sur les poireaux, couvrir et cuire 10 min."],
   jeunes:"Une portion de poisson et demie.",seniors:"Le plat parfait : léger et complet."},
  {id:"burgers",nom:"Burgers maison, oignons fondants et mâche",dessert:"Pommes",temps:"25 min",profil:"Riche en protéines",
-  ing:[["Viande","Steaks hachés 5 %","10 × 100 g",9.00],["Boulangerie","Petits pains complets au levain","6",2.40],["Fruits et légumes","Mâche","2 sachets",2.40],["Fruits et légumes","Oignons rouges","3",0.90],["Frais","Fromage en tranches","10",1.50],["Fruits et légumes","Pommes","1,5 kg",2.70]],
+  ing:[["Viande","Steaks hachés 5 %","10 × 100 g",9.00],["Boulangerie","Petits pains complets au levain","6",2.40],["Fruits et légumes","Mâche","2 sachets",2.40],["Fruits et légumes","Oignons rouges","3",0.90],["Frais","Comté AOP en tranches","200 g",4.20],["Fruits et légumes","Pommes","1,5 kg",2.70]],
   etapes:["Faire fondre les oignons émincés 10 min.","Cuire les steaks 3 min par face.","Toaster les pains.","Monter : pain, mâche, steak, fromage, oignons."],
   jeunes:"Double steak pour eux.",seniors:"Un burger ouvert, sans le pain du dessus, et une grande salade de mâche."},
  {id:"gnocchis",nom:"Gnocchis poêlés aux champignons, épinards et mozzarella",dessert:"Poires",temps:"20 min",profil:"Végétarien",
-  ing:[["Frais","Gnocchis","3 × 500 g",3.60],["Fruits et légumes","Champignons de Paris","600 g",2.40],["Fruits et légumes","Pousses d'épinards","300 g",2.20],["Frais","Mozzarella","3 × 125 g",2.40],["Fruits et légumes","Poires","1 kg",2.60]],
+  ing:[["Frais","Gnocchis à la pomme de terre, sans additif","3 × 500 g",4.50],["Fruits et légumes","Champignons de Paris","600 g",2.40],["Fruits et légumes","Pousses d'épinards","300 g",2.20],["Frais","Mozzarella","3 × 125 g",2.40],["Fruits et légumes","Poires","1 kg",2.60]],
   etapes:["Dorer les gnocchis 8 min à la poêle.","Ajouter les champignons émincés, 6 min.","Ajouter les épinards et la mozzarella en dés, 2 min."],
   jeunes:"Ajouter deux œufs au plat s'il le faut.",seniors:"Plus de légumes, moins de gnocchis."},
  {id:"soupe-thai",nom:"Soupe thaï au poulet, coco et nouilles de riz",dessert:"Kiwis",temps:"25 min",profil:"Léger",
@@ -479,10 +490,12 @@ const DETAIL={
   "Égouttez le thon (ouvrez la boîte en laissant le couvercle dessus et pressez pour vider le jus). Émiettez-le à la fourchette dans la sauce avec les olives. Laissez 3 min.",
   "Égouttez les pâtes, remettez-les dans la grande casserole, versez la sauce et mélangez.",
   "Servez avec la salade assaisonnée. Dessert : 2 clémentines."]},
- boulettes:{materiel:"1 grande sauteuse avec couvercle, 1 saladier, 1 bouilloire ou casserole, 1 éplucheur, 1 fourchette",etapes:[
-  "Sauteuse sur feu moyen avec 1 cuillère à soupe d'huile. Mettez les boulettes encore surgelées et faites-les rouler 5 min pour qu'elles dorent de tous les côtés.",
+ boulettes:{materiel:"1 grande sauteuse avec couvercle, 2 saladiers, 1 râpe, 1 bouilloire ou casserole, 1 éplucheur, 1 fourchette",etapes:[
+  "Boulettes : dans un saladier, mettez le bœuf haché, l'oignon épluché et râpé, 1 cuillère à café de cumin, 1 cuillère à café de sel et du poivre. Mélangez avec les mains.",
+  "Mouillez-vous les mains et roulez des boulettes de la taille d'une noix (environ 36). Posez-les sur une assiette. Lavez-vous les mains et le saladier juste après (viande crue).",
+  "Sauteuse sur feu moyen avec 1 cuillère à soupe d'huile. Faites rouler les boulettes 5 min pour qu'elles dorent de tous les côtés (en deux fois si elles ne tiennent pas toutes).",
   "Pendant ce temps, épluchez les carottes et coupez-les en rondelles fines (l'épaisseur d'une pièce de 1 €).",
-  "Ajoutez dans la sauteuse les carottes, les 2 boîtes de tomates, 1 verre d'eau, 1 cuillère à café de cumin, 1 pincée de sel. Couvrez et laissez cuire 20 min à feu doux. C'est prêt quand les carottes sont tendres et les boulettes chaudes au cœur (coupez-en une).",
+  "Ajoutez dans la sauteuse les carottes, les 2 boîtes de tomates, 1 verre d'eau et 1 pincée de sel. Couvrez et laissez cuire 20 min à feu doux. C'est prêt quand les carottes sont tendres et que les boulettes ne sont plus roses au cœur (coupez-en une).",
   "Semoule, 5 min avant la fin : faites bouillir 1 litre d'eau. Versez 750 g de semoule dans le saladier avec 1 cuillère à café de sel et 2 cuillères à soupe d'huile. Versez l'eau bouillante dessus juste pour couvrir, posez une assiette sur le saladier et attendez 5 min.",
   "Égrainez la semoule à la fourchette (grattez pour séparer les grains).",
   "Servez semoule, boulettes et sauce. Dessert : un yaourt nature."]},
@@ -497,17 +510,17 @@ const DETAIL={
   "Servez avec la salade. Dessert : une pomme."]},
  "soupe-croque":{materiel:"1 grande casserole, 1 mixeur plongeant, 1 plaque de four, papier cuisson, 1 éplucheur",etapes:[
   "Allumez le four à 200 °C.",
-  "Épluchez les pommes de terre et coupez-les en morceaux. Mettez-les dans la grande casserole avec les légumes surgelés, 1,5 litre d'eau et 1 cube de bouillon. Couvrez et mettez sur feu fort. Quand ça bout, baissez à feu moyen et comptez 20 min.",
+  "Épluchez les pommes de terre et coupez-les en morceaux. Mettez-les dans la grande casserole avec les légumes surgelés, 1,5 litre d'eau et 1 cube de bouillon bio, sans exhausteur de goût. Couvrez et mettez sur feu fort. Quand ça bout, baissez à feu moyen et comptez 20 min.",
   "Croques : posez 12 tranches de pain de campagne sur la plaque (le pain de mie contient du sucre ajouté) recouverte de papier cuisson. Sur chacune de 6 tranches : 1 tranche de jambon pliée, une poignée de fromage. Fermez avec une autre tranche, puis un peu de fromage dessus.",
   "Recommencez avec le reste du pain pour avoir 12 croques. Enfournez 10 min jusqu'à ce que le fromage soit doré.",
   "Quand les légumes sont tendres (un couteau entre sans résistance), retirez du feu. Plongez le mixeur jusqu'au fond avant de l'allumer (sinon ça éclabousse) et mixez 2 min.",
   "Goûtez, salez et poivrez si besoin. Servez un bol de soupe et les croques. Dessert : un kiwi."]},
- "pois-chiches":{materiel:"1 grande casserole, 1 grande poêle avec couvercle, 1 passoire, 1 ouvre-boîte, 1 éplucheur, 1 couteau",etapes:[
+ "pois-chiches":{materiel:"1 grande casserole, 1 grande poêle avec couvercle, 1 passoire, 1 ouvre-boîte, 1 éplucheur, 1 planche, 1 couteau",etapes:[
   "Lancez le riz : eau salée bouillante, 500 g de riz, 11 min, égouttez.",
-  "Coupez le chorizo en fines rondelles et retirez la peau si elle est épaisse. Épluchez les patates douces et coupez-les en cubes de 1,5 cm.",
-  "Poêle sur feu moyen, sans huile : mettez le chorizo 2 min, il rend sa propre graisse rouge.",
-  "Ajoutez les cubes de patate douce et 1 verre d'eau, couvrez et laissez cuire 12 min en remuant de temps en temps. Ils sont cuits quand un couteau entre sans forcer.",
-  "Versez les pois chiches dans la passoire, rincez-les. Ajoutez-les dans la poêle avec la boîte de tomates et 1 pincée de sel. Laissez mijoter 8 min à feu doux.",
+  "Coupez le poulet en dés de 2 cm. Lavez-vous les mains et la planche juste après. Épluchez les patates douces et coupez-les en cubes de 1,5 cm.",
+  "Poêle sur feu moyen-fort avec 2 cuillères à soupe d'huile. Ajoutez le poulet, 2 cuillères à café de paprika fumé et 1 pincée de sel. Remuez 5 min jusqu'à ce qu'il soit doré.",
+  "Ajoutez les cubes de patate douce et 1 verre d'eau, couvrez et laissez cuire 12 min en remuant de temps en temps. Ils sont cuits quand un couteau entre sans forcer, et le poulet doit être blanc à l'intérieur.",
+  "Versez les pois chiches dans la passoire, rincez-les. Ajoutez-les dans la poêle avec la boîte de tomates. Laissez mijoter 8 min à feu doux.",
   "Servez sur le riz. Dessert : une orange."]},
  "porc-moutarde":{materiel:"1 grande casserole, 1 presse-purée ou fourchette, 1 casserole moyenne, 1 grande poêle, 1 éplucheur",etapes:[
   "Épluchez les 2 kg de pommes de terre, coupez-les en 4. Mettez-les dans la grande casserole, couvrez d'eau froide, 1 cuillère à soupe de sel, feu fort. Comptez 18 min après l'ébullition : un couteau doit entrer tout seul.",
@@ -548,7 +561,7 @@ const DETAIL={
   "Rincez la mâche et égouttez-la.",
   "Coupez les petits pains en deux (les pains à burger du commerce sont sucrés) et faites-les dorer 2 min face coupée dans une poêle sèche ou 3 min au four à 200 °C.",
   "Grande poêle sur feu fort avec un filet d'huile. Posez les steaks (en plusieurs fois). Cuisez 3 min sans les toucher, retournez avec une spatule, salez et poivrez, 2 à 3 min de plus.",
-  "Juste avant la fin, posez 1 tranche de fromage sur chaque steak pour qu'elle fonde.",
+  "Juste avant la fin, posez 1 tranche de comté sur chaque steak (plutôt que du fromage fondu en tranches, ultra-transformé) pour qu'elle fonde.",
   "Montez : pain du bas, 1 cuillère de moutarde (pas de ketchup : il est très sucré), mâche, steak avec fromage, oignons fondants, pain du haut.",
   "Servez avec le reste de la mâche assaisonnée. Dessert : une pomme."]},
  gnocchis:{materiel:"1 très grande poêle (ou deux poêles), 1 spatule, 1 couteau",etapes:[
@@ -561,7 +574,7 @@ const DETAIL={
  "soupe-thai":{materiel:"1 grande casserole (faitout), 1 planche, 1 couteau, 1 râpe, 1 louche",etapes:[
   "Coupez le poulet en lamelles très fines (cela cuit plus vite). Lavez-vous les mains et la planche.",
   "Rincez les champignons rapidement sous l'eau, coupez le bout terreux du pied et émincez-les en lamelles. Épluchez et râpez 1 cuillère à soupe de gingembre.",
-  "Dans la casserole : les 2 boîtes de lait de coco, 1 litre d'eau, 1 cube de bouillon de volaille, le gingembre. Feu fort jusqu'à ébullition.",
+  "Dans la casserole : les 2 boîtes de lait de coco, 1 litre d'eau, 1 cube de bouillon de volaille bio, sans exhausteur de goût, le gingembre. Feu fort jusqu'à ébullition.",
   "Ajoutez poulet et champignons, baissez à feu moyen et laissez 10 min. Le poulet doit être blanc.",
   "Ajoutez les nouilles de riz cassées en deux, 4 min (ou le temps du paquet).",
   "Hors du feu, pressez le citron vert dedans, ajoutez 2 cuillères à soupe de sauce soja. Goûtez et ajustez.",
@@ -629,30 +642,30 @@ const NOUV=[
   materiel:"1 plat, 12 piques en bois, 1 poêle ou plaque de four, 1 saladier, 1 râpe",
   etapes:["Coupez le poulet en cubes de 3 cm. Mélangez avec 4 yaourts, 2 cuillères à café de paprika, 1 de cumin, le jus d'un citron, sel et poivre. Laissez 10 min.","Piquez le poulet sur les piques en bois.","Faites cuire 10 à 12 min dans la poêle huilée, en retournant. Comptez 2 min de plus si les cubes sont gros.","Versez 500 g de semoule dans un saladier, ajoutez 500 ml d'eau bouillante salée, couvrez 5 min, égrenez à la fourchette.","Épluchez et râpez les carottes. Mélangez-les avec le jus du deuxième citron, 2 cuillères à soupe d'huile, 1 pincée de cumin et de sel.","Servez brochettes, semoule et carottes, avec les 2 yaourts restants en sauce. Dessert : un kiwi."]},
  {id:"n-risotto",nom:"Risotto aux champignons et au jambon blanc supérieur",dessert:"Pommes",temps:"25 min",profil:"Riche en protéines",
-  ing:[["Épicerie","Riz arborio","500 g",2.50],["Fruits et légumes","Champignons de Paris","700 g",3.50],["Charcuterie","Jambon blanc supérieur Label Rouge ou sans nitrite","6 tranches",5.80],["Frais","Parmesan AOP","100 g",3.50],["Épicerie","Bouillon de volaille","2 l",2.80],["Fruits et légumes","Oignons","2",0.40],["Fruits et légumes","Pommes","1,5 kg",3.40]],
+  ing:[["Épicerie","Riz arborio","500 g",2.50],["Fruits et légumes","Champignons de Paris","700 g",3.50],["Charcuterie","Jambon blanc supérieur Label Rouge ou sans nitrite","6 tranches",5.80],["Frais","Parmesan AOP","100 g",3.50],["Épicerie","Bouillon de volaille bio, sans exhausteur de goût","2 l",2.80],["Fruits et légumes","Oignons","2",0.40],["Fruits et légumes","Pommes","1,5 kg",3.40]],
   jeunes:"Ajoutez du fromage râpé.",seniors:"Riz bien fondant, jambon coupé fin.",
   materiel:"1 grande casserole ou sauteuse, 1 casserole pour le bouillon, 1 louche",
   etapes:["Faites chauffer 2 litres de bouillon dans une casserole, laissez-le chaud.","Émincez les oignons, tranchez les champignons, coupez le jambon en lamelles.","Dans la grande casserole, faites revenir oignons et champignons 6 min dans 2 cuillères à soupe d'huile.","Ajoutez le riz et remuez 2 min. Versez une louche de bouillon, remuez jusqu'à absorption. Recommencez pendant 18 min.","Hors du feu, ajoutez le jambon et la moitié du parmesan, mélangez.","Servez avec le reste de parmesan."]},
  {id:"n-thon",nom:"Thon mi cuit au sésame, nouilles sautées et légumes",dessert:"Clémentines",temps:"20 min",profil:"Léger",
-  ing:[["Poissonnerie","Steaks de thon albacore MSC","900 g",24.00],["Épicerie","Nouilles asiatiques","500 g",2.80],["Surgelés","Poêlée de légumes pour wok","1 kg",3.20],["Épicerie","Graines de sésame","1",1.80],["Épicerie","Sauce soja","1",2.00],["Fruits et légumes","Clémentines","1 kg",2.50]],
+  ing:[["Poissonnerie","Steaks de thon albacore MSC","900 g",24.00],["Épicerie","Nouilles asiatiques","500 g",2.80],["Surgelés","Poêlée de légumes pour wok, nature sans sauce","1 kg",3.20],["Épicerie","Graines de sésame","1",1.80],["Épicerie","Sauce soja","1",2.00],["Fruits et légumes","Clémentines","1 kg",2.50]],
   jeunes:"Ajoutez un œuf sur chaque assiette.",seniors:"Peu de sauce soja si vous surveillez le sel.",
   materiel:"1 poêle, 1 wok ou grande poêle, 1 casserole, 1 assiette creuse",
   etapes:["Faites cuire les nouilles selon le paquet, environ 4 min. Égouttez.","Versez les graines de sésame dans une assiette. Passez les steaks de thon dedans pour les enrober.","Chauffez une poêle avec 1 cuillère à soupe d'huile à feu vif. Saisissez le thon 1 min 30 par face. Il reste rose à l'intérieur.","Dans le wok, faites cuire la poêlée de légumes 8 min avec 2 cuillères à soupe d'huile.","Ajoutez les nouilles et 3 cuillères à soupe de sauce soja, mélangez 2 min.","Tranchez le thon et posez-le sur les nouilles."]},
  {id:"n-pizza",nom:"Pizzas maison au jambon cru, mozzarella et roquette",dessert:"Poires",temps:"25 min",profil:"Riche en protéines",
-  ing:[["Frais","Pâtes à pizza fraîches","3",5.40],["Frais","Mozzarella di bufala","500 g",8.50],["Charcuterie","Jambon cru de pays ou San Daniele","200 g",7.50],["Frais","Roquette","200 g",2.40],["Épicerie","Coulis de tomates sans sucre ajouté","2",2.40],["Fruits et légumes","Poires","1 kg",2.60]],
+  ing:[["Frais","Pâtes à pizza à l'huile d'olive, sans additif","3",6.00],["Frais","Mozzarella di bufala","500 g",8.50],["Charcuterie","Jambon cru sans nitrite (Parme ou San Daniele)","200 g",7.50],["Frais","Roquette","200 g",2.40],["Épicerie","Coulis de tomates sans sucre ajouté","2",2.40],["Fruits et légumes","Poires","1 kg",2.60]],
   jeunes:"Choisissez deux garnitures de plus.",seniors:"Moins de jambon, plus de roquette.",
   materiel:"2 plaques de four, du papier cuisson, 1 cuillère",
   etapes:["Allumez le four à 220 °C.","Déroulez les pâtes sur du papier cuisson. Étalez le coulis dessus, salez, poivrez.","Déchirez la mozzarella en morceaux et répartissez-la.","Enfournez 12 à 15 min, jusqu'à ce que les bords soient dorés.","Posez le jambon cru et la roquette à la sortie du four.","Coupez en parts et servez."]},
  {id:"n-morteau",nom:"Saucisse de Morteau IGP, lentilles vertes et moutarde",dessert:"Poires",temps:"25 min",profil:"Riche en protéines",
-  ing:[["Charcuterie","Saucisse de Morteau IGP","3",16.50],["Épicerie","Lentilles vertes du Puy AOP","600 g",4.80],["Fruits et légumes","Carottes","600 g",0.90],["Fruits et légumes","Oignons","2",0.40],["Épicerie","Moutarde de Dijon","1",1.20],["Fruits et légumes","Poires","1 kg",2.80]],
+  ing:[["Charcuterie","Saucisse de Morteau IGP sans nitrite","3",16.50],["Épicerie","Lentilles vertes du Puy AOP","600 g",4.80],["Fruits et légumes","Carottes","600 g",0.90],["Fruits et légumes","Oignons","2",0.40],["Épicerie","Moutarde de Dijon","1",1.20],["Fruits et légumes","Poires","1 kg",2.80]],
   jeunes:"Ajoutez une saucisse en plus à partager.",seniors:"Plus de lentilles et de carottes.",
   materiel:"1 grande casserole, 1 poêle, 1 planche, 1 couteau",
   etapes:["Rincez les lentilles. Mettez-les dans la casserole avec 1,5 litre d'eau froide, 1 oignon piqué en deux et les carottes en rondelles. Ne salez pas encore.","Portez à ébullition, puis laissez frémir 20 min.","Piquez les saucisses avec une fourchette. Faites-les dorer 10 min dans la poêle, à feu moyen, en les tournant.","Salez les lentilles à la fin de la cuisson. Égouttez.","Servez avec les saucisses en tranches et de la moutarde."]},
- {id:"n-moules",nom:"Moules de bouchot marinières et frites au four",dessert:"Pommes",temps:"25 min",profil:"Riche en protéines",
-  ing:[["Poissonnerie","Moules de bouchot AOP","3 kg",16.50],["Surgelés","Frites au four","1,5 kg",4.50],["Fruits et légumes","Échalotes","4",1.20],["Frais","Beurre demi sel","1",2.10],["Fruits et légumes","Persil","1",1.20],["Épicerie","Vin blanc sec","1",3.50],["Fruits et légumes","Pommes","1,5 kg",2.70]],
+ {id:"n-moules",nom:"Moules de bouchot marinières et frites maison au four",dessert:"Pommes",temps:"40 min",profil:"Riche en protéines",
+  ing:[["Poissonnerie","Moules de bouchot AOP","3 kg",16.50],["Fruits et légumes","Pommes de terre","2 kg",2.60],["Fruits et légumes","Échalotes","4",1.20],["Frais","Beurre demi sel","1",2.10],["Fruits et légumes","Persil","1",1.20],["Épicerie","Vin blanc sec","1",3.50],["Fruits et légumes","Pommes","1,5 kg",2.70]],
   jeunes:"Prévoyez 500 g de moules en plus.",seniors:"Peu de sel, les moules sont déjà salées.",
   materiel:"1 grande casserole avec couvercle, 1 plaque de four, 1 passoire",
-  etapes:["Allumez le four selon le paquet de frites, environ 220 °C. Enfournez les frites sur une plaque.","Lavez les moules à l'eau froide. Jetez celles qui restent ouvertes quand vous les tapez.","Émincez les échalotes. Faites-les fondre 3 min dans la casserole avec une noix de beurre.","Ajoutez les moules et 20 cl de vin blanc. Couvrez, feu fort, 6 à 8 min en secouant la casserole.","Jetez les moules restées fermées. Ajoutez le persil haché et du poivre.","Servez avec les frites."]}
+  etapes:["Allumez le four à 220 °C. Épluchez les pommes de terre, coupez-les en bâtonnets épais d'un doigt, séchez-les dans un torchon. Mélangez-les sur la plaque avec 3 cuillères à soupe d'huile et du sel. Enfournez 30 à 35 min en les retournant à mi-cuisson : elles sont prêtes quand elles sont dorées.","Lavez les moules à l'eau froide. Jetez celles qui restent ouvertes quand vous les tapez.","Émincez les échalotes. Faites-les fondre 3 min dans la casserole avec une noix de beurre.","Ajoutez les moules et 20 cl de vin blanc. Couvrez, feu fort, 6 à 8 min en secouant la casserole.","Jetez les moules restées fermées. Ajoutez le persil haché et du poivre.","Servez avec les frites."]}
 ];
 const NOUV_KCAL={"n-escalopes":790,"n-saumon":720,"n-faux-filet":780,"n-cabillaud":560,"n-magret":840,"n-crevettes":640,"n-tarte":690,"n-dahl":680,"n-courgettes":640,"n-brochettes":700,"n-risotto":760,"n-thon":650,"n-pizza":780,"n-morteau":760,"n-moules":760};
 NOUV.forEach(m=>{m.nouveau=true;MENUS.push(m)});
@@ -672,7 +685,7 @@ const EXTRAS=[
    "Laissez refroidir 10 min avant de démouler. Il se garde 3 jours sous un torchon : parfait pour les goûters et les petits-déjeuners."],
   jeunes:"Une belle part en dessert, pendant le repas : pour les dents, c'est mieux qu'en grignotage.",seniors:"Sans sucre ajouté : la douceur vient des pommes et des dattes."},
  {id:"soiree",nom:"Soirée crêpes salées, et crêpes poire-noisette",temps:"20 min de pâte + cuisson à table",profil:"Soirée de la semaine",
-  ing:[["Épicerie","Farine de blé","1 kg",0.90],["Frais","Œufs plein air","12",3.60],["Frais","Lait demi-écrémé","2 l",2.20],["Frais","Jambon blanc","8 tranches",3.50],["Frais","Emmental râpé","200 g",2.00],["Fruits et légumes","Champignons de Paris","500 g",2.00],["Épicerie","Purée de noisettes 100 %, sans sucre","200 g",4.50],["Fruits et légumes","Poires","1 kg",2.60]],
+  ing:[["Épicerie","Farine de blé","1 kg",0.90],["Frais","Œufs plein air","12",3.60],["Frais","Lait demi-écrémé","2 l",2.20],["Frais","Jambon blanc supérieur sans nitrite","8 tranches",4.20],["Frais","Emmental français au lait cru, à râper","200 g",2.40],["Fruits et légumes","Champignons de Paris","500 g",2.00],["Épicerie","Purée de noisettes 100 %, sans sucre","200 g",4.50],["Fruits et légumes","Poires","1 kg",2.60]],
   materiel:"1 grand saladier, 1 fouet, 1 louche, 1 ou 2 poêles antiadhésives (ou une crêpière électrique posée sur la table), 1 spatule, 1 petite poêle pour les champignons",
   etapes:["Pâte (à faire 1 h avant si possible, elle sera meilleure) : dans le saladier, mettez 500 g de farine et 1 pincée de sel. Creusez un trou au milieu et cassez-y 6 œufs.",
    "Fouettez au centre en ajoutant le lait petit à petit (1 litre en tout), d'abord doucement. Si vous versez tout d'un coup, il y aura des grumeaux. Ajoutez 2 cuillères à soupe d'huile. La pâte doit être fluide comme une crème liquide.",
@@ -980,7 +993,7 @@ function messageCommande(){
   const lignes=b.lignes.map(x=>"- "+x.n+" : "+x.q.join(" + ")).concat([...ajouts.values()].map(a=>"- "+a.nom+(a.qte?" : "+a.qte:"")));
   return "Avec le connecteur Carrefour, remplis mon panier Carrefour en livraison à domicile (demande-moi mon adresse si tu ne l'as pas). "+
     "Pour la viande, le poisson, les œufs et les produits laitiers, prends le haut de gamme Carrefour (Label Rouge, AOP, bio, MSC, fermier, Charolais) et écarte les premiers prix. "+
-    "Évite les produits avec sucre ajouté quand une version sans sucre existe (coulis, pain, yaourts et fromage blanc nature). Adapte le nombre de paquets aux grammages. Ensuite, donne-moi le lien pour finaliser la commande sur carrefour.fr.\n\n"+
+    "Choisis des produits bien notés : Nutri-Score A ou B, NOVA 1 ou 2 (jamais 4, ultra-transformé), Yuka « bon » ou « excellent » (au moins 50/100), sans nitrite ni additif inutile ; pour le fromage, le beurre et l'huile, prends l'AOP ou le bio. Évite les produits avec sucre ajouté quand une version sans sucre existe (coulis, pain, yaourts et fromage blanc nature). Adapte le nombre de paquets aux grammages. Ensuite, donne-moi le lien pour finaliser la commande sur carrefour.fr.\n\n"+
     "Menus de la semaine ("+fmt(portions())+" portions par repas) : "+b.sel.map(m=>m.nom).join(" ; ")+"\n\nListe de courses :\n"+lignes.join("\n");
 }
 async function commanderAvecClaude(note){
