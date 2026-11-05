@@ -171,6 +171,7 @@ button:disabled{opacity:.55;cursor:progress}
     <span class="chip" id="chip-foyer"><b>5</b> mangeurs, 6 portions</span>
     <span class="chip" id="chip-menus"><b>0</b> sur 15 menus choisis</span>
     <span class="chip">Fruits et légumes <b>de saison</b> (novembre)</span>
+    <span class="chip"><b>Sans sucre ajouté</b> : desserts aux fruits entiers</span>
     <span class="chip"><b>20-25 min</b> de préparation</span>
     <span class="chip">Budget <b>3 à 4 €</b> par personne</span>
     <span class="chip">Plat + accompagnement + dessert</span>
@@ -197,6 +198,18 @@ button:disabled{opacity:.55;cursor:progress}
     <dt>Viande et volaille</dt><dd>Le poulet et la dinde doivent être blancs à l'intérieur, sans rose. Lavez mains et planche au savon après avoir touché de la viande crue.</dd>
     <dt>Couper un oignon</dt><dd>Coupez les deux bouts, retirez la peau marron, coupez en deux, posez à plat, puis tranchez en lamelles ou en petits dés.</dd>
     <dt>Avant de commencer</dt><dd>Lisez toute la recette, sortez tous les ingrédients et le matériel sur le plan de travail. C'est le meilleur moyen de tenir les 25 minutes.</dd>
+  </dl>
+</details>
+<details class="basics" data-view="semaine">
+  <summary>Moins de sucre, mieux pour les dents : nos règles</summary>
+  <dl>
+    <dt>Le repère</dt><dd>Moins de 25 g de sucres libres par jour, soit environ 5 morceaux : c'est l'objectif idéal de l'OMS. Les recettes n'ajoutent aucun sucre.</dd>
+    <dt>Les desserts</dt><dd>Un fruit entier ou un laitage nature. Pas de compote, de jus, de fruits au sirop ni de glace : le fruit entier garde ses fibres.</dd>
+    <dt>Les sucres cachés</dt><dd>Ketchup, sauce barbecue, pain de mie et pains à burger, coulis et plats préparés contiennent souvent du sucre. On prend du pain au levain et des coulis « sans sucre ajouté », et on lit l'étiquette.</dd>
+    <dt>Lire un yaourt</dt><dd>Un yaourt nature affiche 4 à 6 g de sucres pour 100 g : c'est le lactose du lait, il n'y a pas de sucre ajouté. Au-delà, il a été sucré.</dd>
+    <dt>S'il faut un peu de douceur</dt><dd>Des dattes, quelques pommes ou une petite cuillère de miel, en petite quantité. Jamais de sirop de glucose ou de maïs.</dd>
+    <dt>Quand manger sucré</dt><dd>Pendant le repas plutôt qu'en grignotage, et jamais après le brossage du soir : c'est la fréquence qui abîme les dents, plus que la quantité.</dd>
+    <dt>Les fibres</dt><dd>Légumineuses (lentilles, pois chiches, haricots), légumes, pain et céréales complets : ils rassasient et ralentissent l'absorption du sucre.</dd>
   </dl>
 </details>
 <div class="filters" id="filters" data-view="semaine" role="group" aria-label="Filtrer les menus"></div>
@@ -326,8 +339,8 @@ const MENUS=[
   ing:[["Viande","Hauts de cuisse de poulet désossés","1,2 kg",9.00],["Épicerie","Riz basmati","500 g",1.50],["Surgelés","Haricots verts extra-fins","1 kg",2.20],["Fruits et légumes","Oignons","2",0.40],["Frais","Crème fraîche légère 15 %","20 cl",0.90],["Fruits et légumes","Clémentines","1 kg",2.50]],
   etapes:["Lancer le riz.","Couper le poulet en lanières, le dorer 8 min avec l'oignon émincé et 2 c. à café de paprika.","Ajouter la crème et laisser mijoter 5 min.","Cuire les haricots verts 8 min à la vapeur ou à la poêle."],
   jeunes:"Une portion de poulet un peu plus généreuse.",seniors:"Plus de haricots verts, moins de riz : léger mais complet."},
- {id:"colin",nom:"Colin en papillote citron-aneth, pommes de terre et carottes",dessert:"Yaourt nature et un filet de miel",temps:"25 min",profil:"Léger",
-  ing:[["Surgelés","Filets de colin d'Alaska","1 kg",7.90],["Fruits et légumes","Pommes de terre","2 kg",2.60],["Fruits et légumes","Carottes","1 kg",1.30],["Fruits et légumes","Citrons","2",0.80],["Surgelés","Aneth ou persil","1 sachet",1.00],["Frais","Yaourts nature","8",1.60]],
+ {id:"colin",nom:"Colin en papillote citron-aneth, pommes de terre et carottes",dessert:"Yaourt nature et une clémentine",temps:"25 min",profil:"Léger",
+  ing:[["Surgelés","Filets de colin d'Alaska","1 kg",7.90],["Fruits et légumes","Pommes de terre","2 kg",2.60],["Fruits et légumes","Carottes","1 kg",1.30],["Fruits et légumes","Citrons","2",0.80],["Surgelés","Aneth ou persil","1 sachet",1.00],["Frais","Yaourts nature","8",1.60],["Fruits et légumes","Clémentines","1 kg",2.50]],
   etapes:["Cuire pommes de terre et carottes en rondelles 20 min à la vapeur.","Poser le poisson sur du papier cuisson avec citron, aneth, sel, poivre, un filet d'huile.","Fermer les papillotes, 15 min au four à 200 °C.","Servir avec un trait de citron."],
   jeunes:"Ajouter un œuf dur ou une deuxième portion de poisson.",seniors:"Le plat idéal : beaucoup de légumes, peu de gras."},
  {id:"chili",nom:"Chili con carne à la courge butternut, riz",dessert:"Pommes",temps:"30 min",profil:"Riche en protéines",
@@ -359,7 +372,7 @@ const MENUS=[
   etapes:["Chauffer une galette à la poêle.","Casser un œuf au centre, ajouter jambon et fromage.","Replier les bords, 3 min à couvert.","Recommencer, servir avec la salade."],
   jeunes:"Deux galettes complètes.",seniors:"Une galette et de la salade."},
  {id:"soupe-croque",nom:"Velouté de légumes et croque-monsieur",dessert:"Kiwis",temps:"25 min",profil:"Léger",
-  ing:[["Surgelés","Légumes pour potage","1 kg",2.00],["Fruits et légumes","Pommes de terre","1 kg",1.30],["Boulangerie","Pain de mie","2 paquets",3.00],["Frais","Jambon blanc","8 tranches",3.50],["Frais","Emmental râpé","200 g",2.00],["Fruits et légumes","Kiwis","10",2.50]],
+  ing:[["Surgelés","Légumes pour potage","1 kg",2.00],["Fruits et légumes","Pommes de terre","1 kg",1.30],["Boulangerie","Pain de campagne au levain, en tranches","1 kg",4.20],["Frais","Jambon blanc","8 tranches",3.50],["Frais","Emmental râpé","200 g",2.00],["Fruits et légumes","Kiwis","10",2.50]],
   etapes:["Cuire légumes et pommes de terre 20 min dans 1,5 l d'eau.","Pendant ce temps, monter les croques et les passer 10 min au four.","Mixer la soupe."],
   jeunes:"Deux croques chacun.",seniors:"Un grand bol de soupe et un croque."},
  {id:"pois-chiches",nom:"Poêlée de pois chiches, chorizo et patate douce, riz",dessert:"Oranges",temps:"25 min",profil:"Riche en protéines",
@@ -370,12 +383,12 @@ const MENUS=[
   ing:[["Viande","Tranches d'échine de porc","1,2 kg",7.50],["Fruits et légumes","Pommes de terre","2 kg",2.60],["Surgelés","Brocolis","1 kg",2.20],["Frais","Crème fraîche légère 15 %","20 cl",0.90],["Frais","Yaourts nature","8",1.60]],
   etapes:["Cuire les pommes de terre en morceaux 18 min, puis écraser en purée.","Cuire les brocolis 8 min à la vapeur.","Saisir le porc 4 min par face, ajouter crème et 1 c. à soupe de moutarde."],
   jeunes:"Une tranche de porc chacun, bien servie.",seniors:"Moitié purée, moitié brocolis."},
- {id:"riz-cantonais",nom:"Riz cantonais aux crevettes et œufs",dessert:"Ananas",temps:"25 min",profil:"Riche en protéines",
-  ing:[["Surgelés","Crevettes décortiquées","400 g",5.00],["Épicerie","Riz basmati","500 g",1.50],["Frais","Œufs plein air","12",3.60],["Surgelés","Petits pois","1 kg",1.80],["Frais","Dés de jambon","200 g",2.00],["Épicerie","Ananas au sirop léger","1 boîte",1.50]],
+ {id:"riz-cantonais",nom:"Riz cantonais aux crevettes et œufs",dessert:"Clémentines",temps:"25 min",profil:"Riche en protéines",
+  ing:[["Surgelés","Crevettes décortiquées","400 g",5.00],["Épicerie","Riz basmati","500 g",1.50],["Frais","Œufs plein air","12",3.60],["Surgelés","Petits pois","1 kg",1.80],["Frais","Dés de jambon","200 g",2.00],["Fruits et légumes","Clémentines","1 kg",2.50]],
   etapes:["Cuire le riz, l'étaler pour qu'il refroidisse un peu.","Faire une omelette fine, la couper en lanières.","Sauter crevettes, petits pois et jambon 5 min.","Ajouter le riz et l'omelette, 3 min avec un peu de soja."],
   jeunes:"Crevettes, œufs et jambon : trois protéines.",seniors:"Plus de petits pois, moins de riz."},
- {id:"wraps",nom:"Wraps de poulet, carottes et chou rouge râpés",dessert:"Fromage blanc",temps:"20 min",profil:"Riche en protéines",
-  ing:[["Épicerie","Tortillas de blé","2 × 8",3.00],["Viande","Filets de poulet","800 g",8.00],["Fruits et légumes","Carottes","500 g",0.70],["Fruits et légumes","Chou rouge","1 petit",1.50],["Fruits et légumes","Citrons","1",0.40],["Frais","Fromage blanc","1 kg",1.80]],
+ {id:"wraps",nom:"Wraps de poulet, carottes et chou rouge râpés",dessert:"Fromage blanc nature et pomme",temps:"20 min",profil:"Riche en protéines",
+  ing:[["Épicerie","Tortillas de blé complet","2 × 8",3.40],["Viande","Filets de poulet","800 g",8.00],["Fruits et légumes","Carottes","500 g",0.70],["Fruits et légumes","Chou rouge","1 petit",1.50],["Fruits et légumes","Citrons","1",0.40],["Frais","Fromage blanc","1 kg",1.80],["Fruits et légumes","Pommes","1 kg",1.80]],
   etapes:["Couper le poulet en lanières, saisir 8 min avec paprika et cumin.","Râper carottes et chou rouge, assaisonner au citron.","Préparer une sauce avec un tiers du fromage blanc, citron, herbes.","Garnir les tortillas chaudes de poulet, crudités et sauce."],
   jeunes:"Trois wraps bien garnis.",seniors:"Deux wraps avec beaucoup de crudités."},
  {id:"saucisses",nom:"Saucisses de Toulouse aux lentilles et carottes",dessert:"Clémentines",temps:"25 min",profil:"Riche en protéines",
@@ -387,7 +400,7 @@ const MENUS=[
   etapes:["Cuire le boulgour 12 min.","Faire fondre les poireaux émincés 10 min, ajouter la crème.","Poser le poisson sur les poireaux, couvrir et cuire 10 min."],
   jeunes:"Une portion de poisson et demie.",seniors:"Le plat parfait : léger et complet."},
  {id:"burgers",nom:"Burgers maison, oignons fondants et mâche",dessert:"Pommes",temps:"25 min",profil:"Riche en protéines",
-  ing:[["Viande","Steaks hachés 5 %","10 × 100 g",9.00],["Boulangerie","Pains à burger","6",1.60],["Fruits et légumes","Mâche","2 sachets",2.40],["Fruits et légumes","Oignons rouges","3",0.90],["Frais","Fromage en tranches","10",1.50],["Fruits et légumes","Pommes","1,5 kg",2.70]],
+  ing:[["Viande","Steaks hachés 5 %","10 × 100 g",9.00],["Boulangerie","Petits pains complets au levain","6",2.40],["Fruits et légumes","Mâche","2 sachets",2.40],["Fruits et légumes","Oignons rouges","3",0.90],["Frais","Fromage en tranches","10",1.50],["Fruits et légumes","Pommes","1,5 kg",2.70]],
   etapes:["Faire fondre les oignons émincés 10 min.","Cuire les steaks 3 min par face.","Toaster les pains.","Monter : pain, mâche, steak, fromage, oignons."],
   jeunes:"Double steak pour eux.",seniors:"Un burger ouvert, sans le pain du dessus, et une grande salade de mâche."},
  {id:"gnocchis",nom:"Gnocchis poêlés aux champignons, épinards et mozzarella",dessert:"Poires",temps:"20 min",profil:"Végétarien",
@@ -422,7 +435,7 @@ const DETAIL={
   "Sur chaque filet : 2 rondelles de citron, 1 pincée d'aneth, 1 pincée de sel, un peu de poivre, 1 cuillère à café d'huile.",
   "Fermez chaque papillote : ramenez les deux grands côtés au-dessus du poisson, pliez-les ensemble plusieurs fois, puis roulez les deux bouts comme un bonbon. Posez-les sur la plaque.",
   "Enfournez 15 min (20 min si les filets étaient très épais). Le poisson est cuit quand il est blanc opaque et se défait à la fourchette. Attention à la vapeur brûlante en ouvrant.",
-  "Servez une papillote par personne avec les légumes, un filet d'huile et le reste du citron. Dessert : un yaourt avec une cuillère de miel."]},
+  "Servez une papillote par personne avec les légumes, un filet d'huile et le reste du citron. Dessert : un yaourt nature, sans sucre, et une clémentine."]},
  chili:{materiel:"1 grande casserole pour le riz, 1 grande cocotte ou sauteuse, 1 passoire, 1 ouvre-boîte, 1 éplucheur, 1 planche, 1 couteau",etapes:[
   "Lancez le riz comme d'habitude : grande casserole d'eau salée, quand ça bout versez 500 g de riz, 11 min, égouttez.",
   "Épluchez et coupez les 2 oignons en petits dés. Coupez la butternut en deux dans la longueur, retirez les graines avec une cuillère, épluchez-la avec l'éplucheur et coupez-la en petits cubes de 1 cm (plus ils sont petits, plus ils cuisent vite).",
@@ -485,7 +498,7 @@ const DETAIL={
  "soupe-croque":{materiel:"1 grande casserole, 1 mixeur plongeant, 1 plaque de four, papier cuisson, 1 éplucheur",etapes:[
   "Allumez le four à 200 °C.",
   "Épluchez les pommes de terre et coupez-les en morceaux. Mettez-les dans la grande casserole avec les légumes surgelés, 1,5 litre d'eau et 1 cube de bouillon. Couvrez et mettez sur feu fort. Quand ça bout, baissez à feu moyen et comptez 20 min.",
-  "Croques : posez 12 tranches de pain de mie sur la plaque recouverte de papier cuisson. Sur chacune de 6 tranches : 1 tranche de jambon pliée, une poignée de fromage. Fermez avec une autre tranche, puis un peu de fromage dessus.",
+  "Croques : posez 12 tranches de pain de campagne sur la plaque (le pain de mie contient du sucre ajouté) recouverte de papier cuisson. Sur chacune de 6 tranches : 1 tranche de jambon pliée, une poignée de fromage. Fermez avec une autre tranche, puis un peu de fromage dessus.",
   "Recommencez avec le reste du pain pour avoir 12 croques. Enfournez 10 min jusqu'à ce que le fromage soit doré.",
   "Quand les légumes sont tendres (un couteau entre sans résistance), retirez du feu. Plongez le mixeur jusqu'au fond avant de l'allumer (sinon ça éclabousse) et mixez 2 min.",
   "Goûtez, salez et poivrez si besoin. Servez un bol de soupe et les croques. Dessert : un kiwi."]},
@@ -509,7 +522,7 @@ const DETAIL={
   "Omelette : battez 6 œufs dans un bol avec 1 pincée de sel. Wok sur feu moyen avec 1 cuillère à soupe d'huile, versez les œufs, laissez prendre 2 min sans remuer, puis retournez-la comme une crêpe 1 min. Mettez sur une planche, roulez et coupez en fines lanières.",
   "Wok sur feu fort avec 2 cuillères à soupe d'huile. Ajoutez crevettes, petits pois et dés de jambon, remuez 5 min. Les crevettes doivent être bien roses.",
   "Ajoutez le riz et 4 cuillères à soupe de sauce soja. Remuez 3 min sans arrêt, puis ajoutez les lanières d'omelette.",
-  "Servez. Dessert : quelques tranches d'ananas égouttées."]},
+  "Servez. Dessert : 2 clémentines."]},
  wraps:{materiel:"1 grande poêle, 2 bols, 1 râpe, 1 éplucheur, 1 planche, 1 couteau",etapes:[
   "Sauce : dans un bol, mélangez 300 g de fromage blanc, le jus d'un demi-citron, 1 pincée de sel, du poivre et des herbes (ciboulette ou persil). Mettez au frigo.",
   "Crudités : épluchez et râpez les carottes. Coupez le chou rouge en quatre, retirez le cœur dur et taillez-le en lanières très fines. Mélangez dans un bol avec le reste du citron, 2 cuillères à soupe d'huile et 1 pincée de sel.",
@@ -517,7 +530,7 @@ const DETAIL={
   "Poêle sur feu moyen-fort avec 2 cuillères à soupe d'huile. Ajoutez le poulet, 1 cuillère à café de paprika, 1 de cumin, 1 pincée de sel. Remuez 8 min jusqu'à ce qu'il soit doré et blanc à l'intérieur.",
   "Réchauffez les tortillas une par une 20 secondes dans une poêle sèche (ou 30 secondes au micro-ondes).",
   "Montez : 1 cuillère de sauce au centre de la tortilla, du poulet, une poignée de crudités. Repliez le bas, puis roulez les côtés.",
-  "Dessert : le reste du fromage blanc avec un peu de sucre ou de miel."]},
+  "Dessert : le reste du fromage blanc nature, avec une pomme râpée et une pincée de cannelle. Pas de sucre : la pomme suffit."]},
  saucisses:{materiel:"1 grande casserole, 1 grande poêle avec couvercle, 1 passoire, 1 éplucheur",etapes:[
   "Rincez les 500 g de lentilles vertes dans la passoire. Épluchez les carottes et coupez-les en rondelles. Épluchez les oignons et coupez-les en quatre.",
   "Mettez lentilles, carottes et oignons dans la casserole, couvrez de 3 fois leur volume d'eau froide (environ 1,5 l), ajoutez 1 feuille de laurier et 1 pincée de thym. Pas de sel maintenant : il durcit les lentilles.",
@@ -533,10 +546,10 @@ const DETAIL={
  burgers:{materiel:"2 poêles, 1 planche, 1 couteau, 1 grille-pain ou le four",etapes:[
   "Oignons : épluchez-les et coupez-les en fines lamelles. Petite poêle sur feu doux avec 1 cuillère à soupe d'huile et 1 pincée de sel, laissez-les fondre 10 min en remuant de temps en temps. Ils deviennent tendres et un peu dorés.",
   "Rincez la mâche et égouttez-la.",
-  "Coupez les pains en deux et faites-les dorer 2 min face coupée dans une poêle sèche ou 3 min au four à 200 °C.",
+  "Coupez les petits pains en deux (les pains à burger du commerce sont sucrés) et faites-les dorer 2 min face coupée dans une poêle sèche ou 3 min au four à 200 °C.",
   "Grande poêle sur feu fort avec un filet d'huile. Posez les steaks (en plusieurs fois). Cuisez 3 min sans les toucher, retournez avec une spatule, salez et poivrez, 2 à 3 min de plus.",
   "Juste avant la fin, posez 1 tranche de fromage sur chaque steak pour qu'elle fonde.",
-  "Montez : pain du bas, 1 cuillère de moutarde ou de ketchup, mâche, steak avec fromage, oignons fondants, pain du haut.",
+  "Montez : pain du bas, 1 cuillère de moutarde (pas de ketchup : il est très sucré), mâche, steak avec fromage, oignons fondants, pain du haut.",
   "Servez avec le reste de la mâche assaisonnée. Dessert : une pomme."]},
  gnocchis:{materiel:"1 très grande poêle (ou deux poêles), 1 spatule, 1 couteau",etapes:[
   "Poêle sur feu moyen-fort avec 2 cuillères à soupe d'huile d'olive. Versez les gnocchis directement du paquet, sans les cuire à l'eau.",
@@ -570,11 +583,11 @@ const NOUV=[
   jeunes:"Ajoutez un petit pain pour saucer.",seniors:"Gardez la crème légère et doublez les champignons.",
   materiel:"1 grande casserole, 1 grande poêle, 1 passoire, 1 planche, 1 couteau",
   etapes:["Faites bouillir une grande casserole d'eau salée. Versez les tagliatelles et laissez cuire le temps du paquet, environ 9 min. Égouttez.","Épluchez les échalotes et émincez-les. Coupez le pied des champignons et tranchez-les.","Dans la poêle, faites chauffer 1 cuillère à soupe d'huile à feu moyen-fort. Faites dorer les escalopes 4 min de chaque côté avec du sel et du poivre. Sortez-les sur une assiette.","Dans la même poêle, ajoutez les échalotes et les champignons. Laissez cuire 6 min en remuant, jusqu'à ce que l'eau s'évapore.","Versez la crème, remettez les escalopes, laissez frémir 3 min. Le poulet est cuit quand il n'est plus rose à l'intérieur.","Servez sur les tagliatelles. Dessert : une poire."]},
- {id:"n-saumon",nom:"Saumon à la moutarde et au miel, riz et brocolis",dessert:"Yaourt nature",temps:"25 min",profil:"Riche en protéines",
-  ing:[["Poissonnerie","Pavés de saumon Label Rouge ou bio","1,1 kg",19.00],["Épicerie","Riz basmati","500 g",1.50],["Surgelés","Brocolis","1 kg",2.60],["Épicerie","Moutarde de Dijon","1",1.20],["Épicerie","Miel","1",3.20],["Frais","Yaourts nature","8",1.60]],
+ {id:"n-saumon",nom:"Saumon moutarde-citron, riz et brocolis",dessert:"Yaourt nature",temps:"25 min",profil:"Riche en protéines",
+  ing:[["Poissonnerie","Pavés de saumon Label Rouge ou bio","1,1 kg",19.00],["Épicerie","Riz basmati","500 g",1.50],["Surgelés","Brocolis","1 kg",2.60],["Épicerie","Moutarde de Dijon","1",1.20],["Fruits et légumes","Citrons","2",0.80],["Frais","Yaourts nature","8",1.60]],
   jeunes:"Un pavé un peu plus gros.",seniors:"Peu de sel, plus de brocolis.",
   materiel:"1 plat allant au four, 1 casserole, 1 passoire, 1 petit bol",
-  etapes:["Allumez le four à 200 °C.","Mélangez dans le bol 3 cuillères à soupe de moutarde, 2 cuillères à soupe de miel et 1 cuillère à soupe d'huile.","Posez les pavés dans le plat, étalez le mélange dessus. Enfournez 12 à 15 min. Le saumon est cuit quand il se détache en pétales.","Faites cuire le riz 11 min dans une casserole d'eau salée. Égouttez.","Cuisez les brocolis surgelés 8 min à la vapeur ou dans l'eau bouillante.","Servez avec un peu de jus de cuisson sur le riz."]},
+  etapes:["Allumez le four à 200 °C.","Mélangez dans le bol 3 cuillères à soupe de moutarde, le jus et le zeste d'un citron, 1 cuillère à soupe d'huile et du poivre.","Posez les pavés dans le plat, étalez le mélange dessus. Enfournez 12 à 15 min. Le saumon est cuit quand il se détache en pétales.","Faites cuire le riz 11 min dans une casserole d'eau salée. Égouttez.","Cuisez les brocolis surgelés 8 min à la vapeur ou dans l'eau bouillante.","Servez avec un peu de jus de cuisson sur le riz."]},
  {id:"n-faux-filet",nom:"Faux filet de bœuf poêlé, pommes de terre grenailles et haricots verts",dessert:"Pommes",temps:"25 min",profil:"Riche en protéines",
   ing:[["Viande","Faux filet de bœuf Charolais Label Rouge","1,2 kg",28.00],["Fruits et légumes","Pommes de terre grenailles","1,5 kg",4.20],["Surgelés","Haricots verts extra fins","1 kg",2.20],["Frais","Beurre demi sel","1",2.10],["Fruits et légumes","Ail","1",0.60],["Fruits et légumes","Pommes","1,5 kg",3.40]],
   jeunes:"Prévoyez une tranche en plus.",seniors:"Un steak plus petit et plus de haricots.",
@@ -585,18 +598,18 @@ const NOUV=[
   jeunes:"Ajoutez du riz si la faim est grande.",seniors:"Plat doux et facile à mâcher, idéal le soir.",
   materiel:"1 grande casserole, 1 poêle, 1 fourchette ou un presse purée",
   etapes:["Épluchez les patates douces et coupez-les en cubes. Plongez-les dans l'eau bouillante salée 15 min.","Mettez les épinards surgelés dans une casserole avec un couvercle, à feu doux, 10 min. Salez, ajoutez une noix de beurre.","Séchez le cabillaud avec du papier absorbant. Salez et poivrez.","Chauffez la poêle avec 1 cuillère à soupe d'huile. Posez le poisson côté peau et laissez cuire 4 min sans y toucher. Retournez, 3 min de plus.","Égouttez les patates douces, écrasez-les avec une fourchette, une noix de beurre et du sel.","Servez le poisson avec un quartier de citron."]},
- {id:"n-magret",nom:"Magret de canard au miel, pommes de terre sautées et salade",dessert:"Poires",temps:"25 min",profil:"Riche en protéines",
-  ing:[["Viande","Magrets de canard IGP Sud Ouest","4",20.00],["Fruits et légumes","Pommes de terre","1,5 kg",2.00],["Fruits et légumes","Salade","2",1.80],["Épicerie","Miel","1",3.20],["Épicerie","Vinaigre balsamique","1",2.30],["Fruits et légumes","Poires","1 kg",2.80]],
+ {id:"n-magret",nom:"Magret de canard aux pommes poêlées, pommes de terre sautées et salade",dessert:"Poires",temps:"25 min",profil:"Riche en protéines",
+  ing:[["Viande","Magrets de canard IGP Sud Ouest","4",20.00],["Fruits et légumes","Pommes de terre","1,5 kg",2.00],["Fruits et légumes","Salade","2",1.80],["Fruits et légumes","Pommes","4",1.60],["Épicerie","Vinaigre de cidre","1",1.40],["Fruits et légumes","Poires","1 kg",2.80]],
   jeunes:"Un demi magret de plus par personne.",seniors:"Retirez la peau avant de manger.",
   materiel:"1 grande poêle, 1 poêle, 1 planche, 1 couteau aiguisé",
-  etapes:["Coupez les pommes de terre en dés de 2 cm. Mettez-les dans la poêle avec 2 cuillères à soupe d'huile, couvrez, 15 min à feu moyen, en remuant souvent.","Avec le couteau, quadrillez la peau des magrets en faisant des petites entailles, sans toucher à la chair.","Posez les magrets côté peau dans une poêle froide, mettez sur feu moyen. Laissez 8 min, la graisse fond. Retournez et cuisez 4 min. Jetez la graisse dans une tasse.","Arrosez de 2 cuillères à soupe de miel pendant 1 min. Laissez reposer 5 min sous une assiette.","Préparez la salade avec 3 cuillères à soupe d'huile, 1 de vinaigre, sel et poivre.","Tranchez les magrets en lamelles fines et servez."]},
- {id:"n-crevettes",nom:"Crevettes à l'ail et au persil, linguine au citron",dessert:"Ananas",temps:"20 min",profil:"Léger",
-  ing:[["Poissonnerie","Crevettes décortiquées crues ASC ou bio","900 g",22.00],["Épicerie","Linguine","600 g",1.80],["Fruits et légumes","Ail","1",0.60],["Fruits et légumes","Persil","1",1.20],["Fruits et légumes","Citrons","3",1.20],["Épicerie","Ananas au sirop léger","1",2.20]],
+  etapes:["Coupez les pommes de terre en dés de 2 cm. Mettez-les dans la poêle avec 2 cuillères à soupe d'huile, couvrez, 15 min à feu moyen, en remuant souvent.","Avec le couteau, quadrillez la peau des magrets en faisant des petites entailles, sans toucher à la chair.","Posez les magrets côté peau dans une poêle froide, mettez sur feu moyen. Laissez 8 min, la graisse fond. Retournez et cuisez 4 min. Jetez la graisse dans une tasse.","Laissez reposer les magrets 5 min sous une assiette. Pendant ce temps, coupez 4 pommes en quartiers et faites-les dorer 5 min dans la poêle avec 1 cuillère à soupe de graisse de canard : leur sucre naturel remplace le miel.","Préparez la salade avec 3 cuillères à soupe d'huile, 1 de vinaigre de cidre, sel et poivre.","Tranchez les magrets en lamelles fines et servez."]},
+ {id:"n-crevettes",nom:"Crevettes à l'ail et au persil, linguine au citron",dessert:"Kiwis",temps:"20 min",profil:"Léger",
+  ing:[["Poissonnerie","Crevettes décortiquées crues ASC ou bio","900 g",22.00],["Épicerie","Linguine","600 g",1.80],["Fruits et légumes","Ail","1",0.60],["Fruits et légumes","Persil","1",1.20],["Fruits et légumes","Citrons","3",1.20],["Fruits et légumes","Kiwis","10",2.50]],
   jeunes:"Ajoutez du piment en poudre dans votre assiette.",seniors:"Peu d'huile, beaucoup de citron.",
   materiel:"1 grande casserole, 1 grande poêle, 1 passoire, 1 râpe",
   etapes:["Faites bouillir l'eau salée et cuisez les linguine 9 min. Gardez un verre d'eau de cuisson avant d'égoutter.","Pelez 4 gousses d'ail et écrasez-les. Hachez le persil.","Chauffez 3 cuillères à soupe d'huile dans la poêle à feu moyen. Ajoutez l'ail 30 secondes, sans le brûler.","Ajoutez les crevettes (décongelées si besoin) et cuisez 3 à 4 min, jusqu'à ce qu'elles soient roses.","Mélangez les pâtes dans la poêle avec le jus de 2 citrons, le zeste d'un citron, le persil et un peu d'eau de cuisson.","Servez tout de suite."]},
- {id:"n-tarte",nom:"Tarte fine poireaux et chèvre, salade verte",dessert:"Fromage blanc et miel",temps:"30 min",profil:"Végétarien",
-  ing:[["Frais","Pâte feuilletée pur beurre","3",5.40],["Frais","Bûche de chèvre","400 g",5.50],["Fruits et légumes","Poireaux","1,2 kg",2.90],["Fruits et légumes","Salade","2",1.80],["Épicerie","Thym","1",1.20],["Frais","Fromage blanc","1 kg",2.60],["Épicerie","Miel","1",3.20]],
+ {id:"n-tarte",nom:"Tarte fine poireaux et chèvre, salade verte",dessert:"Fromage blanc nature et kiwi",temps:"30 min",profil:"Végétarien",
+  ing:[["Frais","Pâte feuilletée pur beurre","3",5.40],["Frais","Bûche de chèvre","400 g",5.50],["Fruits et légumes","Poireaux","1,2 kg",2.90],["Fruits et légumes","Salade","2",1.80],["Épicerie","Thym","1",1.20],["Frais","Fromage blanc","1 kg",2.60],["Fruits et légumes","Kiwis","10",2.50]],
   jeunes:"Ajoutez des lardons sur la tarte si vous voulez.",seniors:"Salade en grande quantité pour alléger.",
   materiel:"2 plaques de four, du papier cuisson, 1 grande poêle, 1 planche, 1 couteau",
   etapes:["Allumez le four à 200 °C.","Coupez la racine et le haut vert foncé des poireaux, fendez-les en deux, rincez-les bien entre les feuilles, puis coupez-les en fines demi-rondelles.","Faites-les fondre 10 min dans la poêle sur feu moyen avec 2 cuillères à soupe d'huile, sel et poivre, en remuant. Ils doivent être tendres.","Déroulez les pâtes sur du papier cuisson, posez-les sur les plaques. Piquez-les avec une fourchette.","Étalez les poireaux sur les pâtes en laissant 2 cm de bord. Ajoutez le chèvre en tranches, un filet d'huile et le thym.","Enfournez 20 min, jusqu'à ce que les bords soient dorés.","Servez avec la salade assaisonnée."]},
@@ -620,13 +633,13 @@ const NOUV=[
   jeunes:"Ajoutez du fromage râpé.",seniors:"Riz bien fondant, jambon coupé fin.",
   materiel:"1 grande casserole ou sauteuse, 1 casserole pour le bouillon, 1 louche",
   etapes:["Faites chauffer 2 litres de bouillon dans une casserole, laissez-le chaud.","Émincez les oignons, tranchez les champignons, coupez le jambon en lamelles.","Dans la grande casserole, faites revenir oignons et champignons 6 min dans 2 cuillères à soupe d'huile.","Ajoutez le riz et remuez 2 min. Versez une louche de bouillon, remuez jusqu'à absorption. Recommencez pendant 18 min.","Hors du feu, ajoutez le jambon et la moitié du parmesan, mélangez.","Servez avec le reste de parmesan."]},
- {id:"n-thon",nom:"Thon mi cuit au sésame, nouilles sautées et légumes",dessert:"Ananas",temps:"20 min",profil:"Léger",
-  ing:[["Poissonnerie","Steaks de thon albacore MSC","900 g",24.00],["Épicerie","Nouilles asiatiques","500 g",2.80],["Surgelés","Poêlée de légumes pour wok","1 kg",3.20],["Épicerie","Graines de sésame","1",1.80],["Épicerie","Sauce soja","1",2.00],["Épicerie","Ananas au sirop léger","1",2.20]],
+ {id:"n-thon",nom:"Thon mi cuit au sésame, nouilles sautées et légumes",dessert:"Clémentines",temps:"20 min",profil:"Léger",
+  ing:[["Poissonnerie","Steaks de thon albacore MSC","900 g",24.00],["Épicerie","Nouilles asiatiques","500 g",2.80],["Surgelés","Poêlée de légumes pour wok","1 kg",3.20],["Épicerie","Graines de sésame","1",1.80],["Épicerie","Sauce soja","1",2.00],["Fruits et légumes","Clémentines","1 kg",2.50]],
   jeunes:"Ajoutez un œuf sur chaque assiette.",seniors:"Peu de sauce soja si vous surveillez le sel.",
   materiel:"1 poêle, 1 wok ou grande poêle, 1 casserole, 1 assiette creuse",
   etapes:["Faites cuire les nouilles selon le paquet, environ 4 min. Égouttez.","Versez les graines de sésame dans une assiette. Passez les steaks de thon dedans pour les enrober.","Chauffez une poêle avec 1 cuillère à soupe d'huile à feu vif. Saisissez le thon 1 min 30 par face. Il reste rose à l'intérieur.","Dans le wok, faites cuire la poêlée de légumes 8 min avec 2 cuillères à soupe d'huile.","Ajoutez les nouilles et 3 cuillères à soupe de sauce soja, mélangez 2 min.","Tranchez le thon et posez-le sur les nouilles."]},
- {id:"n-pizza",nom:"Pizzas maison au jambon cru, mozzarella et roquette",dessert:"Glace vanille",temps:"25 min",profil:"Riche en protéines",
-  ing:[["Frais","Pâtes à pizza fraîches","3",5.40],["Frais","Mozzarella di bufala","500 g",8.50],["Charcuterie","Jambon cru de pays ou San Daniele","200 g",7.50],["Frais","Roquette","200 g",2.40],["Épicerie","Coulis de tomates","2",2.20],["Surgelés","Glace vanille","1",3.50]],
+ {id:"n-pizza",nom:"Pizzas maison au jambon cru, mozzarella et roquette",dessert:"Poires",temps:"25 min",profil:"Riche en protéines",
+  ing:[["Frais","Pâtes à pizza fraîches","3",5.40],["Frais","Mozzarella di bufala","500 g",8.50],["Charcuterie","Jambon cru de pays ou San Daniele","200 g",7.50],["Frais","Roquette","200 g",2.40],["Épicerie","Coulis de tomates sans sucre ajouté","2",2.40],["Fruits et légumes","Poires","1 kg",2.60]],
   jeunes:"Choisissez deux garnitures de plus.",seniors:"Moins de jambon, plus de roquette.",
   materiel:"2 plaques de four, du papier cuisson, 1 cuillère",
   etapes:["Allumez le four à 220 °C.","Déroulez les pâtes sur du papier cuisson. Étalez le coulis dessus, salez, poivrez.","Déchirez la mozzarella en morceaux et répartissez-la.","Enfournez 12 à 15 min, jusqu'à ce que les bords soient dorés.","Posez le jambon cru et la roquette à la sortie du four.","Coupez en parts et servez."]},
@@ -635,8 +648,8 @@ const NOUV=[
   jeunes:"Ajoutez une saucisse en plus à partager.",seniors:"Plus de lentilles et de carottes.",
   materiel:"1 grande casserole, 1 poêle, 1 planche, 1 couteau",
   etapes:["Rincez les lentilles. Mettez-les dans la casserole avec 1,5 litre d'eau froide, 1 oignon piqué en deux et les carottes en rondelles. Ne salez pas encore.","Portez à ébullition, puis laissez frémir 20 min.","Piquez les saucisses avec une fourchette. Faites-les dorer 10 min dans la poêle, à feu moyen, en les tournant.","Salez les lentilles à la fin de la cuisson. Égouttez.","Servez avec les saucisses en tranches et de la moutarde."]},
- {id:"n-moules",nom:"Moules de bouchot marinières et frites au four",dessert:"Compote",temps:"25 min",profil:"Riche en protéines",
-  ing:[["Poissonnerie","Moules de bouchot AOP","3 kg",16.50],["Surgelés","Frites au four","1,5 kg",4.50],["Fruits et légumes","Échalotes","4",1.20],["Frais","Beurre demi sel","1",2.10],["Fruits et légumes","Persil","1",1.20],["Épicerie","Vin blanc sec","1",3.50],["Épicerie","Compote de pommes","1",2.20]],
+ {id:"n-moules",nom:"Moules de bouchot marinières et frites au four",dessert:"Pommes",temps:"25 min",profil:"Riche en protéines",
+  ing:[["Poissonnerie","Moules de bouchot AOP","3 kg",16.50],["Surgelés","Frites au four","1,5 kg",4.50],["Fruits et légumes","Échalotes","4",1.20],["Frais","Beurre demi sel","1",2.10],["Fruits et légumes","Persil","1",1.20],["Épicerie","Vin blanc sec","1",3.50],["Fruits et légumes","Pommes","1,5 kg",2.70]],
   jeunes:"Prévoyez 500 g de moules en plus.",seniors:"Peu de sel, les moules sont déjà salées.",
   materiel:"1 grande casserole avec couvercle, 1 plaque de four, 1 passoire",
   etapes:["Allumez le four selon le paquet de frites, environ 220 °C. Enfournez les frites sur une plaque.","Lavez les moules à l'eau froide. Jetez celles qui restent ouvertes quand vous les tapez.","Émincez les échalotes. Faites-les fondre 3 min dans la casserole avec une noix de beurre.","Ajoutez les moules et 20 cl de vin blanc. Couvrez, feu fort, 6 à 8 min en secouant la casserole.","Jetez les moules restées fermées. Ajoutez le persil haché et du poivre.","Servez avec les frites."]}
@@ -645,21 +658,21 @@ const NOUV_KCAL={"n-escalopes":790,"n-saumon":720,"n-faux-filet":780,"n-cabillau
 NOUV.forEach(m=>{m.nouveau=true;MENUS.push(m)});
 // Extras de la semaine : un gâteau et une soirée à thème, selon la saison
 const EXTRAS=[
- {id:"gateau",nom:"Gâteau moelleux aux pommes et à la cannelle",temps:"15 min + 35 min au four",profil:"Gâteau de la semaine",
-  ing:[["Épicerie","Farine de blé","1 kg",0.90],["Épicerie","Sucre en poudre","1 kg",1.20],["Frais","Œufs plein air","6",1.80],["Frais","Yaourt nature","1",0.20],["Fruits et légumes","Pommes","1 kg",1.80],["Épicerie","Levure chimique","1 sachet",0.30],["Épicerie","Cannelle en poudre","1 pot",1.20]],
+ {id:"gateau",nom:"Gâteau moelleux pommes, dattes et cannelle, sans sucre ajouté",temps:"15 min + 35 min au four",profil:"Gâteau de la semaine",
+  ing:[["Épicerie","Farine de blé","1 kg",0.90],["Épicerie","Dattes dénoyautées","200 g",2.60],["Frais","Œufs plein air","6",1.80],["Frais","Yaourt nature","1",0.20],["Fruits et légumes","Pommes","1 kg",1.80],["Épicerie","Levure chimique","1 sachet",0.30],["Épicerie","Cannelle en poudre","1 pot",1.20]],
   materiel:"1 moule rond de 24 cm environ, 1 saladier, 1 fouet ou fourchette, 1 couteau, 1 éplucheur, le pot du yaourt (il sert de verre doseur)",
   etapes:["Allumez le four à 180 °C. Beurrez le moule avec un peu de beurre étalé avec les doigts, puis saupoudrez 1 cuillère à soupe de farine et secouez pour qu'elle colle partout.",
    "Videz le yaourt dans le saladier. Rincez et séchez le pot : il sert de mesure pour la suite.",
-   "Ajoutez 3 œufs et 2 pots de sucre. Fouettez 1 min jusqu'à ce que ce soit mousseux.",
+   "Faites tremper 150 g de dattes 10 min dans un bol d'eau chaude, égouttez-les, puis écrasez-les à la fourchette (ou mixez-les) avec le yaourt jusqu'à obtenir une crème. Ajoutez 3 œufs et fouettez 1 min. Les dattes remplacent tout le sucre.",
    "Ajoutez 3 pots de farine, le sachet de levure et 1 cuillère à café de cannelle. Mélangez jusqu'à ce qu'il n'y ait plus de grumeaux.",
    "Ajoutez 1/2 pot d'huile et mélangez encore.",
-   "Épluchez 3 pommes, coupez-les en quatre, retirez le cœur dur et les pépins, puis coupez en fines lamelles. Ajoutez la moitié des pommes dans la pâte et mélangez.",
-   "Versez la pâte dans le moule. Posez le reste des lamelles sur le dessus en rond, et saupoudrez 1 cuillère à soupe de sucre.",
+   "Épluchez 3 pommes, coupez-les en quatre, retirez le cœur dur et les pépins, puis coupez en fines lamelles. Râpez 1 pomme de plus et ajoutez-la dans la pâte avec la moitié des lamelles : elle rend le gâteau moelleux et sucré naturellement.",
+   "Versez la pâte dans le moule. Posez le reste des lamelles sur le dessus en rond, et saupoudrez un peu de cannelle.",
    "Enfournez 35 min au milieu du four. Il est cuit quand un couteau planté au centre ressort sec, sans pâte collée. Sinon, remettez 5 min.",
    "Laissez refroidir 10 min avant de démouler. Il se garde 3 jours sous un torchon : parfait pour les goûters et les petits-déjeuners."],
-  jeunes:"Une grosse part au goûter après le sport.",seniors:"Peu sucré et léger grâce au yaourt, une part avec un thé."},
- {id:"soiree",nom:"Soirée crêpes salées et sucrées",temps:"20 min de pâte + cuisson à table",profil:"Soirée de la semaine",
-  ing:[["Épicerie","Farine de blé","1 kg",0.90],["Frais","Œufs plein air","12",3.60],["Frais","Lait demi-écrémé","2 l",2.20],["Frais","Jambon blanc","8 tranches",3.50],["Frais","Emmental râpé","200 g",2.00],["Fruits et légumes","Champignons de Paris","500 g",2.00],["Épicerie","Pâte à tartiner","400 g",2.50],["Fruits et légumes","Poires","1 kg",2.60]],
+  jeunes:"Une belle part en dessert, pendant le repas : pour les dents, c'est mieux qu'en grignotage.",seniors:"Sans sucre ajouté : la douceur vient des pommes et des dattes."},
+ {id:"soiree",nom:"Soirée crêpes salées, et crêpes poire-noisette",temps:"20 min de pâte + cuisson à table",profil:"Soirée de la semaine",
+  ing:[["Épicerie","Farine de blé","1 kg",0.90],["Frais","Œufs plein air","12",3.60],["Frais","Lait demi-écrémé","2 l",2.20],["Frais","Jambon blanc","8 tranches",3.50],["Frais","Emmental râpé","200 g",2.00],["Fruits et légumes","Champignons de Paris","500 g",2.00],["Épicerie","Purée de noisettes 100 %, sans sucre","200 g",4.50],["Fruits et légumes","Poires","1 kg",2.60]],
   materiel:"1 grand saladier, 1 fouet, 1 louche, 1 ou 2 poêles antiadhésives (ou une crêpière électrique posée sur la table), 1 spatule, 1 petite poêle pour les champignons",
   etapes:["Pâte (à faire 1 h avant si possible, elle sera meilleure) : dans le saladier, mettez 500 g de farine et 1 pincée de sel. Creusez un trou au milieu et cassez-y 6 œufs.",
    "Fouettez au centre en ajoutant le lait petit à petit (1 litre en tout), d'abord doucement. Si vous versez tout d'un coup, il y aura des grumeaux. Ajoutez 2 cuillères à soupe d'huile. La pâte doit être fluide comme une crème liquide.",
@@ -667,9 +680,9 @@ const EXTRAS=[
    "Cuisson : poêle sur feu moyen-fort, graissez-la avec un essuie-tout imbibé d'huile. Versez une petite louche de pâte et tournez la poêle pour l'étaler en couche fine.",
    "Quand les bords se décollent et dorent (environ 1 min), retournez avec la spatule et laissez 30 secondes de l'autre côté.",
    "Crêpe salée « complète » : sur la crêpe retournée, cassez un œuf, ajoutez jambon, fromage et champignons, couvrez 2 min, puis repliez les bords.",
-   "Crêpe sucrée : tartinez de pâte à tartiner, ajoutez des lamelles de poire, ou simplement sucre et un filet de citron.",
+   "Crêpe dessert : tartinez une fine couche de purée de noisettes et ajoutez des lamelles de poire. Si vous voulez plus doux, une petite cuillère de miel suffit, pas de sucre en poudre.",
    "L'idée de la soirée : chacun compose sa crêpe. Les jeunes peuvent apprendre à la retourner en la faisant sauter. Comptez 4 crêpes par personne."],
-  jeunes:"Crêpes complètes œuf-jambon-fromage, pleines de protéines.",seniors:"Une complète puis une crêpe poire, sans excès."}
+  jeunes:"Crêpes complètes œuf-jambon-fromage, pleines de protéines.",seniors:"Une complète puis une crêpe poire-noisette, sans excès."}
 ];
 const ALL=MENUS.concat(EXTRAS);
 const REG=new Map(ALL.map(m=>[m.id,m]));
@@ -967,7 +980,7 @@ function messageCommande(){
   const lignes=b.lignes.map(x=>"- "+x.n+" : "+x.q.join(" + ")).concat([...ajouts.values()].map(a=>"- "+a.nom+(a.qte?" : "+a.qte:"")));
   return "Avec le connecteur Carrefour, remplis mon panier Carrefour en livraison à domicile (demande-moi mon adresse si tu ne l'as pas). "+
     "Pour la viande, le poisson, les œufs et les produits laitiers, prends le haut de gamme Carrefour (Label Rouge, AOP, bio, MSC, fermier, Charolais) et écarte les premiers prix. "+
-    "Adapte le nombre de paquets aux grammages. Ensuite, donne-moi le lien pour finaliser la commande sur carrefour.fr.\n\n"+
+    "Évite les produits avec sucre ajouté quand une version sans sucre existe (coulis, pain, yaourts et fromage blanc nature). Adapte le nombre de paquets aux grammages. Ensuite, donne-moi le lien pour finaliser la commande sur carrefour.fr.\n\n"+
     "Menus de la semaine ("+fmt(portions())+" portions par repas) : "+b.sel.map(m=>m.nom).join(" ; ")+"\n\nListe de courses :\n"+lignes.join("\n");
 }
 async function commanderAvecClaude(note){
