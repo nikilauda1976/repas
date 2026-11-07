@@ -6,7 +6,7 @@
   "use strict";
   var API = "https://isjnrurkcbwgezasbosv.supabase.co/rest/v1/rpc/";
   var CLE_API = "sb_publishable_biYMg4fR41oKREfletG1Xg_udKBRDOW"; // clé publique, faite pour le navigateur
-  var CLES = ["menus-foyer", "menus-choix", "menus-favoris", "menus-ajouts", "menus-ailleurs"];
+  var CLES = ["menus-foyer", "menus-choix", "menus-favoris", "menus-ajouts", "menus-ailleurs", "menus-perso"];
   var CLE_FAMILLE = "rdm-famille"; // nom + code, gardés sur cet appareil pour rester connecté
   var ls = window.localStorage;
 

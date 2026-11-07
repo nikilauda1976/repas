@@ -140,6 +140,24 @@ button:disabled{opacity:.55;cursor:progress}
 .recette .meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px;color:var(--muted)}
 .recette .cols{margin-top:0}
 .cf-s{font-size:13px;font-weight:600;color:var(--basil);margin-left:8px;white-space:nowrap}
+.bouton{display:inline-flex;align-items:center;font-weight:600;border-radius:8px;padding:10px 14px;cursor:pointer}
+.bouton.ghost{background:var(--surface);color:var(--basil);border:1px solid var(--basil)}
+input.sr:focus-visible+*,.perso-add input.sr:focus-visible{outline:2px solid var(--basil)}
+.perso-add,.perso-form{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.perso-texte{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:12px}
+.perso-lab{font-size:13px;font-weight:600;color:var(--muted)}
+.perso textarea,.perso-input,.perso-grille input,.perso-grille select,.perso-ings input,.perso-ings select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-width:0;width:100%;box-sizing:border-box}
+.perso textarea{resize:vertical}
+.perso-grille{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.perso-grille label{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:600;color:var(--muted)}
+.perso-grille .perso-large{grid-column:1/-1}
+.perso-ings{display:flex;flex-direction:column;gap:6px}
+.perso-ing{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr) minmax(0,1.3fr) auto;gap:6px;align-items:center}
+.perso-liste{display:flex;flex-direction:column;gap:16px}
+.perso-actions{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.perso-actions button{padding:6px 12px;font-size:14px}
+.sucre{grid-column:1/-1;background:var(--saffron-soft);border-radius:8px;padding:8px 12px;font-size:14px}
+@media (max-width:620px){.perso-grille{grid-template-columns:1fr 1fr}.perso-ing{grid-template-columns:minmax(0,1fr) minmax(0,2fr) auto;padding-bottom:8px;border-bottom:1px dashed var(--line)}.perso-ing select{grid-column:1/3;grid-row:2}.perso-ing .x{grid-column:3;grid-row:1}}
 @media print{
   body{background:#fff;color:#000}
   body::before,.tabs,header,[data-view]:not([data-view="recettes"]),#rec-print,.ajout-row{display:none!important}
@@ -222,6 +240,7 @@ button:disabled{opacity:.55;cursor:progress}
 <nav class="tabs" role="tablist" aria-label="Sections de la page">
   <button type="button" role="tab" data-tab="semaine" aria-selected="true">Menus</button>
   <button type="button" role="tab" data-tab="desserts" aria-selected="false">Desserts</button>
+  <button type="button" role="tab" data-tab="perso" aria-selected="false">Mes recettes <span id="tab-perso"></span></button>
   <button type="button" role="tab" data-tab="favoris" aria-selected="false">Favoris <span id="tab-fav"></span></button>
   <button type="button" role="tab" data-tab="liste" aria-selected="false">Ma liste <span id="tab-count"></span></button>
   <button type="button" role="tab" data-tab="carrefour" aria-selected="false">Panier Carrefour <span id="tab-cf"></span></button>
@@ -284,6 +303,47 @@ button:disabled{opacity:.55;cursor:progress}
   <p class="lead">26 desserts et goûters sucrés seulement avec des fruits ou quelques dattes. Cochez-les pour les ajouter aux courses, comme les menus. Pour les dents, servez-les pendant le repas plutôt qu'en grignotage.</p>
   <p class="note">Les 19 desserts à partir du banana bread sont nos propres versions, sans sucre ajouté, de desserts proposés par le site zerosucreetigbas.fr : les ingrédients, les quantités et les étapes ont été écrits pour cette page. Quand un fruit n'est pas de saison (framboises, myrtilles, rhubarbe, abricots), on le prend surgelé. Le chocolat est un noir à 85 % de cacao, en petite quantité.</p>
   <div class="menus" id="desserts"></div>
+</section>
+
+<section data-view="perso" class="perso">
+  <span class="eyebrow">Les recettes de la famille</span>
+  <h2>Mes recettes</h2>
+  <p class="lead">Ajoutez vos propres recettes : écrivez-la, prenez-la en photo ou importez un fichier. Le site relève les ingrédients, la range par type (entrée, plat, dessert…) et la met au même format que les autres. Cochez-la ensuite : ses ingrédients partent dans « Ma liste » et dans la commande Carrefour.</p>
+  <div class="perso-add">
+    <div class="ajout-row">
+      <button type="button" id="p-ecrire">Écrire une recette</button>
+      <label class="bouton ghost" for="p-photo">Prendre en photo</label><input type="file" id="p-photo" class="sr" accept="image/*" capture="environment">
+      <label class="bouton ghost" for="p-fichier">Importer un fichier</label><input type="file" id="p-fichier" class="sr" accept="image/*,.pdf,.txt,.md,.docx,text/plain,application/pdf">
+    </div>
+    <p class="note">Photo, PDF, Word (.docx) ou texte. La lecture se fait dans votre téléphone ou votre ordinateur : rien n'est envoyé ailleurs.</p>
+    <p class="note" id="p-etat" aria-live="polite" hidden></p>
+    <div id="p-texte-box" class="perso-texte" hidden>
+      <label for="p-texte" class="perso-lab">Texte de la recette</label>
+      <textarea id="p-texte" rows="9" placeholder="Le titre, puis la liste des ingrédients (une ligne chacun, par exemple : 200 g de farine), puis les étapes."></textarea>
+      <div class="ajout-row"><button type="button" id="p-analyser">Mettre au format</button><button type="button" class="ghost" id="p-claude">Faire lire par Claude</button></div>
+      <p class="note">Recette écrite à la main ou photo difficile à lire ? « Faire lire par Claude » ouvre Claude avec la consigne déjà écrite : joignez-y la photo, puis collez sa réponse dans ce cadre et appuyez sur « Mettre au format ».</p>
+    </div>
+  </div>
+  <form id="p-form" class="perso-form" hidden>
+    <h3 id="p-form-titre">Vérifiez la recette</h3>
+    <p class="note">Corrigez ce qui a été mal lu, puis enregistrez.</p>
+    <input type="hidden" id="p-id">
+    <div class="perso-grille">
+      <label class="perso-large">Nom de la recette<input id="p-nom" type="text" required autocomplete="off"></label>
+      <label>Type<select id="p-type"></select></label>
+      <label>Temps<input id="p-temps" type="text" placeholder="par exemple : 30 min" autocomplete="off"></label>
+      <label>Pour combien de portions<input id="p-base" type="number" min="1" max="40" step="1" value="4" inputmode="numeric"></label>
+    </div>
+    <h4 class="sub">Ingrédients</h4>
+    <div id="p-ings" class="perso-ings"></div>
+    <button type="button" class="ghost" id="p-ing-plus">Ajouter un ingrédient</button>
+    <label class="perso-lab" for="p-materiel">Matériel</label><input id="p-materiel" type="text" class="perso-input" autocomplete="off">
+    <label class="perso-lab" for="p-etapes">Étapes, une par ligne</label><textarea id="p-etapes" rows="7"></textarea>
+    <label class="perso-lab" for="p-notes">Notes et astuces</label><textarea id="p-notes" rows="2"></textarea>
+    <p class="note warn" id="p-form-msg" hidden></p>
+    <div class="ajout-row"><button type="submit">Enregistrer la recette</button><button type="button" class="ghost" id="p-annuler">Annuler</button></div>
+  </form>
+  <div id="perso-liste" class="perso-liste"></div>
 </section>
 
 <section data-view="favoris">
@@ -940,8 +1000,9 @@ function scaleQ(q,f){
     return Math.max(1,Math.ceil(v-0.3))+sp;
   });
 }
-const ingF=m=>{const f=fac();return m.ing.map(([r,n,q,p])=>[r,n,scaleQ(q,f),p*f])};
-const total=m=>m.ing.reduce((s,i)=>s+i[3],0)*fac();
+const facR=m=>Math.max(0.2,portions()/((m&&m.base)||6));
+const ingF=m=>{const f=facR(m);return m.ing.map(([r,n,q,p])=>[r,n,scaleQ(q,f),p*f])};
+const total=m=>m.ing.reduce((s,i)=>s+i[3],0)*facR(m);
 let chosen=new Set();
 try{const s=JSON.parse(localStorage.getItem("menus-choix")||"null");if(Array.isArray(s))chosen=new Set(s)}catch(e){}
 
@@ -956,13 +1017,13 @@ function card(m,p="m-"){
     <button type="button" class="fav" data-fav="${esc(m.id)}" aria-pressed="false" aria-label="Ajouter ${esc(m.nom)} à mes favorites"><span class="heart" aria-hidden="true">♡</span> Favorite</button></div>
    <div class="tips"><div class="tip"><b>Pour les 18 et 22 ans</b>${esc(m.jeunes)}</div><div class="tip"><b>Pour les plus de 50 ans</b>${esc(m.seniors)}</div></div>
    <details><summary>Ingrédients et recette pas à pas</summary><div class="cols">
-    <div><h4 class="sub">À acheter${Math.abs(fac()-1)>0.01?` pour ${fmt(portions())} portions`:""}</h4><ul>${ingF(m).map(i=>`<li class="ing">${esc(i[1])}, ${esc(i[2])} <small>${eur(i[3])}</small></li>`).join("")}</ul>
+    <div><h4 class="sub">À acheter${Math.abs(facR(m)-1)>0.01?` pour ${fmt(portions())} portions`:""}</h4><ul>${ingF(m).map(i=>`<li class="ing">${esc(i[1])}, ${esc(i[2])} <small>${eur(i[3])}</small></li>`).join("")}</ul>
      ${m.materiel?`<h4 class="sub">Matériel</h4><p class="note">${esc(m.materiel)}</p>`:""}</div>
-    <div><h4 class="sub">Étapes</h4>${Math.abs(fac()-1)>0.01?`<p class="note">Les étapes donnent les quantités pour 6 portions. Pour votre foyer, multipliez-les par ${fmt(fac())} (environ ${fac()<0.85?"les deux tiers":fac()<1.2?"pareil":fac()<1.7?"une fois et demie":"le double"}).</p>`:""}<ol class="etapes">${m.etapes.map(e=>`<li>${esc(e)}</li>`).join("")}</ol></div></div></details>
+    <div><h4 class="sub">Étapes</h4>${Math.abs(facR(m)-1)>0.01?`<p class="note">Les étapes donnent les quantités pour ${m.base||6} portions. Pour votre foyer, multipliez-les par ${fmt(facR(m))} (environ ${facR(m)<0.85?"les deux tiers":facR(m)<1.2?"pareil":facR(m)<1.7?"une fois et demie":"le double"}).</p>`:""}<ol class="etapes">${m.etapes.map(e=>`<li>${esc(e)}</li>`).join("")}</ol></div></div></details>
    <label class="pick"><input type="checkbox" id="${p}pick-${esc(m.id)}" data-id="${esc(m.id)}" ${chosen.has(m.id)?"checked":""}> Je choisis ce menu</label>
   </article>`;
 }
-const isExtra=m=>m.profil==="Gâteau de la semaine"||m.profil==="Soirée de la semaine"||m.profil==="Dessert et goûter";
+const isExtra=m=>m.perso?m.type!=="Plat":m.profil==="Gâteau de la semaine"||m.profil==="Soirée de la semaine"||m.profil==="Dessert et goûter";
 const chosenRecipes=()=>[...chosen].map(id=>REG.get(id)).filter(Boolean);
 const nbOeufs=sel=>sel.reduce((n,m)=>n+ingF(m).reduce((s,i)=>s+(/^[œŒ]ufs/.test(i[1])?(parseInt(i[2],10)||0):0),0),0);
 // Rayons que la famille achète elle-même ailleurs (marché, boucher, poissonnier) : gardés sur l'appareil
@@ -1016,9 +1077,9 @@ function renderBasket(){
   document.getElementById("tab-count").textContent=n?`(${n})`:"";
   const by={};lignes.forEach(x=>(by[x.r]=by[x.r]||[]).push(x));
   const cfS=n=>`<a class="cf-s" href="https://www.carrefour.fr/s?q=${encodeURIComponent(n.replace(/\s*\(.*?\)/g,"").replace(/ ou .*$/,""))}" target="_blank" rel="noopener" aria-label="Chercher ${esc(n)} sur Carrefour">Carrefour ↗</a>`;
-  let html=Object.keys(by).sort().map(r=>`<div class="rayon"><h4>${esc(r)}</h4><ul>${by[r].map(x=>`<li${/^[œŒ]ufs/.test(x.n)?' class="oeufs"':""}><span>${esc(x.n)} (${x.q.map(esc).join(" + ")})${cfS(x.n)}</span><span>${eur(x.p)}</span></li>`).join("")}</ul></div>`).join("");
+  let html=Object.keys(by).sort().map(r=>`<div class="rayon"><h4>${esc(r)}</h4><ul>${by[r].map(x=>`<li${/^[œŒ]ufs/.test(x.n)?' class="oeufs"':""}><span>${esc(x.n)}${x.q.filter(Boolean).length?` (${x.q.filter(Boolean).map(esc).join(" + ")})`:""}${cfS(x.n)}</span><span>${x.p?eur(x.p):"–"}</span></li>`).join("")}</ul></div>`).join("");
   if(dehors.length){const bd={};dehors.forEach(x=>(bd[x.r]=bd[x.r]||[]).push(x));
-    html+=`<h3 class="dehors-titre">À acheter moi-même ailleurs</h3>`+GROUPES.map(([g,lab])=>bd[g]?`<div class="rayon dehors"><h4>Ailleurs · ${esc(lab)}</h4><ul>${bd[g].map(x=>`<li><span>${esc(x.n)} (${x.q.map(esc).join(" + ")})</span><span>${eur(x.p)}</span></li>`).join("")}</ul></div>`:"").join("")}
+    html+=`<h3 class="dehors-titre">À acheter moi-même ailleurs</h3>`+GROUPES.map(([g,lab])=>bd[g]?`<div class="rayon dehors"><h4>Ailleurs · ${esc(lab)}</h4><ul>${bd[g].map(x=>`<li><span>${esc(x.n)}${x.q.filter(Boolean).length?` (${x.q.filter(Boolean).map(esc).join(" + ")})`:""}</span><span>${x.p?eur(x.p):"–"}</span></li>`).join("")}</ul></div>`:"").join("")}
   if(ajouts.size)html+=`<div class="rayon"><h4>Ajouts manuels</h4><ul>${[...ajouts.entries()].map(([id,a])=>`<li><span>${esc(a.nom)}${a.qte?` (${esc(a.qte)})`:""}</span><span><button type="button" class="x" data-del="${esc(id)}" aria-label="Retirer ${esc(a.nom)}">×</button></span></li>`).join("")}</ul></div>`;
   document.getElementById("list").innerHTML=html||'<p class="empty">Cochez un ou plusieurs menus, ou ajoutez un produit ci-dessous.</p>';
   syncCommande(b);
@@ -1029,18 +1090,17 @@ function renderRecettes(sel){
   document.getElementById("tab-rec").textContent=sel.length?`(${sel.length})`:"";
   document.getElementById("rec-print").hidden=!sel.length;
   if(!sel.length){box.innerHTML='<p class="empty">Aucun menu choisi pour l\'instant. Cochez « Je choisis ce menu » dans l\'onglet Menus : la recette apparaîtra ici.</p>';return}
-  const mult=Math.abs(fac()-1)>0.01;
-  box.innerHTML=sel.map((m,k)=>`<article class="recette" id="r-${esc(m.id)}">
+  box.innerHTML=sel.map((m,k)=>{const mult=Math.abs(facR(m)-1)>0.01;return `<article class="recette" id="r-${esc(m.id)}">
    <span class="eyebrow">Recette ${k+1} sur ${sel.length} · ${esc(m.profil)}</span>
    <h3>${esc(m.nom)}</h3>
-   <div class="meta">${m.dessert?`<span>Dessert : ${esc(m.dessert)}</span>`:""}<span>${esc(m.temps)}</span>${m.kcal?`<span class="kcal">≈ ${m.kcal} kcal ${m.id==="gateau"?"par part":"par personne"}</span>`:""}<span>${eur(total(m))} le repas</span></div>
+   <div class="meta">${m.dessert?`<span>Dessert : ${esc(m.dessert)}</span>`:""}<span>${esc(m.temps)}</span>${m.kcal?`<span class="kcal">≈ ${m.kcal} kcal ${m.id==="gateau"?"par part":"par personne"}</span>`:""}${total(m)?`<span>${eur(total(m))} le repas</span>`:""}</div>
    <div class="cols">
     <div><h4 class="sub">Ingrédients${mult?` pour ${fmt(portions())} portions`:""}</h4><ul>${ingF(m).map(i=>`<li class="ing">${esc(i[1])}, ${esc(i[2])}</li>`).join("")}</ul>
      ${m.materiel?`<h4 class="sub">Matériel</h4><p class="note">${esc(m.materiel)}</p>`:""}</div>
-    <div><h4 class="sub">Étapes</h4>${mult?`<p class="note">Les étapes donnent les quantités pour 6 portions : multipliez-les par ${fmt(fac())}.</p>`:""}<ol class="etapes">${(m.etapes||[]).map(s=>`<li>${esc(s)}</li>`).join("")}</ol></div>
+    <div><h4 class="sub">Étapes</h4>${mult?`<p class="note">Les étapes donnent les quantités pour ${m.base||6} portions : multipliez-les par ${fmt(facR(m))}.</p>`:""}<ol class="etapes">${(m.etapes||[]).map(s=>`<li>${esc(s)}</li>`).join("")}</ol></div>
    </div>
    ${m.jeunes||m.seniors?`<div class="tips">${m.jeunes?`<div class="tip"><b>Pour les 18 et 22 ans</b>${esc(m.jeunes)}</div>`:""}${m.seniors?`<div class="tip"><b>Pour les plus de 50 ans</b>${esc(m.seniors)}</div>`:""}</div>`:""}
-  </article>`).join("");
+  </article>`}).join("");
 }
 document.getElementById("rec-print").addEventListener("click",()=>window.print());
 function listText(){
@@ -1453,4 +1513,5 @@ const _cfRender=cfRender;cfRender=function(m){if(m===null)return;_cfRender(m)};
 })();
 function fallback(t){const pre=document.createElement("pre");pre.textContent=t;pre.style.whiteSpace="pre-wrap";document.getElementById("list").appendChild(pre);const r=document.createRange();r.selectNodeContents(pre);const s=getSelection();s.removeAllRanges();s.addRange(r)}
 </script>
+<script src="perso.js"></script>
 </body></html>
