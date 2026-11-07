@@ -84,17 +84,19 @@
   }
   var resembleIng = function (l) { return l.length < 70 && !/[.!?]$/.test(l) && (RE_DEBUT.test(propre(l)) || RE_FIN.test(propre(l))) && !/^\d+\s*[.)]\s+[A-ZÀ-Ü]/.test(l); };
 
+  // Le type vient d'une mention explicite (« Dessert » seul sur une ligne, « Catégorie : Entrée »), sinon du titre
   function devinerType(titre, texte) {
-    var m = texte.match(/\b(entr[ée]e|plat principal|plat|dessert|go[uû]ter|petit[- ]d[ée]jeuner|accompagnement|sauce|boisson)\b/i);
-    var t = (titre + " " + texte).toLowerCase();
-    if (/^(type|catégorie)/im.test(texte) && m) return normType(m[1]);
-    if (/smoothie|jus d|boisson|cocktail|limonade|th[eé] glac|chocolat chaud|milkshake/.test(titre.toLowerCase())) return "Boisson";
-    if (/sauce|vinaigrette|pesto|mayonnaise|b[eé]chamel|aïoli|coulis/.test(titre.toLowerCase())) return "Sauce";
-    if (/porridge|granola|pancake|muesli|pain perdu|overnight/.test(t)) return "Petit-déjeuner";
-    if (/g[aâ]teau|tarte (aux|au) (pomme|poire|fraise|abricot|citron|chocolat|framboise|fruit)|cr[eè]me (br[uû]l|dessert|anglaise)|mousse au|cake|crumble|clafoutis|muffin|cookie|biscuit|glace|sorbet|flan|fondant|brownie|tiramisu|panna cotta|compote|macaron|madeleine|cr[eê]pe|gaufre|beignet|chocolat noir|sucre glace/.test(t)) return /go[uû]ter|cookie|biscuit|madeleine|muffin|cr[eê]pe|gaufre/.test(t) ? "Goûter" : "Dessert";
-    if (/soupe|velout[eé]|potage|gaspacho|salade (de|d'|verte|compos)|terrine|verrine|tartinade|houmous|rillettes|carpaccio|tapenade|œufs? mimosa|oeufs? mimosa|bruschetta|entr[eé]e/.test(t)) return "Entrée";
-    if (/pur[eé]e|gratin dauphinois|riz pilaf|l[eé]gumes r[oô]tis|frites|po[eê]l[eé]e de l[eé]gumes|ratatouille|accompagnement/.test(titre.toLowerCase())) return "Accompagnement";
-    return m ? normType(m[1]) : "Plat";
+    var m = texte.match(/^(?:type|cat[ée]gorie)?\s*:?\s*(entr[ée]es?|plats? principal|plats?|desserts?|go[uû]ters?|petits?[- ]d[ée]jeuners?|accompagnements?|sauces?|boissons?)\s*$/im);
+    if (m) return normType(m[1]);
+    var s = titre.toLowerCase();
+    if (/smoothie|jus d|boisson|cocktail|limonade|th[eé] glac|chocolat chaud|milkshake|sirop d/.test(s)) return "Boisson";
+    if (/^(sauce|vinaigrette|pesto|mayonnaise|b[eé]chamel|a[iï]oli|coulis)|\b(vinaigrette|pesto|mayonnaise|b[eé]chamel)\b/.test(s)) return "Sauce";
+    if (/porridge|granola|pancake|muesli|pain perdu|overnight|petit[- ]d[ée]j/.test(s)) return "Petit-déjeuner";
+    if (/cookie|biscuit|madeleine|muffin|cr[eê]pe|gaufre|financier|sabl[ée]s|barres?|go[uû]ter/.test(s)) return "Goûter";
+    if (/g[aâ]teau|tarte (aux|au|à la) (pomme|poire|fraise|abricot|citron|chocolat|framboise|fruit|prune|myrtille)|tatin|cr[eè]me (br[uû]l|dessert|anglaise|caramel)|mousse au chocolat|cake|crumble|clafoutis|glace|sorbet|\bflan\b|fondant|brownie|tiramisu|panna cotta|compote|macaron|beignet|charlotte|b[uû]che|cheesecake|riz au lait|[iî]le flottante|soufl[ée] au|dessert/.test(s)) return "Dessert";
+    if (/soupe|velout[eé]|potage|gaspacho|salade|terrine|verrine|tartinade|houmous|rillettes|carpaccio|tapenade|mimosa|bruschetta|entr[eé]e|tzatziki|guacamole/.test(s)) return "Entrée";
+    if (/pur[eé]e|gratin dauphinois|riz pilaf|l[eé]gumes r[oô]tis|frites|po[eê]l[eé]e de l[eé]gumes|ratatouille|accompagnement|potatoes/.test(s)) return "Accompagnement";
+    return "Plat";
   }
   function normType(s) {
     s = s.toLowerCase();
@@ -103,10 +105,25 @@
     if (/boisson/.test(s)) return "Boisson"; return "Plat";
   }
 
+  var cle = function (s) { return String(s).toLowerCase().normalize("NFD").replace(/[^a-z0-9]/g, ""); };
+  var ENTETE = /^(ingr[ée]dients?|pr[ée]paration|[ée]tapes?|instructions?|mat[ée]riel|ustensiles?|notes?|astuces?|conseils?|pour \d|temps|cuisson|portions?)\b/i;
+  // Lignes parasites des captures d'écran et des pages web : menus, heure, partage, étoiles…
+  function bruit(l) {
+    var alnum = (l.match(/[0-9a-zà-ÿœ]/gi) || []).length;
+    if (l.length > 2 && alnum / l.length < 0.5) return true;
+    if (/^\d{1,2}[:h]\d{2}$/.test(l) || /^(https?:|www\.)|©|★|☆/i.test(l)) return true;
+    return l.length < 32 && /\b(accueil|partager|imprimer|commentaires?|publicit[ée]|newsletter|abonnez|j'aime|se connecter|connexion|rechercher|voir aussi|recettes similaires|avis|notez|enregistrer|favoris|menu)\b/i.test(l);
+  }
+
   // Transforme un texte libre (ou la réponse de Claude) en recette au format du site
-  function analyser(texte) {
-    var lignes = texte.replace(/\r/g, "").split("\n").map(function (l) { return l.replace(/\s+/g, " ").trim(); }).filter(Boolean);
+  function analyser(texte, titreVu) {
+    var lignes = texte.replace(/\r/g, "").split("\n").map(function (l) { return l.replace(/\s+/g, " ").trim(); }).filter(function (l) { return l && !bruit(l); });
     var r = { nom: "", type: "", temps: "", base: 0, ing: [], etapes: [], materiel: "", notes: "" };
+    if (titreVu) {
+      // Le titre repéré (le plus gros texte) sort du reste, même s'il tenait sur deux lignes
+      r.nom = titreVu; var kt = cle(titreVu), retires = 0;
+      lignes = lignes.filter(function (l) { var k = cle(l); if (retires < 2 && k.length >= 4 && kt.indexOf(k) >= 0) { retires++; return false; } return true; });
+    }
     var temps = [], section = "", libres = [];
     function ajouterEtape(l) {
       var nouveau = /^(\d+\s*[.)\-:]|[ée]tape\s*\d+\s*[:.)-]?|[-•*·]\s)/i.test(l);
@@ -132,11 +149,15 @@
       if (section === "mat") { r.materiel += (r.materiel ? ", " : "") + propre(l); return; }
       if (section === "eta") { ajouterEtape(l); return; }
       if (section === "not") { r.notes += (r.notes ? " " : "") + l; return; }
-      libres.push(l);
+      libres.push({ l: l, avant: !section });
     });
+    var structure = r.ing.length > 0 || r.etapes.length > 0;
     // Sans titres de parties : on devine ligne par ligne
-    libres.forEach(function (l) {
-      if (!r.nom && l.length < 80 && !resembleIng(l)) { r.nom = propre(l); return; }
+    libres.forEach(function (x) {
+      var l = x.l;
+      // Avec des parties « Ingrédients / Préparation », le texte d'en-tête (sous-titre, présentation) va dans les notes
+      if (structure && x.avant && (r.nom || titreVu) && !resembleIng(l)) { if (!r.nom) r.nom = propre(l); else r.notes += (r.notes ? " " : "") + l; return; }
+      if (!r.nom && l.length < 80 && l.length > 3 && !resembleIng(l) && !ENTETE.test(l)) { r.nom = propre(l); return; }
       if (resembleIng(l)) r.ing.push(ingredient(l)); else if (l.length > 25 || /^\d+\s*[.)]/.test(l)) ajouterEtape(l); else if (!r.nom) r.nom = l;
     });
     r.ing = r.ing.filter(function (i) { return i && i.n && !/^(eau|de l'eau)$/i.test(i.n); });
@@ -156,16 +177,42 @@
     }));
   }
   function etat(txt, alerte) { var n = el("p-etat"); n.hidden = !txt; n.textContent = txt || ""; n.className = "note" + (alerte ? " warn" : ""); }
+  var mediane = function (a) { a = a.filter(function (x) { return x > 0; }).sort(function (x, y) { return x - y; }); return a.length ? a[Math.floor(a.length / 2)] : 0; };
 
-  // Réduit les grandes photos (plus rapide à lire, et accepte les formats que le navigateur sait ouvrir)
-  function reduire(fichier) {
+  // Le vrai titre : la ligne écrite le plus gros, en haut du document, avant les ingrédients
+  function choisirTitre(L) {
+    L = L.filter(function (x) { return x.t && /[a-zà-ÿ]{3}/i.test(x.t) && !bruit(x.t); });
+    if (!L.length) return "";
+    var fin = L.findIndex(function (x) { return /^ingr[ée]dients?\b/i.test(x.t); });
+    var haut = L.slice(0, fin > 0 ? fin : Math.max(4, Math.ceil(L.length * 0.4)))
+      .filter(function (x) { return x.t.length <= 80 && !ENTETE.test(x.t) && !resembleIng(x.t) && !/^\d+\s*[.)]/.test(x.t); });
+    if (!haut.length) return "";
+    var corps = mediane(L.map(function (x) { return x.h; }));
+    var best = haut.reduce(function (a, x) { return x.h > a.h ? x : a; });
+    if (best.h < corps * 1.15) return "";
+    // Un titre sur deux lignes : on recolle la ligne voisine écrite presque aussi gros
+    var i = L.indexOf(best), t = best.t, av = L[i - 1], ap = L[i + 1];
+    // même taille de lettres : hauteur proche et, pour les photos, largeur des lettres proche
+    var voisin = function (x) { return x && haut.indexOf(x) >= 0 && x.h >= best.h * 0.75 && x.h <= best.h * 1.35 && (!x.w || !best.w || (x.w >= best.w * 0.8 && x.w <= best.w * 1.25)) && (t + " " + x.t).length <= 90; };
+    if (voisin(av)) t = av.t + " " + t; else if (voisin(ap)) t += " " + ap.t;
+    t = propre(t);
+    if (t === t.toUpperCase() && /[A-Z]{3}/.test(t)) t = t.toLowerCase(); // TITRE EN CAPITALES -> Titre normal
+    return maj(t);
+  }
+
+  // Photo : agrandie si petite (captures d'écran), réduite si énorme, en niveaux de gris pour la lecture
+  function preparerPhoto(fichier) {
     return new Promise(function (ok) {
       var img = new Image(), url = URL.createObjectURL(fichier);
       img.onload = function () {
-        var k = Math.min(1, 2200 / Math.max(img.width, img.height)), c = document.createElement("canvas");
-        c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
-        var g = c.getContext("2d"); g.filter = "grayscale(1) contrast(1.25)"; g.drawImage(img, 0, 0, c.width, c.height);
-        URL.revokeObjectURL(url); ok(c);
+        var max = Math.max(img.width, img.height), k = max < 1400 ? Math.min(2, 1800 / max) : Math.min(1, 2400 / max);
+        var c = document.createElement("canvas"); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+        var g = c.getContext("2d"); g.filter = "grayscale(1) contrast(1.3)"; g.drawImage(img, 0, 0, c.width, c.height);
+        // Copie en couleur, plus légère, gardée avec la recette
+        var k2 = Math.min(1, 1600 / max), d = document.createElement("canvas"); d.width = Math.round(img.width * k2); d.height = Math.round(img.height * k2);
+        d.getContext("2d").drawImage(img, 0, 0, d.width, d.height);
+        URL.revokeObjectURL(url);
+        d.toBlob(function (b) { ok({ lecture: c, copie: b }); }, "image/jpeg", 0.8);
       };
       img.onerror = function () { URL.revokeObjectURL(url); ok(null); };
       img.src = url;
@@ -175,12 +222,23 @@
     return charger("https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js").then(function () {
       var i = 0;
       return Tesseract.createWorker("fra", 1, {
-        logger: function (m) { if (m.status === "recognizing text") etat("Lecture de la photo" + (images.length > 1 ? " " + (i + 1) + " sur " + images.length : "") + "… " + Math.round(m.progress * 100) + " %"); else if (/load|initializ/.test(m.status)) etat("Préparation de la lecture (la première fois, 15 à 30 secondes)…"); }
+        logger: function (m) { if (m.status === "recognizing text") etat("Lecture" + (images.length > 1 ? " de la page " + (i + 1) + " sur " + images.length : " de la photo") + "… " + Math.round(m.progress * 100) + " %"); else if (/load|initializ/.test(m.status)) etat("Préparation de la lecture (la première fois, 15 à 30 secondes)…"); }
       }).then(function (w) {
-        var textes = [];
+        var textes = [], titre = "";
         return images.reduce(function (p, im) {
-          return p.then(function () { return w.recognize(im).then(function (r) { textes.push(r.data.text); i++; }); });
-        }, Promise.resolve()).then(function () { w.terminate(); return textes.join("\n"); });
+          return p.then(function () {
+            return w.recognize(im).then(function (r) {
+              var L = (r.data.lines || []).filter(function (l) { return l.confidence > 30; }).map(function (l) {
+                var ws = (l.words || []).filter(function (w) { return w.text && w.text.length > 1; });
+                return { t: l.text.replace(/\s+/g, " ").trim(), h: l.bbox ? l.bbox.y1 - l.bbox.y0 : mediane(ws.map(function (w) { return w.bbox.y1 - w.bbox.y0; })),
+                  w: mediane(ws.map(function (w) { return (w.bbox.x1 - w.bbox.x0) / w.text.length; })) };
+              });
+              if (!titre) titre = choisirTitre(L);
+              textes.push(L.length ? L.map(function (x) { return x.t; }).join("\n") : r.data.text);
+              i++;
+            });
+          });
+        }, Promise.resolve()).then(function () { w.terminate(); return { texte: textes.join("\n"), titre: titre }; });
       });
     });
   }
@@ -194,11 +252,20 @@
       for (var k = 1; k <= n; k++) pages.push(k);
       return Promise.all(pages.map(function (k) {
         return doc.getPage(k).then(function (pg) {
-          return pg.getTextContent().then(function (tc) { return { pg: pg, txt: tc.items.map(function (it) { return it.str + (it.hasEOL ? "\n" : ""); }).join("") }; });
+          return pg.getTextContent().then(function (tc) {
+            // Lignes avec la taille de leur plus gros caractère
+            var L = [], cur = { t: "", h: 0 };
+            tc.items.forEach(function (it) {
+              cur.t += it.str; cur.h = Math.max(cur.h, Math.hypot(it.transform[2], it.transform[3]) || it.height || 0);
+              if (it.hasEOL) { cur.t = cur.t.replace(/\s+/g, " ").trim(); if (cur.t) L.push(cur); cur = { t: "", h: 0 }; }
+            });
+            cur.t = cur.t.replace(/\s+/g, " ").trim(); if (cur.t) L.push(cur);
+            return { pg: pg, L: L };
+          });
         });
       })).then(function (res) {
-        var txt = res.map(function (x) { return x.txt; }).join("\n");
-        if (txt.replace(/\s/g, "").length > 40) return txt;
+        var txt = res.map(function (x) { return x.L.map(function (l) { return l.t; }).join("\n"); }).join("\n");
+        if (txt.replace(/\s/g, "").length > 40) return { texte: txt, titre: choisirTitre(res[0].L) };
         // PDF scanné : on dessine les pages et on les lit comme des photos
         return Promise.all(res.slice(0, 3).map(function (x) {
           var vp = x.pg.getViewport({ scale: 2 }), c = document.createElement("canvas");
@@ -211,31 +278,123 @@
   function lireDocx(fichier) {
     return charger("https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js")
       .then(function () { return fichier.arrayBuffer(); })
-      .then(function (buf) { return mammoth.extractRawText({ arrayBuffer: buf }); })
-      .then(function (r) { return r.value; });
+      .then(function (buf) { return mammoth.convertToHtml({ arrayBuffer: buf }); })
+      .then(function (r) {
+        var d = new DOMParser().parseFromString(r.value, "text/html");
+        var blocs = [].slice.call(d.body.querySelectorAll("h1,h2,h3,h4,p,li"));
+        var titre = d.body.querySelector("h1") || d.body.querySelector("h2") || d.body.querySelector("h3");
+        if (!titre) titre = blocs.filter(function (b) { var s = b.querySelector("strong,b"); return b.tagName === "P" && s && s.textContent.trim() === b.textContent.trim() && b.textContent.trim().length < 80 && !ENTETE.test(b.textContent.trim()); })[0];
+        return { texte: blocs.map(function (b) { return (b.tagName === "LI" ? "- " : "") + b.textContent.trim(); }).filter(Boolean).join("\n"), titre: titre ? maj(propre(titre.textContent)) : "" };
+      });
   }
+  var LIMITE = 6 * 1024 * 1024;
   function lireFichier(fichier) {
     var nom = (fichier.name || "").toLowerCase(), type = fichier.type || "";
     ouvrirTexte();
     etat("Lecture de « " + (fichier.name || "la photo") + " »…");
-    var p;
-    if (/pdf/.test(type) || /\.pdf$/.test(nom)) p = lirePdf(fichier);
-    else if (/\.docx$/.test(nom) || /wordprocessingml/.test(type)) p = lireDocx(fichier);
-    else if (/^text\//.test(type) || /\.(txt|md)$/.test(nom)) p = fichier.text();
+    var p, original = fichier.size <= LIMITE ? { blob: fichier, type: type || "application/octet-stream", nom: fichier.name || "document" } : null;
+    if (/pdf/.test(type) || /\.pdf$/.test(nom)) { if (original) original.type = "application/pdf"; p = lirePdf(fichier); }
+    else if (/\.docx$/.test(nom) || /wordprocessingml/.test(type)) { if (original) original.type = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"; p = lireDocx(fichier); }
+    else if (/^text\//.test(type) || /\.(txt|md)$/.test(nom)) { if (original) original.type = "text/plain"; p = fichier.text().then(function (s) { return { texte: s, titre: "" }; }); }
     else if (/^image\//.test(type) || /\.(jpe?g|png|webp|heic|heif|gif|bmp)$/.test(nom))
-      p = reduire(fichier).then(function (c) { if (!c) throw new Error("format"); return ocr([c]); });
+      p = preparerPhoto(fichier).then(function (ph) {
+        if (!ph) throw new Error("format");
+        original = ph.copie ? { blob: ph.copie, type: "image/jpeg", nom: (fichier.name || "photo").replace(/\.\w+$/, "") + ".jpg" } : original;
+        return ocr([ph.lecture]);
+      });
     else p = Promise.reject(new Error("format"));
-    p.then(function (txt) {
-      txt = (txt || "").trim();
-      if (txt.replace(/\s/g, "").length < 15) { etat("Je n'ai pas réussi à lire de texte. Essayez une photo plus nette, bien à plat et éclairée, ou « Faire lire par Claude ».", true); return; }
+    p.then(function (res) {
+      var txt = (res.texte || "").trim();
+      docForm = original ? { etat: "nouveau", f: original } : { etat: "aucun" };
+      if (txt.replace(/\s/g, "").length < 15) {
+        etat("Je n'ai pas réussi à lire de texte. Le document est quand même joint : remplissez la fiche à la main, ou utilisez « Faire lire par Claude ».", true);
+        formulaire({ type: "Plat", base: 4 }, "", true); return;
+      }
       el("p-texte").value = txt;
-      etat("Texte lu. Vérifiez la recette ci-dessous, puis enregistrez.");
-      formulaire(analyser(txt));
+      titreLu = res.titre || "";
+      etat("Texte lu. Vérifiez la recette ci-dessous en la comparant au document, puis enregistrez.");
+      formulaire(analyser(txt, titreLu), "", true);
     }).catch(function (e) {
       etat(e && e.message === "format"
         ? "Ce format n'est pas lu ici. Utilisez une photo (JPEG ou PNG), un PDF, un fichier Word (.docx) ou du texte."
         : "La lecture n'a pas marché (connexion internet nécessaire la première fois). Réessayez, ou utilisez « Faire lire par Claude ».", true);
     });
+  }
+
+  // ---------- Documents d'origine ----------
+  // Gardés dans le navigateur (IndexedDB) et, avec un compte famille, dans la base (protégés par le code)
+  var docForm = { etat: "aucun" }, titreLu = "", urls = {};
+  var baseP = null;
+  function base() {
+    return baseP || (baseP = new Promise(function (ok, ko) {
+      var q = indexedDB.open("rdm-fichiers", 1);
+      q.onupgradeneeded = function () { q.result.createObjectStore("f"); };
+      q.onsuccess = function () { ok(q.result); }; q.onerror = function () { ko(q.error); };
+    }));
+  }
+  function idb(op, k, v) {
+    return base().then(function (db) {
+      return new Promise(function (ok, ko) {
+        var s = db.transaction("f", op === "get" ? "readonly" : "readwrite").objectStore("f");
+        var q = op === "get" ? s.get(k) : op === "put" ? s.put(v, k) : s.delete(k);
+        q.onsuccess = function () { ok(q.result); }; q.onerror = function () { ko(q.error); };
+      });
+    });
+  }
+  var compte = function () { var c = window.rdmCompte; return c && c.famille() ? c : null; };
+  function en64(blob) { return new Promise(function (ok, ko) { var r = new FileReader(); r.onload = function () { ok(String(r.result).split(",")[1] || ""); }; r.onerror = ko; r.readAsDataURL(blob); }); }
+  function envoyerDoc(id) {
+    var c = compte(), r = perso[id];
+    if (!c || !r || !r.doc || r.doc.envoye) return Promise.resolve();
+    return idb("get", id).then(function (f) {
+      if (!f) return;
+      return en64(f.blob).then(function (b64) {
+        var fam = c.famille();
+        return c.rpc("enregistrer_fichier", { p_nom: fam.nom, p_code: fam.code, p_id: id, p_type: f.type, p_nom_fichier: f.nom, p_donnees: b64 });
+      }).then(function (ok) { if (ok && perso[id] && perso[id].doc) { perso[id].doc.envoye = true; garder(); } });
+    }).catch(function (e) { if (/plein/.test(e && (e.code || e.message))) etat("L'espace des documents de la famille est plein : supprimez d'anciennes recettes pour en ajouter.", true); });
+  }
+  function docDe(id) {
+    return idb("get", id).catch(function () { return null; }).then(function (f) {
+      if (f) return f;
+      var c = compte(); if (!c) return null;
+      var fam = c.famille();
+      return c.rpc("lire_fichier", { p_nom: fam.nom, p_code: fam.code, p_id: id }).then(function (j) {
+        if (!j) return null;
+        return fetch("data:" + j.type + ";base64," + j.donnees).then(function (x) { return x.blob(); }).then(function (blob) {
+          var g = { blob: blob, type: j.type, nom: j.nom }; idb("put", id, g).catch(function () {}); return g;
+        });
+      }).catch(function () { return null; });
+    });
+  }
+  function urlDe(id, f) { if (!urls[id]) urls[id] = URL.createObjectURL(f.blob); return urls[id]; }
+  function oublierUrl(id) { if (urls[id]) { URL.revokeObjectURL(urls[id]); delete urls[id]; } }
+  function htmlDoc(id, f, grand) {
+    var u = urlDe(id, f);
+    if (/^image\//.test(f.type)) return '<a href="' + u + '" target="_blank" rel="noopener" class="doc-img' + (grand ? " grand" : "") + '"><img src="' + u + '" alt="Document d\'origine : ' + esc(f.nom) + '"></a>';
+    return '<a class="cf-s doc-lien" href="' + u + '" target="_blank" rel="noopener" download="' + esc(f.nom) + '">Ouvrir le document d\'origine (' + esc(f.nom) + ")</a>";
+  }
+  // Remplit les emplacements [data-doc] d'une zone avec l'aperçu du document
+  function remplirDocs(zone, grand) {
+    [].forEach.call(zone.querySelectorAll("[data-doc]"), function (n) {
+      var id = n.dataset.doc;
+      docDe(id).then(function (f) {
+        n.innerHTML = (n.dataset.titre ? '<h4 class="sub">Document d\'origine</h4>' : "") + (f ? htmlDoc(id, f, grand) : '<p class="note">Le document d\'origine est resté sur l\'appareil où la recette a été ajoutée. Il sera visible ici dès que cet appareil sera connecté au compte de la famille.</p>');
+      });
+    });
+  }
+  function montrerDocForm() {
+    var z = el("p-doc"), f = docForm.f;
+    if (docForm.etat === "nouveau" || docForm.etat === "garder") {
+      z.hidden = false;
+      var apercu = function (g) {
+        z.innerHTML = '<h4 class="sub">Document d\'origine</h4>' + (g ? (/^image\//.test(g.type) ? '<img src="' + URL.createObjectURL(g.blob) + '" alt="">' : '<p class="note">' + esc(g.nom) + "</p>") : '<p class="note">Document joint.</p>') +
+          '<button type="button" class="x" id="p-doc-retirer">Retirer le document</button>';
+        el("p-doc-retirer").addEventListener("click", function () { docForm = { etat: "retirer" }; montrerDocForm(); });
+      };
+      if (docForm.etat === "nouveau") apercu(f); else docDe(el("p-id").value).then(apercu);
+    } else { z.hidden = true; z.innerHTML = ""; }
+    el("p-doc-joindre").textContent = docForm.etat === "nouveau" || docForm.etat === "garder" ? "Remplacer le document" : "Joindre la photo ou le document";
   }
   function ouvrirTexte() { el("p-texte-box").hidden = false; }
 
@@ -268,8 +427,9 @@
     el("p-ings").appendChild(d);
     return d;
   }
-  function formulaire(r, id) {
+  function formulaire(r, id, garderDoc) {
     el("p-form").hidden = false;
+    if (!garderDoc) docForm = id && perso[id] && perso[id].doc ? { etat: "garder" } : { etat: "aucun" };
     el("p-form-titre").textContent = id ? "Modifier la recette" : "Vérifiez la recette";
     el("p-id").value = id || "";
     el("p-nom").value = r.nom || "";
@@ -282,16 +442,24 @@
     el("p-etapes").value = (r.etapes || []).join("\n");
     el("p-notes").value = r.notes || "";
     el("p-form-msg").hidden = true;
+    montrerDocForm();
     el("p-form").scrollIntoView({ behavior: "smooth", block: "start" });
   }
-  function fermer() { el("p-form").hidden = true; el("p-form").reset(); el("p-ings").innerHTML = ""; }
+  function fermer() { el("p-form").hidden = true; el("p-form").reset(); el("p-ings").innerHTML = ""; docForm = { etat: "aucun" }; titreLu = ""; el("p-doc").innerHTML = ""; }
+  el("p-doc-input").addEventListener("change", function (e) {
+    var f = e.target.files && e.target.files[0]; e.target.value = "";
+    if (!f) return;
+    if (f.size > LIMITE) { etat("Ce document est trop lourd (plus de 6 Mo).", true); return; }
+    if (/^image\//.test(f.type)) preparerPhoto(f).then(function (ph) { docForm = { etat: "nouveau", f: ph && ph.copie ? { blob: ph.copie, type: "image/jpeg", nom: (f.name || "photo").replace(/\.\w+$/, "") + ".jpg" } : { blob: f, type: f.type, nom: f.name } }; montrerDocForm(); });
+    else { docForm = { etat: "nouveau", f: { blob: f, type: f.type || "application/octet-stream", nom: f.name || "document" } }; montrerDocForm(); }
+  });
 
-  el("p-ecrire").addEventListener("click", function () { ouvrirTexte(); etat(""); formulaire({ type: "Plat", base: 4 }); el("p-nom").focus(); });
+  el("p-ecrire").addEventListener("click", function () { ouvrirTexte(); etat(""); titreLu = ""; formulaire({ type: "Plat", base: 4 }); el("p-nom").focus(); });
   el("p-analyser").addEventListener("click", function () {
     var t = el("p-texte").value.trim();
     if (!t) { etat("Écrivez ou collez d'abord la recette dans le cadre.", true); return; }
     etat("Recette mise au format. Vérifiez-la ci-dessous, puis enregistrez.");
-    formulaire(analyser(t), el("p-id").value || "");
+    formulaire(analyser(t, titreLu), el("p-id").value || "", true);
   });
   ["p-photo", "p-fichier"].forEach(function (id) {
     el(id).addEventListener("change", function (e) { var f = e.target.files && e.target.files[0]; if (f) lireFichier(f); e.target.value = ""; });
@@ -316,12 +484,23 @@
       etapes: el("p-etapes").value.split("\n").map(function (s) { return s.replace(/^\s*(\d+\s*[.)\-:]|[-•*·])\s*/, "").trim(); }).filter(Boolean),
       notes: el("p-notes").value.trim(), ajoute: (perso[id] && perso[id].ajoute) || new Date().toISOString()
     };
+    var avant = perso[id] && perso[id].doc, d = docForm;
+    if (d.etat === "nouveau") {
+      r.doc = { nom: d.f.nom, type: d.f.type, envoye: false }; oublierUrl(id);
+      idb("put", id, d.f).catch(function () {}).then(function () { return envoyerDoc(id); }).then(function () { afficher(); });
+    } else if (d.etat === "garder" && avant) r.doc = avant;
+    else if (avant) supprimerDoc(id);
     perso[id] = r; inscrire(r); garder();
     fermer(); el("p-texte").value = ""; el("p-texte-box").hidden = true;
     etat("« " + nom + " » est enregistrée dans « " + r.type + " ». Cochez-la pour l'ajouter aux courses.");
     afficher(); renderBasket();
     var a = el("mr-" + id); if (a) a.scrollIntoView({ behavior: "smooth", block: "center" });
   });
+
+  function supprimerDoc(id) {
+    oublierUrl(id); idb("del", id).catch(function () {});
+    var c = compte(); if (c) { var fam = c.famille(); c.rpc("supprimer_fichier", { p_nom: fam.nom, p_code: fam.code, p_id: id }).catch(function () {}); }
+  }
 
   // ---------- Affichage ----------
   var SUCRE = /\bsucre\b|cassonade|vergeoise|sirop|\bmiel\b|confiture|nutella|p[aâ]te à tartiner|chocolat au lait|chocolat blanc|caramel|lait concentr/i;
@@ -331,6 +510,7 @@
       '<div class="menu-head"><span class="eyebrow">Ma recette · ' + esc(m.type) + "</span><h3>" + esc(m.nom) + "</h3>" +
       '<div class="meta"><span>' + esc(m.temps) + "</span><span>Recette pour " + m.base + " portions</span><span>" + m.ing.length + " ingrédients</span></div></div>" +
       '<div class="perso-actions"><button type="button" class="ghost" data-pmod="' + esc(m.id) + '">Modifier</button><button type="button" class="x" data-psup="' + esc(m.id) + '" aria-label="Supprimer ' + esc(m.nom) + '">Supprimer</button></div>' +
+      (m.doc ? '<div class="doc-carte" data-doc="' + esc(m.id) + '"><p class="note">Chargement du document d\'origine…</p></div>' : "") +
       (sucre ? '<p class="sucre">Cette recette contient du sucre ajouté. Pour les dents, essayez d\'en mettre moitié moins ou de le remplacer par des dattes ou une banane bien mûre, et servez-la pendant le repas plutôt qu\'en grignotage.</p>' : "") +
       '<details><summary>Ingrédients et recette pas à pas</summary><div class="cols">' +
       '<div><h4 class="sub">À acheter' + (mult ? " pour " + fmt(portions()) + " portions" : "") + "</h4><ul>" +
@@ -349,6 +529,7 @@
       var de = liste.filter(function (m) { return m.type === t; }).sort(function (a, b) { return a.nom.localeCompare(b.nom); });
       return de.length ? '<h3 class="perso-type">' + (t === "Plat" ? "Plats" : t === "Sauce" ? "Sauces" : t === "Boisson" ? "Boissons" : t === "Petit-déjeuner" ? "Petits-déjeuners" : t + "s") + " (" + de.length + ')</h3><div class="menus">' + de.map(carte).join("") + "</div>" : "";
     }).join("");
+    remplirDocs(el("perso-liste"));
   }
   el("perso-liste").addEventListener("click", function (e) {
     var b = e.target.closest("[data-pmod]");
@@ -357,14 +538,30 @@
     if (b) {
       var id = b.dataset.psup, p = perso[id];
       if (!p || !confirm("Supprimer « " + p.nom + " » de vos recettes ? Elle disparaîtra aussi pour le reste de la famille.")) return;
+      if (p.doc) supprimerDoc(id);
       delete perso[id]; REG.delete(id);
       if (chosen.delete(id)) try { localStorage.setItem("menus-choix", JSON.stringify([].concat(Array.from(chosen)))); } catch (err) {}
       garder(); afficher(); renderBasket();
     }
   });
 
+  var renderRecettesOrig = renderRecettes;
+  renderRecettes = function (sel) {
+    renderRecettesOrig(sel);
+    sel.forEach(function (m) {
+      var a = m.perso && m.doc && document.getElementById("r-" + m.id);
+      if (a) { var d = document.createElement("div"); d.className = "doc-recette"; d.dataset.doc = m.id; d.dataset.titre = "1"; a.appendChild(d); }
+    });
+    remplirDocs(el("rec-liste"), true);
+  };
+  window.addEventListener("rdm-famille", function () {
+    Object.keys(perso).forEach(function (id) { if (perso[id].doc && !perso[id].doc.envoye) envoyerDoc(id); });
+    afficher();
+  });
+
   lire();
   afficher();
   renderBasket();
   window.__persoAnalyser = analyser; // pour les tests
+  window.__persoTitre = choisirTitre;
 })();

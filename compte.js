@@ -91,7 +91,7 @@
     var distant = rep.donnees || {};
     var dejaRecharge = false;
     try { dejaRecharge = sessionStorage.getItem("rdm-sync") === "1"; sessionStorage.removeItem("rdm-sync"); } catch (e) {}
-    if (neuve) { pret = true; enregistrer(); return; }
+    if (neuve) { pret = true; enregistrer(); signaler(); return; }
     if (!dejaRecharge && JSON.stringify(distant) !== JSON.stringify(lireLocal())) {
       ecrireLocal(distant);
       try { sessionStorage.setItem("rdm-sync", "1"); } catch (e) {}
@@ -100,7 +100,11 @@
     }
     pret = true;
     etat("enregistré");
+    signaler();
   }
+  function signaler() { try { window.dispatchEvent(new Event("rdm-famille")); } catch (e) {} }
+  // Pour perso.js : les documents d'origine des recettes passent par le même compte
+  window.rdmCompte = { famille: function () { return famille && pret ? famille : null; }, rpc: rpc };
 
   function brancher() {
     var bloc = $("compte");
@@ -144,6 +148,7 @@
       clearTimeout(minuterie);
       memoriser(null);
       ecrireLocal({}); // on ne laisse pas les choix de la famille sur un appareil partagé
+      try { indexedDB.deleteDatabase("rdm-fichiers"); } catch (e) {}
       location.reload();
     });
 
