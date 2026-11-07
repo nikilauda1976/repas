@@ -177,32 +177,26 @@ button:disabled{opacity:.55;cursor:progress}
   <h1>Les menus de la maison</h1>
   <div class="compte" id="compte" hidden>
     <div id="compte-off" class="compte-ligne">
-      <p class="note">Créez un compte pour votre famille : vos menus, votre liste et vos réglages vous suivent sur tous vos appareils.</p>
-      <button type="button" id="compte-ouvrir">Se connecter ou créer un compte</button>
+      <p class="note">Créez votre famille avec un nom et un code secret : vos menus, votre liste et vos réglages vous suivent sur tous vos appareils. Pas besoin d'e-mail.</p>
+      <button type="button" id="compte-ouvrir">Retrouver ou créer ma famille</button>
     </div>
     <div id="compte-on" class="compte-ligne" hidden>
-      <p>Famille <b id="compte-nom"></b> <span class="note">· <span id="compte-etat">connecté</span></span></p>
+      <p>Famille <b id="compte-nom"></b> <span class="note">· <span id="compte-etat">connectée</span></span></p>
       <button type="button" id="compte-sortir" class="ghost">Se déconnecter</button>
     </div>
     <form id="compte-form" class="compte-form" hidden aria-label="Compte famille">
       <div class="compte-tabs" role="group" aria-label="Choisir">
-        <button type="button" id="compte-tab-in" aria-pressed="true">J'ai un compte</button>
-        <button type="button" id="compte-tab-new" aria-pressed="false">Créer un compte famille</button>
+        <button type="button" id="compte-tab-in" aria-pressed="true">J'ai déjà une famille</button>
+        <button type="button" id="compte-tab-new" aria-pressed="false">Créer ma famille</button>
       </div>
-      <label id="compte-nom-champ" hidden>Nom de la famille<input id="compte-famille" type="text" maxlength="80" autocomplete="family-name" placeholder="Par exemple : Famille Martin"></label>
-      <label>E-mail<input id="compte-email" type="email" autocomplete="email" required></label>
-      <label>Mot de passe (8 caractères minimum)<input id="compte-mdp" type="password" minlength="8" autocomplete="current-password" required></label>
+      <p class="note" id="compte-aide">Entrez le nom et le code de votre famille.</p>
+      <label>Nom de la famille<input id="compte-famille" type="text" maxlength="80" autocomplete="username" placeholder="Par exemple : Famille Martin Montrouge"></label>
+      <label>Code secret (6 caractères minimum)<input id="compte-code" type="password" minlength="6" maxlength="100" autocomplete="current-password"></label>
       <div class="ajout-row">
-        <button type="submit" id="compte-go">Se connecter</button>
-        <button type="button" id="compte-oubli" class="lien">Mot de passe oublié</button>
+        <button type="submit" id="compte-go">Retrouver ma famille</button>
         <button type="button" id="compte-annuler" class="lien">Fermer</button>
       </div>
       <p class="note" id="compte-msg" role="status" hidden></p>
-    </form>
-    <form id="compte-nouveau" class="compte-form" hidden aria-label="Nouveau mot de passe">
-      <label>Nouveau mot de passe<input id="compte-nouveau-mdp" type="password" minlength="8" autocomplete="new-password"></label>
-      <button type="submit">Enregistrer le mot de passe</button>
-      <p class="note" id="compte-nouveau-msg" role="status"></p>
     </form>
   </div>
   <p class="lead">Trente-cinq menus au choix et des desserts sans sucre ajouté. Réglez votre foyer ci-dessous, cochez vos menus, puis ouvrez l'onglet « Ma liste » : les quantités, le nombre d'œufs et le total s'adaptent tout seuls.</p>
@@ -395,7 +389,6 @@ button:disabled{opacity:.55;cursor:progress}
 </section>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="compte.js"></script>
 <script>
 const MENUS=[
