@@ -148,6 +148,22 @@ button:disabled{opacity:.55;cursor:progress}
   .recette{break-inside:avoid-page;border:0;border-top:2px solid #000;border-radius:0;padding:12px 0}
   .recette+.recette{break-before:page}
 }
+.compte{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px;display:flex;flex-direction:column;gap:10px}
+.compte-ligne{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:space-between}
+.compte-ligne p{margin:0;flex:1 1 220px;min-width:0}
+.compte-form{display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--line);padding-top:10px}
+.compte-form label{display:flex;flex-direction:column;gap:4px;font-size:14px;font-weight:600;color:var(--muted)}
+.compte-form input{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 12px;min-width:0}
+.compte-form input:focus-visible{outline:2px solid var(--basil);outline-offset:1px}
+.compte-tabs{display:flex;flex-wrap:wrap;gap:6px}
+.compte-tabs button{background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px}
+.compte-tabs button[aria-pressed="true"]{background:var(--basil);color:var(--surface);border-color:var(--basil)}
+.note.ok{color:var(--basil)}
+.note.warn{color:var(--saffron)}
+.liens-ig{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px}
+.liens-ig li{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:0}
+.liens-ig a{color:var(--basil);font-weight:600;text-decoration:none}
+.liens-ig a:hover{text-decoration:underline}
 .cta{display:inline-block;background:var(--saffron);color:var(--surface);font-weight:700;text-decoration:none;border-radius:8px;padding:12px 16px;width:fit-content}
 @media (max-width:620px){
   .cols,.tips{grid-template-columns:1fr}
@@ -159,7 +175,37 @@ button:disabled{opacity:.55;cursor:progress}
 <header>
   <span class="eyebrow">Semaine du 2 novembre 2026 · livraison samedi 31 octobre</span>
   <h1>Les menus de la maison</h1>
-  <p class="lead">Vingt menus au choix. Réglez votre foyer ci-dessous, cochez vos menus, puis ouvrez l'onglet « Ma liste » : les quantités, le nombre d'œufs et le total s'adaptent tout seuls.</p>
+  <div class="compte" id="compte" hidden>
+    <div id="compte-off" class="compte-ligne">
+      <p class="note">Créez un compte pour votre famille : vos menus, votre liste et vos réglages vous suivent sur tous vos appareils.</p>
+      <button type="button" id="compte-ouvrir">Se connecter ou créer un compte</button>
+    </div>
+    <div id="compte-on" class="compte-ligne" hidden>
+      <p>Famille <b id="compte-nom"></b> <span class="note">· <span id="compte-etat">connecté</span></span></p>
+      <button type="button" id="compte-sortir" class="ghost">Se déconnecter</button>
+    </div>
+    <form id="compte-form" class="compte-form" hidden aria-label="Compte famille">
+      <div class="compte-tabs" role="group" aria-label="Choisir">
+        <button type="button" id="compte-tab-in" aria-pressed="true">J'ai un compte</button>
+        <button type="button" id="compte-tab-new" aria-pressed="false">Créer un compte famille</button>
+      </div>
+      <label id="compte-nom-champ" hidden>Nom de la famille<input id="compte-famille" type="text" maxlength="80" autocomplete="family-name" placeholder="Par exemple : Famille Martin"></label>
+      <label>E-mail<input id="compte-email" type="email" autocomplete="email" required></label>
+      <label>Mot de passe (8 caractères minimum)<input id="compte-mdp" type="password" minlength="8" autocomplete="current-password" required></label>
+      <div class="ajout-row">
+        <button type="submit" id="compte-go">Se connecter</button>
+        <button type="button" id="compte-oubli" class="lien">Mot de passe oublié</button>
+        <button type="button" id="compte-annuler" class="lien">Fermer</button>
+      </div>
+      <p class="note" id="compte-msg" role="status" hidden></p>
+    </form>
+    <form id="compte-nouveau" class="compte-form" hidden aria-label="Nouveau mot de passe">
+      <label>Nouveau mot de passe<input id="compte-nouveau-mdp" type="password" minlength="8" autocomplete="new-password"></label>
+      <button type="submit">Enregistrer le mot de passe</button>
+      <p class="note" id="compte-nouveau-msg" role="status"></p>
+    </form>
+  </div>
+  <p class="lead">Trente-cinq menus au choix et des desserts sans sucre ajouté. Réglez votre foyer ci-dessous, cochez vos menus, puis ouvrez l'onglet « Ma liste » : les quantités, le nombre d'œufs et le total s'adaptent tout seuls.</p>
   <form class="foyer" id="foyer" aria-label="Réglages du foyer">
     <label>Adultes et ados<input type="number" id="f-adultes" min="0" max="12" step="1" value="5" inputmode="numeric"></label>
     <label>Enfants de moins de 12 ans<input type="number" id="f-enfants" min="0" max="12" step="1" value="0" inputmode="numeric"></label>
@@ -228,9 +274,14 @@ button:disabled{opacity:.55;cursor:progress}
 
 <section data-view="semaine">
   <span class="eyebrow">En plus des repas</span>
-  <h2>Le gâteau et la soirée de la semaine</h2>
-  <p class="lead">Chaque semaine, un gâteau pour les goûters et une soirée pour se retrouver autour de la table, qui changent avec la saison. Cochez-les pour les ajouter aux courses.</p>
+  <h2>Desserts, goûters, gâteau et soirée</h2>
+  <p class="lead">Des desserts et des goûters sans sucre ajouté, sucrés seulement avec des fruits de saison ou quelques dattes, plus un gâteau et une soirée qui changent avec la saison. Cochez-les pour les ajouter aux courses. Pour les dents, servez-les pendant le repas plutôt qu'en grignotage.</p>
   <div class="menus" id="extras"></div>
+  <details class="basics">
+    <summary>D'autres idées : 19 desserts et goûters IG bas de zerosucreetigbas.fr</summary>
+    <p class="note" style="margin-top:10px">Recettes du site <a class="cta-lien" href="https://zerosucreetigbas.fr/category/recettes-sucrees/desserts-et-gouters/" target="_blank" rel="noopener">zerosucreetigbas.fr</a>, à lire sur leur site. Elles ne sont pas dans la liste de courses. Avant de les faire, vérifiez qu'elles suivent nos règles : certaines utilisent un sucrant, du chocolat ou des fruits hors saison.</p>
+    <ul class="liens-ig" id="liens-ig"><li><a href="https://zerosucreetigbas.fr/bananabread-ig-bas-sans-sucre-ajoute/" target="_blank" rel="noopener">Bananabread IG bas sans sucre ajouté ↗</a></li><li><a href="https://zerosucreetigbas.fr/buche-vanille-framboise-ig-bas/" target="_blank" rel="noopener">Bûche vanille framboise IG bas ↗</a></li><li><a href="https://zerosucreetigbas.fr/chocolat-caramel-ig-bas/" target="_blank" rel="noopener">Chocolat caramel IG bas ↗</a></li><li><a href="https://zerosucreetigbas.fr/galette-des-rois-ig-bas-avec-pate-feuilletee-maison-express/" target="_blank" rel="noopener">Galette des rois IG bas maison ↗</a></li><li><a href="https://zerosucreetigbas.fr/buche-de-noel-legere-au-chocolat-ig-bas/" target="_blank" rel="noopener">Bûche de Noël légère au chocolat IG bas ↗</a></li><li><a href="https://zerosucreetigbas.fr/tarte-halloween-ig-bas-potimarron-noisette-et-chocolat/" target="_blank" rel="noopener">Tarte potimarron, noisette et chocolat IG bas ↗</a></li><li><a href="https://zerosucreetigbas.fr/buche-poire-vanille-a-ig-bas-et-sans-gluten/" target="_blank" rel="noopener">Bûche poire vanille IG bas, sans gluten ↗</a></li><li><a href="https://zerosucreetigbas.fr/cheesecake-ig-bas-framboise-pistache/" target="_blank" rel="noopener">Cheesecake framboise pistache IG bas ↗</a></li><li><a href="https://zerosucreetigbas.fr/pancakes-pomme-ig-bas/" target="_blank" rel="noopener">Pancakes pomme IG bas ↗</a></li><li><a href="https://zerosucreetigbas.fr/muffins-pepites-de-chocolat-noisettes-ig-bas/" target="_blank" rel="noopener">Muffins pépites de chocolat et noisettes IG bas ↗</a></li><li><a href="https://zerosucreetigbas.fr/barres-cereales-abricots-sans-sucre-et-a-ig-bas/" target="_blank" rel="noopener">Barres céréales abricots sans sucre, IG bas ↗</a></li><li><a href="https://zerosucreetigbas.fr/cake-fondant-coco-ig-bas-aux-pepites-de-chocolat/" target="_blank" rel="noopener">Cake fondant coco aux pépites de chocolat IG bas ↗</a></li><li><a href="https://zerosucreetigbas.fr/cookies-moelleux-ig-bas-sans-gluten/" target="_blank" rel="noopener">Cookies moelleux IG bas, sans gluten ↗</a></li><li><a href="https://zerosucreetigbas.fr/layer-cake-coco-poire-ig-bas/" target="_blank" rel="noopener">Layer cake coco poire IG bas ↗</a></li><li><a href="https://zerosucreetigbas.fr/boule-chocolat-pistache-ig-bas/" target="_blank" rel="noopener">Boule chocolat pistache IG bas ↗</a></li><li><a href="https://zerosucreetigbas.fr/gateau-au-yaourt-ig-bas-aux-abricots/" target="_blank" rel="noopener">Gâteau au yaourt aux abricots IG bas ↗</a></li><li><a href="https://zerosucreetigbas.fr/crumble-rhubarbe-fraise-banane-ig-bas/" target="_blank" rel="noopener">Crumble rhubarbe, fraise, banane IG bas ↗</a></li><li><a href="https://zerosucreetigbas.fr/gateaux-au-chocolat-moelleux-ig-bas-sans-gluten/" target="_blank" rel="noopener">Gâteaux au chocolat moelleux IG bas, sans gluten ↗</a></li><li><a href="https://zerosucreetigbas.fr/muffin-myrtilles-ig-bas-sans-gluten/" target="_blank" rel="noopener">Muffins myrtilles IG bas, sans gluten ↗</a></li></ul>
+  </details>
   <details class="basics">
     <summary>Le calendrier des idées selon la saison</summary>
     <div class="table-wrap"><table style="min-width:0;margin-top:10px"><tbody id="saisons"></tbody></table></div>
@@ -344,6 +395,8 @@ button:disabled{opacity:.55;cursor:progress}
 </section>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="compte.js"></script>
 <script>
 const MENUS=[
  {id:"poulet",nom:"Poulet au paprika, riz et haricots verts",dessert:"Clémentines",temps:"25 min",profil:"Riche en protéines",
@@ -696,6 +749,41 @@ const NOUV_KCAL={"n-escalopes":790,"n-saumon":720,"n-faux-filet":780,"n-cabillau
 NOUV.forEach(m=>{m.nouveau=true;MENUS.push(m)});
 // Extras de la semaine : un gâteau et une soirée à thème, selon la saison
 const EXTRAS=[
+ {id:"d-pommes-four",nom:"Pommes au four farcies aux dattes et aux noix, fromage blanc",temps:"10 min + 30 min au four",profil:"Dessert et goûter",
+  ing:[["Fruits et légumes","Pommes (Boskoop ou reinette)","6",2.40],["Épicerie","Dattes dénoyautées","100 g",1.30],["Épicerie","Cerneaux de noix","60 g",1.50],["Frais","Fromage blanc nature","500 g",1.20]],
+  materiel:"1 plat allant au four, 1 vide-pomme ou 1 petit couteau, 1 planche, 1 cuillère",
+  etapes:["Allumez le four à 180 °C.","Lavez les pommes. Retirez le cœur avec le vide-pomme, ou creusez-le avec le petit couteau en tournant, sans percer le fond.","Hachez finement les dattes et les noix sur la planche. Mélangez-les avec 1 cuillère à café de cannelle.","Posez les pommes dans le plat et remplissez le trou avec le mélange en tassant avec le doigt. Posez une petite noisette de beurre sur chaque pomme et versez 1 verre d'eau au fond du plat.","Enfournez 30 min. Elles sont cuites quand la peau se ride et qu'un couteau entre sans forcer.","Servez tiède, avec 2 cuillères de fromage blanc nature. Pas besoin de sucre : la pomme cuite et les dattes suffisent."],
+  jeunes:"Ajoutez une poignée de noix en plus : bon pour la récupération.",seniors:"Une pomme bien cuite, très digeste, avec le fromage blanc pour le calcium."},
+ {id:"d-poires-pochees",nom:"Poires pochées à la vanille et à la cannelle, amandes grillées",temps:"10 min + 20 min de cuisson",profil:"Dessert et goûter",
+  ing:[["Fruits et légumes","Poires (Conférence)","6",2.60],["Épicerie","Gousse de vanille","1",2.50],["Épicerie","Amandes effilées","50 g",1.20],["Frais","Yaourts nature","6",1.20]],
+  materiel:"1 grande casserole, 1 éplucheur, 1 petite poêle, 1 couteau",
+  etapes:["Épluchez les poires en gardant la queue. Coupez une fine tranche en dessous pour qu'elles tiennent debout.","Fendez la gousse de vanille en deux dans la longueur et grattez les graines avec la pointe du couteau.","Dans la casserole, mettez 1,5 litre d'eau, la gousse et ses graines, 1 bâton ou 1 cuillère à café de cannelle. Portez à petits bouillons.","Plongez les poires, baissez à feu doux et laissez frémir 20 min. Elles sont prêtes quand un couteau entre comme dans du beurre.","Pendant ce temps, faites dorer les amandes 2 min dans la petite poêle sans matière grasse, en remuant : elles brûlent vite.","Servez chaque poire tiède avec un yaourt nature et les amandes. Le jus de cuisson n'est pas sucré : vous pouvez en verser un peu dessus."],
+  jeunes:"Doublez les amandes.",seniors:"Très doux et digeste, parfait le soir."},
+ {id:"d-crumble",nom:"Crumble pommes-poires à l'avoine et aux noisettes",temps:"15 min + 30 min au four",profil:"Dessert et goûter",
+  ing:[["Fruits et légumes","Pommes","800 g",1.50],["Fruits et légumes","Poires","600 g",1.60],["Épicerie","Flocons d'avoine","120 g",0.40],["Épicerie","Poudre de noisettes","80 g",1.60],["Épicerie","Dattes dénoyautées","60 g",0.80],["Frais","Beurre doux","60 g",0.60]],
+  materiel:"1 plat allant au four, 1 saladier, 1 éplucheur, 1 planche, 1 couteau",
+  etapes:["Allumez le four à 180 °C.","Épluchez les pommes et les poires, retirez le cœur et coupez-les en cubes de 2 cm. Mettez-les dans le plat avec 1 cuillère à café de cannelle.","Hachez les dattes très finement : ce seront les seuls points sucrés du crumble.","Dans le saladier, mélangez les flocons d'avoine, la poudre de noisettes et les dattes. Ajoutez le beurre froid coupé en petits dés.","Frottez le mélange entre vos doigts jusqu'à obtenir du sable grossier, puis répartissez-le sur les fruits.","Enfournez 30 min. Le dessus doit être doré et les fruits doivent buller sur les bords.","Laissez tiédir 10 min avant de servir."],
+  jeunes:"Une belle part, avec un yaourt nature à côté.",seniors:"Une petite part : riche en fibres grâce à l'avoine."},
+ {id:"d-clafoutis",nom:"Clafoutis aux poires sans sucre ajouté",temps:"15 min + 35 min au four",profil:"Dessert et goûter",
+  ing:[["Fruits et légumes","Poires bien mûres","4",2.00],["Frais","Œufs plein air","4",1.20],["Frais","Lait demi-écrémé","40 cl",0.50],["Épicerie","Farine de blé T80","60 g",0.20],["Épicerie","Poudre d'amandes","50 g",1.30],["Épicerie","Dattes dénoyautées","50 g",0.70]],
+  materiel:"1 plat allant au four, 1 saladier, 1 fouet, 1 fourchette, 1 éplucheur",
+  etapes:["Allumez le four à 180 °C. Beurrez le plat.","Faites tremper les dattes 10 min dans un bol d'eau chaude, égouttez-les et écrasez-les à la fourchette (ou mixez-les) jusqu'à faire une purée.","Épluchez les poires, retirez le cœur, coupez-les en lamelles et rangez-les dans le plat.","Dans le saladier, fouettez les œufs avec la purée de dattes, puis ajoutez la farine et la poudre d'amandes. Versez le lait petit à petit en fouettant pour éviter les grumeaux.","Versez la pâte sur les poires.","Enfournez 35 min. Il est cuit quand le dessus est doré et qu'un couteau planté au centre ressort propre.","Servez tiède ou froid. Les poires bien mûres apportent la douceur."],
+  jeunes:"Deux parts, riches en œufs.",seniors:"Une part, très moelleuse."},
+ {id:"d-riz-lait",nom:"Riz au lait à la vanille et aux dattes",temps:"40 min (dont 35 min de cuisson douce)",profil:"Dessert et goûter",
+  ing:[["Épicerie","Riz rond","150 g",0.60],["Frais","Lait demi-écrémé","1 l",1.10],["Épicerie","Gousse de vanille","1",2.50],["Épicerie","Dattes dénoyautées","60 g",0.80]],
+  materiel:"1 casserole à fond épais, 1 cuillère en bois, 1 couteau, 6 ramequins ou bols",
+  etapes:["Fendez la gousse de vanille et grattez les graines. Hachez finement les dattes.","Dans la casserole, versez le lait, la gousse, ses graines et les dattes. Faites chauffer sur feu moyen jusqu'aux premiers frémissements, sans laisser bouillir.","Versez le riz, baissez à feu très doux et laissez cuire 35 min en remuant toutes les 5 min : le riz colle vite au fond.","C'est prêt quand le riz est tendre et que le mélange est crémeux. Il épaissit encore en refroidissant.","Retirez la gousse, répartissez dans les ramequins et laissez refroidir. Gardez au frais 2 jours.","Le sucre vient seulement du lait et des dattes : pas de sucre en poudre."],
+  jeunes:"Un grand bol au goûter après le sport, pendant un vrai repas plutôt qu'en grignotage.",seniors:"Un petit ramequin, avec une poire."},
+ {id:"d-salade-agrumes",nom:"Salade de clémentines, kiwis et grenade à la menthe",temps:"15 min",profil:"Dessert et goûter",
+  ing:[["Fruits et légumes","Clémentines","1 kg",2.50],["Fruits et légumes","Kiwis","6",1.50],["Fruits et légumes","Grenade","1",1.50],["Fruits et légumes","Menthe fraîche","1 botte",1.20]],
+  materiel:"1 saladier, 1 planche, 1 couteau",
+  etapes:["Épluchez les clémentines et séparez les quartiers.","Épluchez les kiwis et coupez-les en rondelles.","Coupez la grenade en deux. Au-dessus du saladier, tapez le dos de chaque moitié avec une cuillère : les grains tombent.","Ciselez quelques feuilles de menthe.","Mélangez tous les fruits et la menthe. Gardez au frais jusqu'au moment de servir.","Aucun sucre à ajouter : les fruits mûrs font leur jus tout seuls."],
+  jeunes:"Ajoutez un yaourt nature pour les protéines.",seniors:"Léger, riche en vitamine C pour l'hiver."},
+ {id:"d-muffins",nom:"Muffins pomme-cannelle à l'avoine, sans sucre ajouté",temps:"15 min + 20 min au four",profil:"Dessert et goûter",
+  ing:[["Épicerie","Flocons d'avoine","150 g",0.50],["Épicerie","Farine complète T110","100 g",0.30],["Frais","Œufs plein air","3",0.90],["Frais","Yaourts nature","2",0.40],["Fruits et légumes","Pommes","3",1.20],["Épicerie","Dattes dénoyautées","80 g",1.10],["Épicerie","Levure chimique","1 sachet",0.30]],
+  materiel:"1 moule à 12 muffins (ou 12 caissettes en papier), 1 saladier, 1 râpe, 1 fourchette",
+  etapes:["Allumez le four à 180 °C. Posez les caissettes dans le moule.","Faites tremper les dattes 10 min dans de l'eau chaude, égouttez-les et écrasez-les en purée.","Râpez 2 pommes. Coupez la troisième en petits dés.","Dans le saladier, mélangez les œufs, les yaourts, la purée de dattes, les pommes râpées et 3 cuillères à soupe d'huile.","Ajoutez les flocons d'avoine, la farine, la levure et 1 cuillère à café de cannelle. Mélangez juste ce qu'il faut : la pâte reste épaisse.","Remplissez les caissettes aux trois quarts et posez quelques dés de pomme dessus.","Enfournez 20 min. Ils sont cuits quand une pique en bois ressort sèche. Ils se gardent 3 jours dans une boîte."],
+  jeunes:"Deux muffins au goûter, avec un verre de lait.",seniors:"Un muffin au petit-déjeuner, riche en fibres."},
  {id:"gateau",nom:"Gâteau moelleux pommes, dattes et cannelle, sans sucre ajouté",temps:"15 min + 35 min au four",profil:"Gâteau de la semaine",
   ing:[["Épicerie","Farine de blé","1 kg",0.90],["Épicerie","Dattes dénoyautées","200 g",2.60],["Frais","Œufs plein air","6",1.80],["Frais","Yaourt nature","1",0.20],["Fruits et légumes","Pommes","1 kg",1.80],["Épicerie","Levure chimique","1 sachet",0.30],["Épicerie","Cannelle en poudre","1 pot",1.20]],
   materiel:"1 moule rond de 24 cm environ, 1 saladier, 1 fouet ou fourchette, 1 couteau, 1 éplucheur, le pot du yaourt (il sert de verre doseur)",
@@ -725,7 +813,7 @@ const EXTRAS=[
 const ALL=MENUS.concat(EXTRAS);
 const REG=new Map(ALL.map(m=>[m.id,m]));
 // Calories estimées par portion (1/6 de la recette, dessert ou accompagnement compris), à ±15 %
-const KCAL={poulet:760,colin:560,chili:660,curry:950,wok:590,frittata:560,"pates-thon":830,boulettes:1010,galettes:700,"soupe-croque":700,"pois-chiches":640,"porc-moutarde":920,"riz-cantonais":690,wraps:680,saucisses:790,lieu:600,burgers:650,gnocchis:720,"soupe-thai":700,shakshuka:700,gateau:350,soiree:1200};
+const KCAL={poulet:760,colin:560,chili:660,curry:950,wok:590,frittata:560,"pates-thon":830,boulettes:1010,galettes:700,"soupe-croque":700,"pois-chiches":640,"porc-moutarde":920,"riz-cantonais":690,wraps:680,saucisses:790,lieu:600,burgers:650,gnocchis:720,"soupe-thai":700,shakshuka:700,gateau:350,soiree:1200,"d-pommes-four":200,"d-poires-pochees":160,"d-crumble":260,"d-clafoutis":210,"d-riz-lait":230,"d-salade-agrumes":90,"d-muffins":330};
 ALL.forEach(m=>{m.kcal=KCAL[m.id]||NOUV_KCAL[m.id]||0});
 const SAISONS=[
  ["Novembre","Soirée crêpes ou raclette, gâteau aux pommes, soupes à la courge"],
@@ -782,7 +870,7 @@ function card(m,p="m-"){
    <label class="pick"><input type="checkbox" id="${p}pick-${esc(m.id)}" data-id="${esc(m.id)}" ${chosen.has(m.id)?"checked":""}> Je choisis ce menu</label>
   </article>`;
 }
-const isExtra=m=>m.profil==="Gâteau de la semaine"||m.profil==="Soirée de la semaine";
+const isExtra=m=>m.profil==="Gâteau de la semaine"||m.profil==="Soirée de la semaine"||m.profil==="Dessert et goûter";
 const chosenRecipes=()=>[...chosen].map(id=>REG.get(id)).filter(Boolean);
 const nbOeufs=sel=>sel.reduce((n,m)=>n+ingF(m).reduce((s,i)=>s+(/^[œŒ]ufs/.test(i[1])?(parseInt(i[2],10)||0):0),0),0);
 // Rayons que la famille achète elle-même ailleurs (marché, boucher, poissonnier) : gardés sur l'appareil
