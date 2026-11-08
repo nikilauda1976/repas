@@ -403,6 +403,10 @@ body.avec-barre .wrap{padding-bottom:110px}
 .suite button:not(.ghost){margin-left:auto}
 @media (max-width:767px){.tabs .num{width:18px;height:18px;margin-right:5px;font-size:10px}.tabs .extra{font-size:13px}.suite button{flex:1 1 auto;text-align:center}}
 @media print{.etape-tete,.suite{display:none!important}}
+/* Commander avec Jow */
+.jow-plats{list-style:none;padding:0;margin:4px 0 0;display:flex;flex-direction:column}
+.jow-plats li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);margin:0}
+.jow-plats a{flex:none;color:var(--basil);font-weight:500;font-size:14px}
 /* Choisir : sélecteur Plats / Desserts / Mes recettes, et « Choisir pour moi » */
 .sous{display:inline-flex;flex-wrap:wrap;gap:4px;padding:4px;margin-top:10px;border:1px solid var(--line);border-radius:999px;width:fit-content;max-width:100%}
 .sous button,.sous button:hover{background:transparent;color:var(--ink);padding:8px 16px;font-size:14px}
@@ -1796,5 +1800,5 @@ function fallback(t){const pre=document.createElement("pre");pre.textContent=t;p
   <button type="button" data-aller="liste">Courses</button>
 </div>
 <script src="perso.js?v=20261108"></script>
-<script src="ui.js?v=20261108l"></script>
+<script src="ui.js?v=20261108m"></script>
 </body></html>

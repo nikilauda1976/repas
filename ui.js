@@ -222,6 +222,26 @@
   window.rdmProchaine = function (t) { return PARCOURS[rang(t) + 1]; };
   majParcours("semaine");
 
+  // ---------- Commander avec Jow : ouvrir Jow et retrouver chaque plat choisi parmi leurs recettes ----------
+  // Jow ne permet pas de recevoir une liste venue d'ailleurs : on ouvre Jow, et chaque plat a un lien qui cherche la recette Jow la plus proche.
+  var jow = document.createElement("section");
+  jow.className = "jow basket"; jow.dataset.view = "commande";
+  var premiereCommande = document.querySelector('section[data-view="commande"]');
+  premiereCommande.parentNode.insertBefore(jow, premiereCommande);
+  function majJow() {
+    var plats = buildList().repas;
+    var cherche = function (nom) { return "https://www.google.com/search?q=" + encodeURIComponent("site:jow.fr/recipes " + nom.split(",")[0]); };
+    jow.innerHTML = '<span class="eyebrow">Le plus rapide · 0,99 € par commande</span><h2>Commander avec Jow</h2>' +
+      '<p class="lead">Jow remplit votre panier au drive Carrefour, Leclerc, Auchan ou Intermarché en un clic, mais seulement avec ses propres recettes. Ajoutez à votre menu Jow la recette la plus proche de chaque plat, puis validez le panier dans Jow.</p>' +
+      '<div class="ajout-row"><a class="cta" href="https://jow.fr/" target="_blank" rel="noopener">Ouvrir Jow ↗</a></div>' +
+      (plats.length ? '<ol class="jow-plats">' + plats.map(function (m) {
+        return '<li><span>' + esc(m.nom) + '</span><a href="' + cherche(m.nom) + '" target="_blank" rel="noopener">Trouver sur Jow ↗</a></li>';
+      }).join("") + "</ol>" : '<p class="note">Choisissez d\'abord vos plats à l\'étape 1 : ils apparaîtront ici avec un lien vers la recette Jow la plus proche.</p>') +
+      '<p class="note">Les recettes Jow ne sont pas exactement les vôtres : les quantités et quelques ingrédients changent. Pour garder vos recettes à vous, utilisez plutôt « Remplir mon panier pas à pas » à l\'étape Courses (gratuit).</p>';
+  }
+  majJow();
+  new MutationObserver(majJow).observe(liste, { childList: true });
+
   // ---------- Remplir son panier pas à pas, dans le magasin en ligne choisi ----------
   // Sans IA : un article à la fois, un bouton qui ouvre la recherche du magasin, « Ajouté » pour passer au suivant.
   var MAGASINS = {
