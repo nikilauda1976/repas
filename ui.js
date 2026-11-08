@@ -136,45 +136,88 @@
   };
   document.querySelector(".tabs").addEventListener("click", function (e) { var b = e.target.closest("button[data-tab]"); if (b) { ongletCourant = b.dataset.tab; majBarre(); } });
 
-  // ---------- Parcours : plats, desserts, mes recettes, ma semaine, courses, commander ----------
+  // ---------- Parcours en 3 étapes : choisir (plats, desserts, mes recettes), courses, commander ----------
   var PARCOURS = [
-    { t: "semaine", nom: "Plats", consigne: "Choisissez vos plats de la semaine", aide: "Cochez « Je choisis ce menu » sur les plats qui vous font envie." },
-    { t: "desserts", nom: "Desserts", consigne: "Ajoutez des desserts et des goûters", aide: "Facultatif : cochez ceux que vous voulez, ils s'ajoutent aux courses." },
-    { t: "perso", nom: "Mes recettes", consigne: "Ajoutez vos propres recettes", aide: "Facultatif : cochez une de vos recettes, ou ajoutez-en une nouvelle." },
-    { t: "recettes", nom: "Ma semaine", consigne: "Relisez les recettes de la semaine", aide: "Toutes vos recettes au même endroit, à imprimer si besoin." },
-    { t: "liste", nom: "Courses", consigne: "Vérifiez votre liste de courses", aide: "Retirez ce que vous avez déjà, puis remplissez votre panier en ligne article par article." },
-    { t: "commande", nom: "Commander", consigne: "Choisissez où commander", aide: "Comparez les magasins et notez le bon jour pour réserver la livraison." }
+    { t: "semaine", nom: "Choisir", groupe: ["semaine", "desserts", "perso"], consigne: "Choisissez vos repas de la semaine", aide: "Cochez vos plats, ou laissez-nous choisir. Ajoutez des desserts et vos propres recettes si vous voulez." },
+    { t: "liste", nom: "Courses", groupe: ["liste", "recettes"], consigne: "Vérifiez vos courses", aide: "Retirez ce que vous avez déjà, puis remplissez votre panier en ligne article par article." },
+    { t: "commande", nom: "Commander", groupe: ["commande"], consigne: "Choisissez où commander", aide: "Comparez les magasins et notez le bon jour pour réserver la livraison." }
   ];
-  var rang = function (t) { for (var i = 0; i < PARCOURS.length; i++) if (PARCOURS[i].t === t) return i; return -1; };
+  var rang = function (t) { for (var i = 0; i < PARCOURS.length; i++) if (PARCOURS[i].groupe.indexOf(t) >= 0) return i; return -1; };
   var barreOnglets = document.querySelector(".tabs");
-  // Onglets dans l'ordre du parcours, numérotés ; Favoris et Carrefour à la suite, en plus
+  var ongletDe = function (t) { return barreOnglets.querySelector('button[data-tab="' + t + '"]'); };
+  // Onglets : 1 Choisir, 2 Courses, 3 Commander, puis Ma semaine, Favoris et Carrefour en plus
   PARCOURS.forEach(function (p, i) {
-    var b = barreOnglets.querySelector('button[data-tab="' + p.t + '"]'); if (!b) return;
-    if (p.t === "semaine") b.firstChild.nodeValue = "Plats";
-    if (p.t === "commande") b.firstChild.nodeValue = "Commander";
+    var b = ongletDe(p.t); if (!b) return;
+    b.firstChild.nodeValue = p.nom + " ";
     var n = document.createElement("span"); n.className = "num"; n.setAttribute("aria-hidden", "true"); n.textContent = i + 1;
     b.insertBefore(n, b.firstChild); b.classList.add("etape");
     barreOnglets.appendChild(b);
   });
+  ["desserts", "perso"].forEach(function (t) { var b = ongletDe(t); if (b) b.hidden = true; });
   var sep = document.createElement("span"); sep.className = "sep"; sep.setAttribute("aria-hidden", "true"); barreOnglets.appendChild(sep);
-  ["favoris", "carrefour"].forEach(function (t) { var b = barreOnglets.querySelector('button[data-tab="' + t + '"]'); if (b) { b.classList.add("extra"); barreOnglets.appendChild(b); } });
-  // En-tête de l'étape et boutons Retour / Suivant
+  ["recettes", "favoris", "carrefour"].forEach(function (t) { var b = ongletDe(t); if (b) { b.classList.add("extra"); barreOnglets.appendChild(b); } });
+  // En-tête de l'étape, sélecteur Plats / Desserts / Mes recettes, boutons Retour / Suivant
   var tete = document.createElement("div"); tete.className = "etape-tete"; barreOnglets.insertAdjacentElement("afterend", tete);
+  var SOUS = [["semaine", "Plats", "#menus,#extras"], ["desserts", "Desserts", "#desserts"], ["perso", "Mes recettes", "[data-view=perso]"]];
   var suite = document.createElement("nav"); suite.className = "suite"; suite.setAttribute("aria-label", "Étapes"); document.querySelector(".wrap").appendChild(suite);
-  suite.addEventListener("click", function (e) { var b = e.target.closest("[data-aller]"); if (b) showTab(b.dataset.aller); });
+  function aller(e) {
+    var b = e.target.closest("[data-aller]"); if (b) { showTab(b.dataset.aller); return; }
+    if (e.target.closest("#pour-moi")) choisirPourMoi();
+  }
+  tete.addEventListener("click", aller); suite.addEventListener("click", aller);
+  var courant = "semaine";
+  function compteCoches(sel) {
+    var n = 0; document.querySelectorAll(sel).forEach(function (z) { n += z.querySelectorAll("input[data-id]:checked").length; }); return n;
+  }
+  function majSous() {
+    var box = tete.querySelector(".sous"); if (!box) return;
+    SOUS.forEach(function (x) { var c = box.querySelector('[data-aller="' + x[0] + '"] i'); if (c) { var n = compteCoches(x[2]); c.textContent = n ? n : ""; } });
+  }
   function majParcours(t) {
+    courant = t;
     var i = rang(t), p = PARCOURS[i];
-    barreOnglets.querySelectorAll("button.etape").forEach(function (b) { b.classList.toggle("fait", i >= 0 && rang(b.dataset.tab) < i); });
+    document.body.classList.toggle("tete-courte", t !== "semaine");
+    barreOnglets.querySelectorAll("button.etape").forEach(function (b) {
+      var j = rang(b.dataset.tab); b.classList.toggle("fait", i >= 0 && j < i);
+      if (j === i && b.dataset.tab !== t && ongletDe(t) && ongletDe(t).hidden) b.setAttribute("aria-selected", "true");
+    });
     tete.hidden = suite.hidden = i < 0;
     if (i < 0) return;
-    tete.innerHTML = '<span class="eyebrow">Étape ' + (i + 1) + " sur " + PARCOURS.length + "</span><h2>" + p.consigne + '</h2><p class="note">' + p.aide + '</p><div class="etape-barre"><i style="width:' + Math.round((i + 1) / PARCOURS.length * 100) + '%"></i></div>';
+    var h = '<span class="eyebrow">Étape ' + (i + 1) + " sur " + PARCOURS.length + "</span><h2>" + (t === "recettes" ? "Les recettes de votre semaine" : p.consigne) + '</h2><p class="note">' + (t === "recettes" ? "Toutes les recettes choisies, à imprimer ou à garder sur le téléphone." : p.aide) + '</p><div class="etape-barre"><i style="width:' + Math.round((i + 1) / PARCOURS.length * 100) + '%"></i></div>';
+    if (i === 0) {
+      h += '<div class="sous" role="group" aria-label="Que choisir">' + SOUS.map(function (x) { return '<button type="button" data-aller="' + x[0] + '" aria-pressed="' + (x[0] === t) + '">' + x[1] + " <i></i></button>"; }).join("") + "</div>";
+      if (t === "semaine") h += '<div class="pour-moi"><button type="button" id="pour-moi">✨ Choisir pour moi</button><span class="note" id="pour-moi-note">Coche ' + FOYER.menus + " plats variés d'un coup. Appuyez encore pour en tirer d'autres.</span></div>";
+    }
+    if (t === "liste") h += '<div class="ajout-row"><button type="button" class="ghost" data-aller="recettes">Voir les recettes de ma semaine</button></div>';
+    if (t === "recettes") h += '<div class="ajout-row"><button type="button" class="ghost" data-aller="liste">← Revenir à ma liste de courses</button></div>';
+    tete.innerHTML = h; majSous();
     var av = PARCOURS[i - 1], ap = PARCOURS[i + 1];
     suite.innerHTML = (av ? '<button type="button" class="ghost" data-aller="' + av.t + '">← ' + av.nom + "</button>" : "<span></span>") +
-      (ap ? '<button type="button" data-aller="' + ap.t + '">Suivant : ' + ap.nom + " →</button>" : '<button type="button" class="ghost" data-aller="semaine">Revenir aux plats</button>');
+      (ap ? '<button type="button" data-aller="' + ap.t + '">Suivant : ' + ap.nom + " →</button>" : '<button type="button" class="ghost" data-aller="semaine">Revenir au choix des repas</button>');
+  }
+  // Choisir pour moi : le nombre de plats réglé, en alternant protéines, léger et végétarien
+  function melange(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), x = a[i]; a[i] = a[j]; a[j] = x; } return a; }
+  function cocherPlat(id, oui) {
+    var c = document.getElementById("m-pick-" + id); if (!c || c.checked === oui) return;
+    c.checked = oui; c.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+  function choisirPourMoi() {
+    var deja = MENUS.filter(function (m) { return chosen.has(m.id); }).map(function (m) { return m.id; });
+    var groupes = {}; melange(MENUS.filter(function (m) { return deja.indexOf(m.id) < 0; })).forEach(function (m) { (groupes[m.profil] = groupes[m.profil] || []).push(m); });
+    var ordre = ["Riche en protéines", "Léger", "Végétarien", "Riche en protéines"], pris = [], k = 0, garde = 0;
+    while (pris.length < FOYER.menus && garde++ < 200) { var g = groupes[ordre[k++ % ordre.length]]; if (g && g.length) pris.push(g.shift().id); }
+    if (pris.length < FOYER.menus) melange(deja).forEach(function (id) { if (pris.length < FOYER.menus) pris.push(id); });
+    deja.forEach(function (id) { if (pris.indexOf(id) < 0) cocherPlat(id, false); });
+    pris.forEach(function (id) { cocherPlat(id, true); });
+    var f = document.querySelector('#filters button[data-p="Tous"]'); if (f) f.click();
+    var note = document.getElementById("pour-moi-note");
+    if (note) note.textContent = pris.length + " plats choisis. Décochez ceux qui ne vous plaisent pas, ou appuyez encore pour changer.";
+    var premier = document.querySelector("#menus .menu.on"); if (premier) premier.scrollIntoView({ behavior: "smooth", block: "center" });
   }
   var showTabParcours = showTab;
   showTab = function (t) { showTabParcours(t); majParcours(t); };
   barreOnglets.addEventListener("click", function (e) { var b = e.target.closest("button[data-tab]"); if (b) majParcours(b.dataset.tab); });
+  document.querySelector(".wrap").addEventListener("change", function (e) { if (e.target.dataset && e.target.dataset.id) majSous(); });
   window.rdmProchaine = function (t) { return PARCOURS[rang(t) + 1]; };
   majParcours("semaine");
 
