@@ -510,7 +510,7 @@ body.tete-courte .wrap>header{display:none}
   <button type="button" role="tab" data-tab="favoris" aria-selected="false">Favoris <span id="tab-fav"></span></button>
   <button type="button" role="tab" data-tab="recettes" aria-selected="false">Ma semaine <span id="tab-rec"></span></button>
   <button type="button" role="tab" data-tab="liste" aria-selected="false">Courses <span id="tab-count"></span></button>
-  <button type="button" role="tab" data-tab="carrefour" aria-selected="false">Carrefour <span id="tab-cf"></span></button>
+  <button type="button" role="tab" data-tab="carrefour" aria-selected="false" hidden>Carrefour <span id="tab-cf"></span></button>
   <button type="button" role="tab" data-tab="commande" aria-selected="false">Commande</button>
 </nav>
 <div class="infos" data-view="semaine">
@@ -715,9 +715,8 @@ body.tete-courte .wrap>header{display:none}
   <p class="note">Frais relevés sur un comparatif 2026 (meslistesdecourses.fr). La disponibilité exacte à votre adresse se vérifie en entrant l'adresse sur le site de l'enseigne.</p>
   <p><strong>Ma recommandation :</strong> Carrefour en livraison à domicile pour le samedi. C'est le meilleur compromis entre prix, qualité de la marque distributeur et créneaux du samedi. Si vous pouvez passer au drive, Leclerc fait économiser encore 10 à 15 %.</p>
   <ul>
-    <li><b>Option 1, la plus simple :</b> je vous envoie la liste, vous la collez dans le site Carrefour (environ 10 minutes) et vous payez.</li>
+    <li><b>Option 1, la plus simple :</b> à l'étape « Courses », appuyez sur « Remplir mon panier pas à pas ». Choisissez votre magasin (Carrefour, Leclerc Drive, Auchan, Intermarché, Courses U ou Monoprix) : pour chaque article, un bouton ouvre directement la recherche du produit, vous l'ajoutez au panier, puis vous passez au suivant.</li>
     <li><b>Option 2, avec l'appli Jow :</b> elle envoie un panier directement au drive Carrefour, Leclerc, Auchan ou Intermarché, pour 0,99 € par commande. Mais il faut prendre leurs recettes à eux.</li>
-    <li><b>Option 3, la plus automatique :</b> ouvrez l'onglet « Panier Carrefour » et appuyez sur « Remplir le panier avec ma liste ». La page cherche chaque produit chez Carrefour, calcule les quantités d'après les grammages et remplit le panier. Vous ajustez, puis vous finalisez sur Carrefour.fr.</li>
   </ul>
 </section>
 
@@ -1797,5 +1796,5 @@ function fallback(t){const pre=document.createElement("pre");pre.textContent=t;p
   <button type="button" data-aller="liste">Courses</button>
 </div>
 <script src="perso.js?v=20261108"></script>
-<script src="ui.js?v=20261108j"></script>
+<script src="ui.js?v=20261108l"></script>
 </body></html>

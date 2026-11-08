@@ -145,7 +145,7 @@
   var rang = function (t) { for (var i = 0; i < PARCOURS.length; i++) if (PARCOURS[i].groupe.indexOf(t) >= 0) return i; return -1; };
   var barreOnglets = document.querySelector(".tabs");
   var ongletDe = function (t) { return barreOnglets.querySelector('button[data-tab="' + t + '"]'); };
-  // Onglets : 1 Choisir, 2 Courses, 3 Commander, puis Ma semaine, Favoris et Carrefour en plus
+  // Onglets : 1 Choisir, 2 Courses, 3 Commander, puis Ma semaine et Favoris en plus (Carrefour retiré)
   PARCOURS.forEach(function (p, i) {
     var b = ongletDe(p.t); if (!b) return;
     b.firstChild.nodeValue = p.nom + " ";
@@ -155,7 +155,8 @@
   });
   ["desserts", "perso"].forEach(function (t) { var b = ongletDe(t); if (b) b.hidden = true; });
   var sep = document.createElement("span"); sep.className = "sep"; sep.setAttribute("aria-hidden", "true"); barreOnglets.appendChild(sep);
-  ["recettes", "favoris", "carrefour"].forEach(function (t) { var b = ongletDe(t); if (b) { b.classList.add("extra"); barreOnglets.appendChild(b); } });
+  ["recettes", "favoris"].forEach(function (t) { var b = ongletDe(t); if (b) { b.classList.add("extra"); barreOnglets.appendChild(b); } });
+  var bCf = ongletDe("carrefour"); if (bCf) bCf.hidden = true;
   // En-tête de l'étape, sélecteur Plats / Desserts / Mes recettes, boutons Retour / Suivant
   var tete = document.createElement("div"); tete.className = "etape-tete"; barreOnglets.insertAdjacentElement("afterend", tete);
   var SOUS = [["semaine", "Plats", "#menus,#extras"], ["desserts", "Desserts", "#desserts"], ["perso", "Mes recettes", "[data-view=perso]"]];
@@ -227,11 +228,27 @@
     carrefour: { nom: "Carrefour", accueil: "https://www.carrefour.fr/", cherche: "https://www.carrefour.fr/s?q=" },
     auchan: { nom: "Auchan", accueil: "https://www.auchan.fr/", cherche: "https://www.auchan.fr/recherche?text=" },
     coursesu: { nom: "Courses U", accueil: "https://www.coursesu.com/", cherche: "https://www.coursesu.com/recherche?q=" },
-    monoprix: { nom: "Monoprix", accueil: "https://courses.monoprix.fr/", cherche: "https://courses.monoprix.fr/search?q=" }
+    monoprix: { nom: "Monoprix", accueil: "https://courses.monoprix.fr/", cherche: "https://courses.monoprix.fr/search?q=" },
+    intermarche: { nom: "Intermarché", accueil: "https://www.intermarche.com/", cherche: "https://www.intermarche.com/recherche/" },
+    leclerc: { nom: "Leclerc Drive", accueil: "https://www.leclercdrive.fr/", cherche: null }
   };
+  // Leclerc Drive : chaque magasin a sa propre adresse. On la demande une fois, puis on cherche dans ce magasin.
+  var baseLeclerc = function (u) { var r = /^(https:\/\/[a-z0-9-]+\.leclercdrive\.fr\/magasin-[^\/?#.]+)(?:\.aspx|\/|[?#]|$)/i.exec((u || "").trim()); return r ? r[1] + "/" : ""; };
+  function majLeclerc() {
+    var b = baseLeclerc(lireLS("rdm-leclerc", ""));
+    MAGASINS.leclerc.accueil = b || "https://www.leclercdrive.fr/";
+    MAGASINS.leclerc.cherche = b ? b + "recherche.aspx?TexteRecherche=" : null;
+  }
+  function demanderLeclerc() {
+    var u = window.prompt("Pour chercher dans votre drive Leclerc :\n1. Ouvrez leclercdrive.fr et choisissez votre magasin.\n2. Copiez l'adresse de la page (elle contient « magasin- »).\n3. Collez-la ici.", lireLS("rdm-leclerc", ""));
+    if (u === null) return;
+    if (!baseLeclerc(u)) { window.alert("Cette adresse ne ressemble pas à celle d'un magasin Leclerc Drive. Sans elle, les boutons ouvriront seulement l'accueil du drive."); return; }
+    ecrireLS("rdm-leclerc", u.trim()); majLeclerc();
+  }
   var magasin = lireLS("rdm-magasin", "carrefour"); if (!MAGASINS[magasin]) magasin = "carrefour";
   var motCle = function (n) { return (typeof KW !== "undefined" && KW[n]) || String(n).replace(/\s*\(.*?\)/g, "").replace(/ ou .*$/, "").replace(/,.*$/, "").trim(); };
-  var lienMagasin = function (n) { return MAGASINS[magasin].cherche + encodeURIComponent(motCle(n)); };
+  majLeclerc();
+  var lienMagasin = function (n) { var m = MAGASINS[magasin]; return m.cherche ? m.cherche + encodeURIComponent(motCle(n)) : m.accueil; };
   var cleNom = function (n) { return String(n).split(" (")[0].trim(); };
   // Les liens « ↗ » de la liste suivent le magasin choisi
   function majLiens() {
@@ -263,6 +280,7 @@
       '<div class="pas-haut"><h2 id="pas-titre">Mon panier pas à pas</h2><button type="button" class="x" id="pas-fermer" aria-label="Fermer">×</button></div>' +
       '<label class="tri">Magasin <select id="pas-magasin">' + Object.keys(MAGASINS).map(function (k) { return '<option value="' + k + '">' + MAGASINS[k].nom + "</option>"; }).join("") + "</select></label>" +
       '<div class="pas-progres"><span id="pas-compte"></span><div class="pas-barre"><i id="pas-jauge"></i></div></div>' +
+      '<p class="note" id="pas-leclerc" hidden></p>' +
       '<div class="pas-carte" id="pas-carte"></div>' +
       '<p class="note">Connectez-vous une fois sur le site du magasin et choisissez la livraison ou le retrait. Appuyez sur « Chercher », ajoutez le produit au panier, revenez ici et appuyez sur « Ajouté ».</p>' +
     "</div>";
@@ -271,7 +289,9 @@
     var L = pas.liste, n = L.length, faits = L.filter(function (a) { return coches.has(cleNom(a.n)); }).length;
     el("pas-compte").textContent = faits + " sur " + n + " dans le panier";
     el("pas-jauge").style.width = (n ? Math.round(faits / n * 100) : 0) + "%";
-    var c = el("pas-carte"), m = MAGASINS[magasin];
+    var c = el("pas-carte"), m = MAGASINS[magasin], lec = el("pas-leclerc");
+    lec.hidden = magasin !== "leclerc";
+    lec.innerHTML = (m.cherche ? "Recherche dans votre drive Leclerc. " : "Sans l'adresse de votre drive, chaque bouton ouvre seulement l'accueil de Leclerc Drive. ") + '<button type="button" class="lien" id="pas-leclerc-choisir">' + (m.cherche ? "Changer de magasin" : "Indiquer mon drive") + "</button>";
     if (pas.i >= n) {
       c.innerHTML = '<span class="eyebrow">Terminé</span><h3>Tout est dans le panier</h3><p>Il ne reste plus qu\'à ouvrir votre panier ' + m.nom + ', choisir le créneau et payer.</p>' +
         '<div class="pas-boutons"><a class="cta" href="' + m.accueil + '" target="_blank" rel="noopener">Ouvrir ' + m.nom + ' ↗</a><button type="button" class="ghost" data-pas="debut">Revoir la liste</button></div>';
@@ -322,7 +342,8 @@
   });
   el("pas-fermer").addEventListener("click", fermerPas);
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !fen.hidden) fermerPas(); });
-  el("pas-magasin").addEventListener("change", function (e) { magasin = e.target.value; ecrireLS("rdm-magasin", magasin); majLiens(); montrer(); });
+  fen.addEventListener("click", function (e) { if (e.target.id === "pas-leclerc-choisir") { demanderLeclerc(); majLiens(); montrer(); } });
+  el("pas-magasin").addEventListener("change", function (e) { magasin = e.target.value; if (magasin === "leclerc" && !MAGASINS.leclerc.cherche) demanderLeclerc(); ecrireLS("rdm-magasin", magasin); majLiens(); montrer(); });
   var go = document.createElement("button"); go.type = "button"; go.id = "courses-pas"; go.textContent = "Remplir mon panier pas à pas";
   outils.insertBefore(go, outils.firstChild.nextSibling);
   go.addEventListener("click", ouvrirPas);
