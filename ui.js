@@ -69,7 +69,7 @@
   function majCourses() {
     var ls = lignes(), faits = 0;
     ls.forEach(function (li) { var on = coches.has(cle(li)); li.classList.toggle("fait", on); li.setAttribute("aria-checked", on ? "true" : "false"); li.setAttribute("role", "checkbox"); li.tabIndex = 0; if (on) faits++; });
-    el("courses-etat").textContent = ls.length ? faits + " sur " + ls.length + " dans le chariot" : "";
+    el("courses-etat").textContent = ls.length ? faits + " sur " + ls.length + " déjà pris" : "";
     el("courses-decocher").hidden = !faits;
     outils.hidden = !ls.length && !chosen.size;
   }
@@ -134,7 +134,113 @@
   };
   document.querySelector(".tabs").addEventListener("click", function (e) { var b = e.target.closest("button[data-tab]"); if (b) { ongletCourant = b.dataset.tab; majBarre(); } });
 
+  // ---------- Remplir son panier pas à pas, dans le magasin en ligne choisi ----------
+  // Sans IA : un article à la fois, un bouton qui ouvre la recherche du magasin, « Ajouté » pour passer au suivant.
+  var MAGASINS = {
+    carrefour: { nom: "Carrefour", accueil: "https://www.carrefour.fr/", cherche: "https://www.carrefour.fr/s?q=" },
+    auchan: { nom: "Auchan", accueil: "https://www.auchan.fr/", cherche: "https://www.auchan.fr/recherche?text=" },
+    coursesu: { nom: "Courses U", accueil: "https://www.coursesu.com/", cherche: "https://www.coursesu.com/recherche?q=" },
+    monoprix: { nom: "Monoprix", accueil: "https://courses.monoprix.fr/", cherche: "https://courses.monoprix.fr/search?q=" }
+  };
+  var magasin = lireLS("rdm-magasin", "carrefour"); if (!MAGASINS[magasin]) magasin = "carrefour";
+  var motCle = function (n) { return (typeof KW !== "undefined" && KW[n]) || String(n).replace(/\s*\(.*?\)/g, "").replace(/ ou .*$/, "").replace(/,.*$/, "").trim(); };
+  var lienMagasin = function (n) { return MAGASINS[magasin].cherche + encodeURIComponent(motCle(n)); };
+  var cleNom = function (n) { return String(n).split(" (")[0].trim(); };
+  // Les liens « ↗ » de la liste suivent le magasin choisi
+  function majLiens() {
+    [].forEach.call(liste.querySelectorAll("a.cf-s"), function (a) {
+      var li = a.closest("li"), n = li ? cle(li) : "";
+      if (!n) return;
+      a.href = lienMagasin(n); a.textContent = MAGASINS[magasin].nom + " ↗";
+      a.setAttribute("aria-label", "Chercher " + n + " sur " + MAGASINS[magasin].nom);
+    });
+  }
+  function conseil(r, n) {
+    if (/^(œ|oe)ufs/i.test(n)) return "Œufs plein air ou bio : code 0 ou 1 sur la coquille.";
+    if (r === "Viande") return "Prenez Label Rouge, fermier ou bio, origine France. Charcuterie sans nitrite.";
+    if (r === "Poissonnerie") return "Prenez MSC, ASC ou bio. Évitez les poissons panés ou en sauce.";
+    if (r === "Frais") return "AOP ou bio, nature et sans sucre ajouté. Nutri-Score A ou B si possible.";
+    if (r === "Fruits et légumes") return "De saison, français si possible. Bio pour ce qui se mange avec la peau.";
+    return "Nutri-Score A ou B, NOVA 1 ou 2, liste d'ingrédients courte, sans sucre ajouté.";
+  }
+  function articles() {
+    var b = buildList();
+    return b.lignes.map(function (x) { return { n: x.n, q: x.q.filter(Boolean).join(" + "), r: x.r }; })
+      .concat([].concat(Array.from(ajouts.values())).map(function (a) { return { n: a.nom, q: a.qte || "", r: "Ajouts" }; }));
+  }
+  var pas = { liste: [], i: 0 };
+  var fen = document.createElement("div");
+  fen.className = "pas"; fen.hidden = true; fen.setAttribute("role", "dialog"); fen.setAttribute("aria-modal", "true"); fen.setAttribute("aria-labelledby", "pas-titre");
+  fen.innerHTML =
+    '<div class="pas-boite">' +
+      '<div class="pas-haut"><h2 id="pas-titre">Mon panier pas à pas</h2><button type="button" class="x" id="pas-fermer" aria-label="Fermer">×</button></div>' +
+      '<label class="tri">Magasin <select id="pas-magasin">' + Object.keys(MAGASINS).map(function (k) { return '<option value="' + k + '">' + MAGASINS[k].nom + "</option>"; }).join("") + "</select></label>" +
+      '<div class="pas-progres"><span id="pas-compte"></span><div class="pas-barre"><i id="pas-jauge"></i></div></div>' +
+      '<div class="pas-carte" id="pas-carte"></div>' +
+      '<p class="note">Connectez-vous une fois sur le site du magasin et choisissez la livraison ou le retrait. Appuyez sur « Chercher », ajoutez le produit au panier, revenez ici et appuyez sur « Ajouté ».</p>' +
+    "</div>";
+  document.body.appendChild(fen);
+  function montrer() {
+    var L = pas.liste, n = L.length, faits = L.filter(function (a) { return coches.has(cleNom(a.n)); }).length;
+    el("pas-compte").textContent = faits + " sur " + n + " dans le panier";
+    el("pas-jauge").style.width = (n ? Math.round(faits / n * 100) : 0) + "%";
+    var c = el("pas-carte"), m = MAGASINS[magasin];
+    if (pas.i >= n) {
+      c.innerHTML = '<span class="eyebrow">Terminé</span><h3>Tout est dans le panier</h3><p>Il ne reste plus qu\'à ouvrir votre panier ' + m.nom + ', choisir le créneau et payer.</p>' +
+        '<div class="pas-boutons"><a class="cta" href="' + m.accueil + '" target="_blank" rel="noopener">Ouvrir ' + m.nom + ' ↗</a><button type="button" class="ghost" data-pas="debut">Revoir la liste</button></div>';
+      return;
+    }
+    var a = L[pas.i], fait = coches.has(cleNom(a.n));
+    c.innerHTML = '<span class="eyebrow">Article ' + (pas.i + 1) + " sur " + n + " · " + esc(a.r === "Ajouts" ? "Ajout manuel" : a.r) + "</span>" +
+      "<h3>" + esc(a.n) + "</h3>" + (a.q ? '<p class="pas-qte">' + esc(a.q) + "</p>" : "") +
+      (fait ? '<p class="ok">Déjà dans le panier.</p>' : "") +
+      '<p class="pas-conseil">' + esc(conseil(a.r, a.n)) + "</p>" +
+      '<div class="pas-boutons">' +
+        '<a class="cta" href="' + lienMagasin(a.n) + '" target="_blank" rel="noopener">Chercher sur ' + m.nom + " ↗</a>" +
+        '<button type="button" data-pas="ajoute">Ajouté ✓</button>' +
+      "</div>" +
+      '<div class="pas-boutons petits">' +
+        '<button type="button" class="ghost" data-pas="prec"' + (pas.i ? "" : " disabled") + ">‹ Précédent</button>" +
+        '<button type="button" class="ghost" data-pas="passe">Je l\'ai déjà</button>' +
+        '<button type="button" class="ghost" data-pas="suiv">Passer ›</button>' +
+      "</div>";
+  }
+  function suivantLibre(depuis) {
+    for (var k = depuis; k < pas.liste.length; k++) if (!coches.has(cleNom(pas.liste[k].n))) return k;
+    return pas.liste.length;
+  }
+  function ouvrirPas() {
+    pas.liste = articles();
+    if (!pas.liste.length) { alert("Choisissez d'abord des menus : la liste de courses est vide."); return; }
+    pas.i = suivantLibre(0);
+    el("pas-magasin").value = magasin;
+    fen.hidden = false; document.body.classList.add("pas-ouvert");
+    montrer();
+    el("pas-fermer").focus();
+  }
+  function fermerPas() { fen.hidden = true; document.body.classList.remove("pas-ouvert"); majCourses(); }
+  function cocher(a, on) {
+    var k = cleNom(a.n); if (on) coches.add(k); else coches.delete(k);
+    ecrireLS(COCHES, [].concat(Array.from(coches)));
+  }
+  fen.addEventListener("click", function (e) {
+    if (e.target === fen) { fermerPas(); return; }
+    var b = e.target.closest("[data-pas]"); if (!b) return;
+    var a = pas.liste[pas.i], act = b.dataset.pas;
+    if (act === "ajoute" || act === "passe") { cocher(a, true); pas.i = suivantLibre(pas.i + 1); }
+    else if (act === "suiv") pas.i = Math.min(pas.liste.length, pas.i + 1);
+    else if (act === "prec") pas.i = Math.max(0, pas.i - 1);
+    else if (act === "debut") pas.i = 0;
+    montrer();
+  });
+  el("pas-fermer").addEventListener("click", fermerPas);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !fen.hidden) fermerPas(); });
+  el("pas-magasin").addEventListener("change", function (e) { magasin = e.target.value; ecrireLS("rdm-magasin", magasin); majLiens(); montrer(); });
+  var go = document.createElement("button"); go.type = "button"; go.id = "courses-pas"; go.textContent = "Remplir mon panier pas à pas";
+  outils.insertBefore(go, outils.firstChild.nextSibling);
+  go.addEventListener("click", ouvrirPas);
+
   // Après chaque mise à jour de la liste (menus cochés, foyer, ajouts…)
-  new MutationObserver(function () { majCourses(); majBarre(); }).observe(liste, { childList: true });
-  majCourses(); majBarre();
+  new MutationObserver(function () { majCourses(); majBarre(); majLiens(); }).observe(liste, { childList: true });
+  majCourses(); majBarre(); majLiens();
 })();
