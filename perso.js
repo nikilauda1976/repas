@@ -288,37 +288,112 @@
       });
   }
   var LIMITE = 6 * 1024 * 1024;
+  // ---------- Lecture intelligente (Gemini, par le serveur de la famille) ----------
+  var FONCTION_IA = "https://isjnrurkcbwgezasbosv.supabase.co/functions/v1/lire-recette";
+  var RAISONS_IA = {
+    sans_compte: "Lecture simple. Pour la lecture intelligente (écriture à la main, pages compliquées), connectez-vous au compte de la famille, en haut de la page.",
+    pas_de_cle: "Lecture simple : la lecture intelligente n'est pas encore activée.",
+    quota: "Lecture simple : la famille a utilisé ses 30 lectures intelligentes du jour.",
+    quota_global: "Lecture simple : la lecture intelligente gratuite est saturée pour aujourd'hui. Réessayez demain.",
+    limite_google: "Lecture simple : la lecture intelligente gratuite est saturée pour le moment. Réessayez dans quelques minutes.",
+    pas_recette: "L'IA ne voit pas de recette dans ce document : voici ce que la lecture simple a trouvé.",
+    trop_lourd: "Lecture simple : le document est trop lourd pour la lecture intelligente.",
+    bloque: "Lecture simple : trop de codes faux, la famille est bloquée 15 minutes."
+  };
+  function appelIA(corps) {
+    var c = compte();
+    if (!c) return Promise.reject({ code: "sans_compte" });
+    var fam = c.famille();
+    corps.nom = fam.nom; corps.code = fam.code;
+    return fetch(FONCTION_IA, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(corps) })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok || !j.recette) throw { code: j.erreur || "reseau" }; return depuisIA(j.recette); }); },
+            function () { throw { code: "reseau" }; });
+  }
+  function depuisIA(x) {
+    if (!x || x.est_une_recette === false || !(x.ingredients || []).length) throw { code: "pas_recette" };
+    var titre = propre(x.titre || "");
+    if (titre === titre.toUpperCase() && /[A-Z]{3}/.test(titre)) titre = titre.toLowerCase();
+    return {
+      nom: maj(titre || "Ma recette"),
+      type: TYPES.indexOf(x.type) >= 0 ? x.type : devinerType(titre, ""),
+      temps: x.temps || "",
+      base: x.portions > 0 && x.portions <= 40 ? Math.round(x.portions) : 4,
+      ing: x.ingredients.map(function (i) {
+        var n = maj(propre(i.nom || ""));
+        return { q: String(i.quantite || "").trim(), n: n, r: RAYONS.indexOf(i.rayon) >= 0 ? i.rayon : rayon(n) };
+      }).filter(function (i) { return i.n; }),
+      etapes: (x.etapes || []).map(function (s) { return maj(String(s).replace(/^\s*\d+\s*[.)\-:]\s*/, "")); }).filter(Boolean),
+      materiel: x.materiel || "", notes: x.notes || ""
+    };
+  }
+  // Recette -> texte au format « TITRE : … », pour pouvoir la retoucher dans le cadre
+  function enTexte(r) {
+    return "TITRE : " + r.nom + "\nTYPE : " + r.type + (r.temps ? "\nTEMPS : " + r.temps : "") + "\nPORTIONS : " + r.base +
+      "\nINGRÉDIENTS :\n" + r.ing.map(function (i) { return "- " + i.q + " | " + i.n + " | " + i.r; }).join("\n") +
+      (r.materiel ? "\nMATÉRIEL : " + r.materiel : "") + "\nÉTAPES :\n" + r.etapes.map(function (s, k) { return (k + 1) + ". " + s; }).join("\n") +
+      (r.notes ? "\nNOTES : " + r.notes : "");
+  }
+  function essayerIA(genre, fichier, ph) {
+    if (!compte()) return Promise.reject({ code: "sans_compte" });
+    etat("Lecture intelligente en cours… (5 à 20 secondes)");
+    var corps;
+    if (genre === "image") corps = en64(ph.copie).then(function (d) { return { fichiers: [{ type: "image/jpeg", donnees: d }] }; });
+    else if (genre === "pdf") corps = fichier.size > 8 * 1024 * 1024 ? Promise.reject({ code: "trop_lourd" }) : en64(fichier).then(function (d) { return { fichiers: [{ type: "application/pdf", donnees: d }] }; });
+    else if (genre === "docx") corps = lireDocx(fichier).then(function (x) { return { texte: (x.titre ? x.titre + "\n" : "") + x.texte }; });
+    else corps = fichier.text().then(function (s) { return { texte: s }; });
+    return corps.then(appelIA);
+  }
+  function lectureSimple(genre, fichier, ph) {
+    if (genre === "pdf") return lirePdf(fichier);
+    if (genre === "docx") return lireDocx(fichier);
+    if (genre === "txt") return fichier.text().then(function (s) { return { texte: s, titre: "" }; });
+    return ocr([ph.lecture]);
+  }
+
   function lireFichier(fichier) {
     var nom = (fichier.name || "").toLowerCase(), type = fichier.type || "";
     ouvrirTexte();
     etat("Lecture de « " + (fichier.name || "la photo") + " »…");
-    var p, original = fichier.size <= LIMITE ? { blob: fichier, type: type || "application/octet-stream", nom: fichier.name || "document" } : null;
-    if (/pdf/.test(type) || /\.pdf$/.test(nom)) { if (original) original.type = "application/pdf"; p = lirePdf(fichier); }
-    else if (/\.docx$/.test(nom) || /wordprocessingml/.test(type)) { if (original) original.type = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"; p = lireDocx(fichier); }
-    else if (/^text\//.test(type) || /\.(txt|md)$/.test(nom)) { if (original) original.type = "text/plain"; p = fichier.text().then(function (s) { return { texte: s, titre: "" }; }); }
-    else if (/^image\//.test(type) || /\.(jpe?g|png|webp|heic|heif|gif|bmp)$/.test(nom))
-      p = preparerPhoto(fichier).then(function (ph) {
-        if (!ph) throw new Error("format");
-        original = ph.copie ? { blob: ph.copie, type: "image/jpeg", nom: (fichier.name || "photo").replace(/\.\w+$/, "") + ".jpg" } : original;
-        return ocr([ph.lecture]);
+    var genre = /pdf/.test(type) || /\.pdf$/.test(nom) ? "pdf"
+      : /\.docx$/.test(nom) || /wordprocessingml/.test(type) ? "docx"
+      : /^text\//.test(type) || /\.(txt|md)$/.test(nom) ? "txt"
+      : /^image\//.test(type) || /\.(jpe?g|png|webp|heic|heif|gif|bmp)$/.test(nom) ? "image" : "";
+    var TYPES_DOC = { pdf: "application/pdf", docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document", txt: "text/plain" };
+    var original = fichier.size <= LIMITE ? { blob: fichier, type: TYPES_DOC[genre] || type || "application/octet-stream", nom: fichier.name || "document" } : null;
+    var raison = "";
+    (genre ? Promise.resolve() : Promise.reject(new Error("format")))
+      .then(function () { return genre === "image" ? preparerPhoto(fichier) : null; })
+      .then(function (ph) {
+        if (genre === "image") {
+          if (!ph) throw new Error("format");
+          if (ph.copie) original = { blob: ph.copie, type: "image/jpeg", nom: (fichier.name || "photo").replace(/\.\w+$/, "") + ".jpg" };
+        }
+        docForm = original ? { etat: "nouveau", f: original } : { etat: "aucun" };
+        return essayerIA(genre, fichier, ph).then(function (r) { return { ia: r }; }, function (e) {
+          raison = RAISONS_IA[e && e.code] || "Lecture simple : la lecture intelligente n'a pas répondu.";
+          return lectureSimple(genre, fichier, ph);
+        });
+      })
+      .then(function (res) {
+        if (res.ia) {
+          titreLu = ""; el("p-texte").value = enTexte(res.ia);
+          etat("Recette lue par la lecture intelligente. Vérifiez-la en la comparant au document, puis enregistrez.");
+          formulaire(res.ia, "", true); return;
+        }
+        var txt = (res.texte || "").trim();
+        if (txt.replace(/\s/g, "").length < 15) {
+          etat((raison ? raison + " " : "") + "Je n'ai pas réussi à lire de texte. Le document est quand même joint : remplissez la fiche à la main, ou utilisez « Faire lire par Claude ».", true);
+          formulaire({ type: "Plat", base: 4 }, "", true); return;
+        }
+        el("p-texte").value = txt;
+        titreLu = res.titre || "";
+        etat((raison ? raison + " " : "") + "Vérifiez la recette ci-dessous en la comparant au document, puis enregistrez.", !!raison && raison.indexOf("connectez-vous") < 0);
+        formulaire(analyser(txt, titreLu), "", true);
+      }).catch(function (e) {
+        etat(e && e.message === "format"
+          ? "Ce format n'est pas lu ici. Utilisez une photo (JPEG ou PNG), un PDF, un fichier Word (.docx) ou du texte."
+          : "La lecture n'a pas marché (connexion internet nécessaire la première fois). Réessayez, ou utilisez « Faire lire par Claude ».", true);
       });
-    else p = Promise.reject(new Error("format"));
-    p.then(function (res) {
-      var txt = (res.texte || "").trim();
-      docForm = original ? { etat: "nouveau", f: original } : { etat: "aucun" };
-      if (txt.replace(/\s/g, "").length < 15) {
-        etat("Je n'ai pas réussi à lire de texte. Le document est quand même joint : remplissez la fiche à la main, ou utilisez « Faire lire par Claude ».", true);
-        formulaire({ type: "Plat", base: 4 }, "", true); return;
-      }
-      el("p-texte").value = txt;
-      titreLu = res.titre || "";
-      etat("Texte lu. Vérifiez la recette ci-dessous en la comparant au document, puis enregistrez.");
-      formulaire(analyser(txt, titreLu), "", true);
-    }).catch(function (e) {
-      etat(e && e.message === "format"
-        ? "Ce format n'est pas lu ici. Utilisez une photo (JPEG ou PNG), un PDF, un fichier Word (.docx) ou du texte."
-        : "La lecture n'a pas marché (connexion internet nécessaire la première fois). Réessayez, ou utilisez « Faire lire par Claude ».", true);
-    });
   }
 
   // ---------- Documents d'origine ----------
@@ -458,8 +533,15 @@
   el("p-analyser").addEventListener("click", function () {
     var t = el("p-texte").value.trim();
     if (!t) { etat("Écrivez ou collez d'abord la recette dans le cadre.", true); return; }
-    etat("Recette mise au format. Vérifiez-la ci-dessous, puis enregistrez.");
-    formulaire(analyser(t, titreLu), el("p-id").value || "", true);
+    var id = el("p-id").value || "";
+    var simple = function (raison) { etat((raison ? raison + " " : "") + "Recette mise au format. Vérifiez-la ci-dessous, puis enregistrez."); formulaire(analyser(t, titreLu), id, true); };
+    // Texte déjà au format « TITRE : … » (réponse de Claude) : pas besoin de l'IA
+    if (/^TITRE\s*:/im.test(t) || !compte()) { simple(""); return; }
+    el("p-analyser").disabled = true;
+    etat("Lecture intelligente en cours…");
+    appelIA({ texte: t }).then(function (r) { etat("Recette mise au format par la lecture intelligente. Vérifiez-la, puis enregistrez."); formulaire(r, id, true); },
+      function (e) { simple(RAISONS_IA[e && e.code] || ""); })
+      .then(function () { el("p-analyser").disabled = false; });
   });
   ["p-photo", "p-fichier"].forEach(function (id) {
     el(id).addEventListener("change", function (e) { var f = e.target.files && e.target.files[0]; if (f) lireFichier(f); e.target.value = ""; });
