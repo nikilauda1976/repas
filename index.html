@@ -385,6 +385,24 @@ body.avec-barre .wrap{padding-bottom:110px}
 }
 @media (prefers-reduced-motion:reduce){.tabs .bulle{transition:none}button:active{transform:none}}
 @media print{.haut{display:none}}
+/* Parcours en étapes */
+.tabs .num{display:inline-grid;place-items:center;width:20px;height:20px;margin-right:7px;border-radius:50%;border:1px solid currentColor;font-size:11px;letter-spacing:0;vertical-align:1px}
+.tabs button[aria-selected="true"] .num{background:var(--basil);border-color:var(--basil);color:var(--on-basil)}
+.tabs button.fait .num{background:var(--basil-soft);border-color:var(--basil);color:transparent;position:relative}
+.tabs button.fait .num::after{content:"✓";position:absolute;inset:0;display:grid;place-items:center;color:var(--basil);font-size:12px}
+.tabs .sep{flex:none;align-self:center;width:1px;height:20px;margin:0 6px;background:var(--line)}
+.tabs .extra{text-transform:none;letter-spacing:.01em;font-size:14px}
+.etape-tete{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.etape-tete[hidden]{display:none}
+.etape-tete h2{font-size:clamp(26px,5vw,36px)}
+.etape-barre{height:4px;border-radius:4px;background:var(--line);overflow:hidden;margin-top:6px}
+.etape-barre i{display:block;height:100%;background:var(--basil);transition:width .45s var(--ease)}
+.suite{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding-top:24px;border-top:1px solid var(--line)}
+.suite[hidden]{display:none}
+.suite button{padding:12px 20px}
+.suite button:not(.ghost){margin-left:auto}
+@media (max-width:767px){.tabs .num{width:18px;height:18px;margin-right:5px;font-size:10px}.tabs .extra{font-size:13px}.suite button{flex:1 1 auto;text-align:center}}
+@media print{.etape-tete,.suite{display:none!important}}
 </style>
 
 <div class="haut"><a class="marque" href="./">repas</a></div>
@@ -1735,5 +1753,5 @@ function fallback(t){const pre=document.createElement("pre");pre.textContent=t;p
   <button type="button" data-aller="liste">Courses</button>
 </div>
 <script src="perso.js?v=20261108"></script>
-<script src="ui.js?v=20261108e"></script>
+<script src="ui.js?v=20261108f"></script>
 </body></html>

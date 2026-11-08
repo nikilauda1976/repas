@@ -122,6 +122,8 @@
     var voir = b.sel.length > 0 && ongletCourant !== "liste" && ongletCourant !== "recettes";
     barre.hidden = !voir;
     document.body.classList.toggle("avec-barre", voir);
+    var ap = window.rdmProchaine && window.rdmProchaine(ongletCourant), go = barre.querySelector("button:not(.ghost)");
+    if (ap) { go.dataset.aller = ap.t; go.textContent = "Suivant : " + ap.nom + " →"; } else { go.dataset.aller = "liste"; go.textContent = "Courses"; }
     el("barre-texte").innerHTML = "<b>" + repas + "</b>/" + FOYER.menus + " menus" + (extras ? " · " + extras + " en plus" : "") + (b.lignes.length ? " · " + b.lignes.length + " articles" : "");
   }
   barre.addEventListener("click", function (e) { var b = e.target.closest("[data-aller]"); if (b) showTab(b.dataset.aller); });
@@ -133,6 +135,48 @@
     window.scrollTo(0, 0);
   };
   document.querySelector(".tabs").addEventListener("click", function (e) { var b = e.target.closest("button[data-tab]"); if (b) { ongletCourant = b.dataset.tab; majBarre(); } });
+
+  // ---------- Parcours : plats, desserts, mes recettes, ma semaine, courses, commander ----------
+  var PARCOURS = [
+    { t: "semaine", nom: "Plats", consigne: "Choisissez vos plats de la semaine", aide: "Cochez « Je choisis ce menu » sur les plats qui vous font envie." },
+    { t: "desserts", nom: "Desserts", consigne: "Ajoutez des desserts et des goûters", aide: "Facultatif : cochez ceux que vous voulez, ils s'ajoutent aux courses." },
+    { t: "perso", nom: "Mes recettes", consigne: "Ajoutez vos propres recettes", aide: "Facultatif : cochez une de vos recettes, ou ajoutez-en une nouvelle." },
+    { t: "recettes", nom: "Ma semaine", consigne: "Relisez les recettes de la semaine", aide: "Toutes vos recettes au même endroit, à imprimer si besoin." },
+    { t: "liste", nom: "Courses", consigne: "Vérifiez votre liste de courses", aide: "Retirez ce que vous avez déjà, puis remplissez votre panier en ligne article par article." },
+    { t: "commande", nom: "Commander", consigne: "Choisissez où commander", aide: "Comparez les magasins et notez le bon jour pour réserver la livraison." }
+  ];
+  var rang = function (t) { for (var i = 0; i < PARCOURS.length; i++) if (PARCOURS[i].t === t) return i; return -1; };
+  var barreOnglets = document.querySelector(".tabs");
+  // Onglets dans l'ordre du parcours, numérotés ; Favoris et Carrefour à la suite, en plus
+  PARCOURS.forEach(function (p, i) {
+    var b = barreOnglets.querySelector('button[data-tab="' + p.t + '"]'); if (!b) return;
+    if (p.t === "semaine") b.firstChild.nodeValue = "Plats";
+    if (p.t === "commande") b.firstChild.nodeValue = "Commander";
+    var n = document.createElement("span"); n.className = "num"; n.setAttribute("aria-hidden", "true"); n.textContent = i + 1;
+    b.insertBefore(n, b.firstChild); b.classList.add("etape");
+    barreOnglets.appendChild(b);
+  });
+  var sep = document.createElement("span"); sep.className = "sep"; sep.setAttribute("aria-hidden", "true"); barreOnglets.appendChild(sep);
+  ["favoris", "carrefour"].forEach(function (t) { var b = barreOnglets.querySelector('button[data-tab="' + t + '"]'); if (b) { b.classList.add("extra"); barreOnglets.appendChild(b); } });
+  // En-tête de l'étape et boutons Retour / Suivant
+  var tete = document.createElement("div"); tete.className = "etape-tete"; barreOnglets.insertAdjacentElement("afterend", tete);
+  var suite = document.createElement("nav"); suite.className = "suite"; suite.setAttribute("aria-label", "Étapes"); document.querySelector(".wrap").appendChild(suite);
+  suite.addEventListener("click", function (e) { var b = e.target.closest("[data-aller]"); if (b) showTab(b.dataset.aller); });
+  function majParcours(t) {
+    var i = rang(t), p = PARCOURS[i];
+    barreOnglets.querySelectorAll("button.etape").forEach(function (b) { b.classList.toggle("fait", i >= 0 && rang(b.dataset.tab) < i); });
+    tete.hidden = suite.hidden = i < 0;
+    if (i < 0) return;
+    tete.innerHTML = '<span class="eyebrow">Étape ' + (i + 1) + " sur " + PARCOURS.length + "</span><h2>" + p.consigne + '</h2><p class="note">' + p.aide + '</p><div class="etape-barre"><i style="width:' + Math.round((i + 1) / PARCOURS.length * 100) + '%"></i></div>';
+    var av = PARCOURS[i - 1], ap = PARCOURS[i + 1];
+    suite.innerHTML = (av ? '<button type="button" class="ghost" data-aller="' + av.t + '">← ' + av.nom + "</button>" : "<span></span>") +
+      (ap ? '<button type="button" data-aller="' + ap.t + '">Suivant : ' + ap.nom + " →</button>" : '<button type="button" class="ghost" data-aller="semaine">Revenir aux plats</button>');
+  }
+  var showTabParcours = showTab;
+  showTab = function (t) { showTabParcours(t); majParcours(t); };
+  barreOnglets.addEventListener("click", function (e) { var b = e.target.closest("button[data-tab]"); if (b) majParcours(b.dataset.tab); });
+  window.rdmProchaine = function (t) { return PARCOURS[rang(t) + 1]; };
+  majParcours("semaine");
 
   // ---------- Remplir son panier pas à pas, dans le magasin en ligne choisi ----------
   // Sans IA : un article à la fois, un bouton qui ouvre la recherche du magasin, « Ajouté » pour passer au suivant.
