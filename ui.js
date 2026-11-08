@@ -208,7 +208,10 @@
   }
   function choisirPourMoi() {
     var deja = MENUS.filter(function (m) { return chosen.has(m.id); }).map(function (m) { return m.id; });
-    var groupes = {}; melange(MENUS.filter(function (m) { return deja.indexOf(m.id) < 0; })).forEach(function (m) { (groupes[m.profil] = groupes[m.profil] || []).push(m); });
+    // Les plats notés « bof » sont écartés, les plats aimés passent en premier
+    var note = function (m) { return typeof NOTES !== "undefined" ? NOTES[m.id] || 0 : 0; };
+    var candidats = melange(MENUS.filter(function (m) { return deja.indexOf(m.id) < 0 && note(m) >= 0; })).sort(function (a, b) { return note(b) - note(a); });
+    var groupes = {}; candidats.forEach(function (m) { (groupes[m.profil] = groupes[m.profil] || []).push(m); });
     var ordre = ["Riche en protéines", "Léger", "Végétarien", "Riche en protéines"], pris = [], k = 0, garde = 0;
     while (pris.length < FOYER.menus && garde++ < 200) { var g = groupes[ordre[k++ % ordre.length]]; if (g && g.length) pris.push(g.shift().id); }
     if (pris.length < FOYER.menus) melange(deja).forEach(function (id) { if (pris.length < FOYER.menus) pris.push(id); });

@@ -44,7 +44,8 @@
     // Combien de repas utilisent chaque ingrédient, pour signaler ceux à partager
     var compte = {};
     b.sel.forEach(function (m) { ingF(m).forEach(function (i) { compte[i[1]] = (compte[i[1]] || 0) + 1; }); });
-    var tri = repas.map(function (m) { return { m: m, f: fragilite(m) }; }).sort(function (a, c) { return a.f.rang - c.f.rang; });
+    var jourDe = function (m) { return window.rdmJourDe ? window.rdmJourDe(m.id) : null; };
+    var tri = repas.map(function (m) { return { m: m, f: fragilite(m), j: jourDe(m) }; }).sort(function (a, c) { return a.j && c.j ? a.j.j - c.j.j : a.f.rang - c.f.rang; });
     var total = 0, faits = 0, lieux = {};
     var carte = function (m, titre, conseil) {
       var ings = ingF(m);
@@ -58,7 +59,7 @@
       return '<article class="r-sac' + (n === ings.length ? " complet" : "") + '"><div class="r-tete"><span class="eyebrow">' + titre + "</span><h3>" + esc(m.nom) + "</h3>" +
         (conseil ? '<p class="note">' + conseil + "</p>" : "") + '<span class="r-compte">' + n + " / " + ings.length + "</span></div><ul>" + lignes + "</ul></article>";
     };
-    var h = tri.map(function (x, k) { return carte(x.m, "Sac " + (k + 1) + (k === 0 ? " · à cuisiner en premier" : k === tri.length - 1 ? " · à cuisiner en dernier" : ""), x.f.conseil); }).join("");
+    var h = tri.map(function (x, k) { return carte(x.m, "Sac " + (k + 1) + (x.j ? " · " + x.j.nom + " " + x.j.date.getDate() : k === 0 ? " · à cuisiner en premier" : k === tri.length - 1 ? " · à cuisiner en dernier" : ""), x.f.conseil); }).join("");
     if (extras.length) h += '<h3 class="r-groupe">Desserts et extras</h3>' + extras.map(function (m) { return carte(m, "Dessert ou extra", ""); }).join("");
     var resume = Object.keys(lieux).map(function (k) { return '<span class="chip"><b>' + lieux[k] + "</b> " + k.toLowerCase() + "</span>"; }).join("");
     sec.innerHTML =
