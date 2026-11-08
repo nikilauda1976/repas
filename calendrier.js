@@ -32,13 +32,21 @@
   // Donne un jour à chaque plat qui n'en a pas, en remplissant d'abord les jours libres
   function placer() {
     var repas = buildList().repas, ids = repas.map(function (m) { return m.id; }), change = false;
-    Object.keys(jours).forEach(function (id) { if (ids.indexOf(id) < 0) { delete jours[id]; change = true; } });
+    Object.keys(jours).forEach(function (id) {
+      var base = id.replace(/^restes:/, ""), garde = ids.indexOf(base) >= 0 && (id === base || DOUBLES.has(base));
+      if (!garde) { delete jours[id]; change = true; }
+    });
     var libres = repas.filter(function (m) { return !(m.id in jours); }).sort(function (a, b) { return fragilite(a) - fragilite(b); });
     libres.forEach(function (m) {
       var pris = {}; Object.keys(jours).forEach(function (id) { pris[jours[id]] = (pris[jours[id]] || 0) + 1; });
       var j = 0, min = Infinity;
       for (var k = 0; k < 7; k++) { var n = pris[k] || 0; if (n < min) { min = n; j = k; } }
       jours[m.id] = j; change = true;
+    });
+    // Les restes d'un plat doublé : le lendemain (les restes se gardent 2 à 3 jours au frigo)
+    repas.forEach(function (m) {
+      var k = "restes:" + m.id; if (!DOUBLES.has(m.id) || k in jours) return;
+      jours[k] = Math.min(6, jours[m.id] + 1); change = true;
     });
     if (change) garder();
     return repas;
@@ -56,15 +64,18 @@
     if (!repas.length) { box.hidden = true; return; }
     box.hidden = false;
     var parJour = [[], [], [], [], [], [], []];
-    repas.forEach(function (m) { parJour[jours[m.id]].push(m); });
+    repas.forEach(function (m) { parJour[jours[m.id]].push({ m: m }); if (DOUBLES.has(m.id)) parJour[jours["restes:" + m.id]].push({ m: m, restes: true }); });
     var auj = new Date(); auj.setHours(0, 0, 0, 0);
     box.innerHTML = '<div class="cal-tete"><p class="envoi-titre">Ma semaine jour par jour</p>' +
-      '<p class="note">' + (choisi ? "Touchez le jour où vous voulez mettre « " + esc(REG.get(choisi).nom.split(",")[0]) + " »." : "Le plus fragile en premier (poisson, viande hachée). Pour changer de jour, touchez un plat puis le nouveau jour.") + "</p></div>" +
+      '<p class="note">' + (choisi ? "Touchez le jour où vous voulez mettre « " + esc(REG.get(choisi.replace(/^restes:/, "")).nom.split(",")[0]) + " »." : "Le plus fragile en premier (poisson, viande hachée). Pour changer de jour, touchez un plat puis le nouveau jour. « ×2 » : cuisinez le double et gardez les restes pour un autre soir.") + "</p></div>" +
       '<ol class="cal-jours">' + parJour.map(function (ms, j) {
         var d = dateDe(j), cest = d.getTime() === auj.getTime();
         return '<li class="cal-jour' + (cest ? " aujourdhui" : "") + (choisi ? " cible" : "") + '" data-jour="' + j + '"><span class="cal-date"><b>' + JOURS[j].slice(0, 3) + "</b> " + court(d) + "</span>" +
-          '<span class="cal-plats">' + (ms.length ? ms.map(function (m) {
-            return '<span class="cal-plat' + (choisi === m.id ? " choisi" : "") + '"><button type="button" class="cal-nom" data-bouger="' + esc(m.id) + '">' + esc(m.nom.split(",")[0]) + "</button>" +
+          '<span class="cal-plats">' + (ms.length ? ms.map(function (x) {
+            var m = x.m, k = x.restes ? "restes:" + m.id : m.id, nom = m.nom.split(",")[0];
+            if (x.restes) return '<span class="cal-plat cal-reste' + (choisi === k ? " choisi" : "") + '"><button type="button" class="cal-nom" data-bouger="' + esc(k) + '">♻ Restes : ' + esc(nom) + "</button></span>";
+            return '<span class="cal-plat' + (choisi === k ? " choisi" : "") + '"><button type="button" class="cal-nom" data-bouger="' + esc(k) + '">' + esc(nom) + "</button>" +
+              '<button type="button" class="cal-x2' + (DOUBLES.has(m.id) ? " on" : "") + '" data-doubler="' + esc(m.id) + '" aria-pressed="' + DOUBLES.has(m.id) + '" title="Cuisiner une fois, manger deux fois">×2</button>' +
               '<button type="button" class="cal-go" data-cuisiner="' + esc(m.id) + '" aria-label="Cuisiner ' + esc(m.nom) + '">▶</button></span>';
           }).join("") : '<span class="cal-vide">' + (cest ? "Rien de prévu aujourd'hui" : "—") + "</span>") + "</span></li>";
       }).join("") + "</ol>" +
@@ -73,6 +84,8 @@
   }
   box.addEventListener("click", function (e) {
     if (e.target.closest("[data-cuisiner]")) return;
+    var x2 = e.target.closest("[data-doubler]");
+    if (x2) { var id = x2.dataset.doubler; DOUBLES.has(id) ? DOUBLES.delete(id) : DOUBLES.add(id); try { localStorage.setItem("menus-doubles", JSON.stringify(Array.from(DOUBLES))); } catch (er) {} choisi = null; renderCards(); renderBasket(); return; }
     var b = e.target.closest("[data-bouger]");
     if (b) { choisi = choisi === b.dataset.bouger ? null : b.dataset.bouger; rendre(); return; }
     if (e.target.closest("#cal-annuler")) { choisi = null; rendre(); return; }
@@ -103,6 +116,11 @@
     var maintenant = new Date(), stamp = maintenant.toISOString().replace(/[-:]/g, "").replace(/\.\d+/, "");
     var lignes = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//repas//semaine//FR", "CALSCALE:GREGORIAN"];
     buildList().repas.forEach(function (m) {
+      if (DOUBLES.has(m.id) && ("restes:" + m.id) in jours) {
+        var dr = dateDe(jours["restes:" + m.id]);
+        lignes.push("BEGIN:VEVENT", "UID:restes-" + m.id + "-" + f(dr, 19, 0) + "@repas", "DTSTAMP:" + stamp, "DTSTART:" + f(dr, 19, 0), "DTEND:" + f(dr, 20, 0),
+          "SUMMARY:" + echap("♻ Restes : " + m.nom), "DESCRIPTION:" + echap("Réchauffez les restes gardés le " + JOURS[jours[m.id]].toLowerCase() + "."), "END:VEVENT");
+      }
       var d = dateDe(jours[m.id]);
       lignes.push("BEGIN:VEVENT", "UID:" + m.id + "-" + f(d, 19, 0) + "@repas", "DTSTAMP:" + stamp,
         "DTSTART:" + f(d, 19, 0), "DTEND:" + f(d, 20, 0), "SUMMARY:" + echap("🍽 " + m.nom),

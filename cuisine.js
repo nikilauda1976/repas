@@ -82,6 +82,7 @@
     var ings = ingF(rec), mult = Math.abs(facR(rec) - 1) > 0.01;
     ecrans = [];
     ecrans.push('<span class="eyebrow">Avant de commencer</span><h2>Sortez les ingrédients</h2>' +
+      (DOUBLES.has(rec.id) ? '<p class="note ok">Plat doublé : cuisinez tout, puis gardez la moitié au frigo pour le soir des restes (3 jours maximum).</p>' : "") +
       (mult ? '<p class="note">Quantités pour ' + fmt(portions()) + " portions. Les étapes parlent de " + (rec.base || 6) + " portions : multipliez par " + fmt(facR(rec)) + ".</p>" : "") +
       '<ul class="cu-ings">' + ings.map(function (i) { return '<li><label><input type="checkbox"> <span>' + esc(i[1]) + (i[2] ? " <b>" + esc(i[2]) + "</b>" : "") + "</span></label></li>"; }).join("") + "</ul>" +
       (rec.materiel ? '<p class="cu-mat"><b>Matériel :</b> ' + esc(rec.materiel) + "</p>" : ""));

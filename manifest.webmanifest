@@ -1,0 +1,16 @@
+{
+  "name": "repas · les menus de la maison",
+  "short_name": "repas",
+  "description": "Les menus de la semaine, la liste de courses et les recettes de la famille.",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f3e7",
+  "theme_color": "#f4f3e7",
+  "icons": [
+    { "src": "icone-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icone-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icone-masque-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

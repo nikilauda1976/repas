@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icone-192.png" type="image/png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="theme-color" content="#f4f3e7"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="repas"><meta name="apple-mobile-web-app-status-bar-style" content="default"></head><body>
 <title>Menus de la maison 1</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -529,6 +529,33 @@ body.cuisine-ouverte .barre-semaine{display:none}
 .cu-bas{display:flex;gap:10px;max-width:760px;width:100%;margin:0 auto}
 .cu-bas button{flex:1;padding:16px;font-size:17px}
 .cu-bas button:disabled{opacity:.35}
+/* Installer l'appli */
+.haut{position:sticky}
+.installer{position:absolute;right:max(12px,env(safe-area-inset-right,0px));top:50%;transform:translateY(-50%);padding:6px 14px;font-size:13px;text-transform:uppercase;letter-spacing:.08em}
+.installer:active{transform:translateY(-50%) scale(.97)}
+.installer-aide{position:fixed;z-index:70;left:12px;right:12px;bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:16px 18px;box-shadow:0 20px 40px -20px rgba(0,0,0,.5);max-width:420px;margin:0 auto}
+.installer-aide ol{padding-left:20px;margin:6px 0 12px}
+/* Filtres, allergènes, anti-gaspi, ×2 */
+.filtre-off{display:none!important}
+.filtres-plus{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:0}
+.filtres-plus button{border-radius:999px;background:transparent;color:var(--ink);border:1px solid var(--line);padding:6px 12px;font-size:13px;font-weight:500}
+.filtres-plus button[aria-pressed="true"]{background:var(--basil);color:var(--on-basil);border-color:var(--basil)}
+.filtres-plus .note{flex-basis:100%;margin:2px 0 0;font-size:12.5px}
+.badge{font-size:11.5px;color:var(--ink);border:1px solid var(--line);border-radius:99px;padding:0 7px;white-space:nowrap}
+.allergenes{font-size:13px;margin:8px 0 0;color:var(--ink)}.allergenes small{color:var(--muted)}
+.antigaspi{border:1px solid var(--basil);background:var(--basil-soft);border-radius:18px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.antigaspi:empty{display:none}
+.ag-tete{display:flex;justify-content:space-between;align-items:center}
+.ag-titre{margin:0;font:300 20px/1.2 var(--display)}
+.ag-liste{list-style:none;padding:0;margin:0}
+.ag-liste li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line);margin:0}
+.ag-liste li>span{display:flex;flex-direction:column;min-width:0}
+.ag-liste b{font-weight:500}.ag-liste small{color:var(--muted);font-size:12.5px}.ag-liste .ag-type{display:inline;color:var(--basil)}
+.ag-liste button{flex:none;padding:7px 14px;font-size:14px}
+.cal-x2,.cal-x2:hover{flex:none;width:38px;height:38px;padding:0;background:transparent;color:var(--muted);border:1px solid var(--line);font-size:13px}
+.cal-x2.on{background:var(--basil-soft);color:var(--basil);border-color:var(--basil)}
+.cal-reste .cal-nom{font-style:italic;color:var(--basil);background:transparent;border-style:dashed}
+@media (max-width:620px){.filtres-plus{margin-top:0;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}.filtres-plus::-webkit-scrollbar{display:none}.filtres-plus button{flex:none}.filtres-plus .note{display:none}}
 /* Commander avec Jow */
 .jow-plats{list-style:none;padding:0;margin:4px 0 0;display:flex;flex-direction:column}
 .jow-plats li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);margin:0}
@@ -861,7 +888,7 @@ body.tete-courte .wrap>header{display:none}
 </section>
 </div>
 
-<script src="compte.js?v=20261108u"></script>
+<script src="compte.js?v=20261108w"></script>
 <script>
 const MENUS=[
  {id:"poulet",nom:"Poulet au paprika, riz et haricots verts",dessert:"Clémentines",temps:"25 min",profil:"Riche en protéines",
@@ -1408,16 +1435,21 @@ function scaleQ(q,f){
     return Math.max(1,Math.ceil(v-0.3))+sp;
   });
 }
-const facR=m=>Math.max(0.2,portions()/((m&&m.base)||6));
+// « Cuisiner une fois, manger deux fois » : un plat doublé fait aussi le repas des restes
+let DOUBLES=new Set();
+try{const s=JSON.parse(localStorage.getItem("menus-doubles")||"null");if(Array.isArray(s))DOUBLES=new Set(s)}catch(e){}
+const double=m=>!!(m&&DOUBLES.has(m.id));
+const facR=m=>Math.max(0.2,portions()/((m&&m.base)||6))*(double(m)?2:1);
 const ingF=m=>{const f=facR(m);return m.ing.map(([r,n,q,p])=>[r,n,scaleQ(q,f),p*f])};
 const total=m=>m.ing.reduce((s,i)=>s+i[3],0)*facR(m);
+const totalRepas=m=>total(m)/(double(m)?2:1);
 let chosen=new Set();
 try{const s=JSON.parse(localStorage.getItem("menus-choix")||"null");if(Array.isArray(s))chosen=new Set(s)}catch(e){}
 
 let favs=new Map(), favDb=null, favLocal=false, ajouts=new Map(), touched=false, lastKey="";
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 function card(m,p="m-"){
-  const t=total(m);
+  const t=totalRepas(m);
   return `<article class="menu${chosen.has(m.id)?" on":""}" id="${p}${esc(m.id)}" data-rid="${esc(m.id)}">
    <div class="menu-head"><span class="eyebrow">${m.nouveau?"Nouveau · ":""}${esc(m.profil)}</span><h3>${esc(m.nom)}</h3>
     <div class="meta">${m.dessert?`<span>Dessert : ${esc(m.dessert)}</span>`:""}<span>${esc(m.temps)}</span>${m.kcal?`<span class="kcal">≈ ${m.kcal} kcal ${m.id==="gateau"?"par part":"par personne"}</span>`:""}${noteBadge(m.id)}</div></div>
@@ -1453,7 +1485,7 @@ function buildList(){
   const toutes=[...map.values()], lignes=toutes.filter(x=>!ailleurs.has(x.r)&&!placard.has(x.n)), dehors=toutes.filter(x=>ailleurs.has(x.r)&&!placard.has(x.n)), auPlacard=toutes.filter(x=>placard.has(x.n));
   const oeufs=lignes.reduce((s,x)=>s+(/^[œŒ]ufs/.test(x.n)?x.q.reduce((a,q)=>a+(parseInt(q,10)||0),0):0),0);
   const sum=a=>a.reduce((s,x)=>s+x.p,0);
-  return {sel,repas,lignes,dehors,auPlacard,tot:sum(lignes),totDehors:sum(dehors),totRepas:repas.reduce((s,m)=>s+total(m),0),oeufs};
+  return {sel,repas,lignes,dehors,auPlacard,tot:sum(lignes),totDehors:sum(dehors),totRepas:repas.reduce((s,m)=>s+totalRepas(m),0),oeufs};
 }
 function renderAilleurs(){
   const box=document.getElementById("ailleurs-opts"); if(!box)return;
@@ -1949,9 +1981,12 @@ function fallback(t){const pre=document.createElement("pre");pre.textContent=t;p
   <button type="button" data-aller="liste">Courses</button>
 </div>
 <script src="perso.js?v=20261108"></script>
-<script src="ui.js?v=20261108u"></script>
+<script src="ui.js?v=20261108x"></script>
 <script src="partage.js?v=20261108p"></script>
-<script src="calendrier.js?v=20261108v"></script>
-<script src="rangement.js?v=20261108u"></script>
-<script src="cuisine.js?v=20261108u"></script>
+<script src="calendrier.js?v=20261108x"></script>
+<script src="rangement.js?v=20261108w"></script>
+<script src="cuisine.js?v=20261108w"></script>
+<script src="filtres.js?v=20261108w"></script>
+<script src="antigaspi.js?v=20261108w"></script>
+<script src="pwa.js?v=20261108w"></script>
 </body></html>

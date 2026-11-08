@@ -57,6 +57,7 @@
       }).join("");
       var n = ings.filter(function (i) { return ranges.has(cle(m, i[1])); }).length;
       return '<article class="r-sac' + (n === ings.length ? " complet" : "") + '"><div class="r-tete"><span class="eyebrow">' + titre + "</span><h3>" + esc(m.nom) + "</h3>" +
+        (DOUBLES.has(m.id) ? '<p class="note ok">×2 : quantités doublées, la moitié sera pour les restes.</p>' : "") +
         (conseil ? '<p class="note">' + conseil + "</p>" : "") + '<span class="r-compte">' + n + " / " + ings.length + "</span></div><ul>" + lignes + "</ul></article>";
     };
     var h = tri.map(function (x, k) { return carte(x.m, "Sac " + (k + 1) + (x.j ? " · " + x.j.nom + " " + x.j.date.getDate() : k === 0 ? " · à cuisiner en premier" : k === tri.length - 1 ? " · à cuisiner en dernier" : ""), x.f.conseil); }).join("");

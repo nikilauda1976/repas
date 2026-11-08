@@ -210,7 +210,7 @@
     var deja = MENUS.filter(function (m) { return chosen.has(m.id); }).map(function (m) { return m.id; });
     // Les plats notés « bof » sont écartés, les plats aimés passent en premier
     var note = function (m) { return typeof NOTES !== "undefined" ? NOTES[m.id] || 0 : 0; };
-    var candidats = melange(MENUS.filter(function (m) { return deja.indexOf(m.id) < 0 && note(m) >= 0; })).sort(function (a, b) { return note(b) - note(a); });
+    var candidats = melange(MENUS.filter(function (m) { return deja.indexOf(m.id) < 0 && note(m) >= 0 && (!window.rdmFiltreOk || window.rdmFiltreOk(m)); })).sort(function (a, b) { return note(b) - note(a); });
     var groupes = {}; candidats.forEach(function (m) { (groupes[m.profil] = groupes[m.profil] || []).push(m); });
     var ordre = ["Riche en protéines", "Léger", "Végétarien", "Riche en protéines"], pris = [], k = 0, garde = 0;
     while (pris.length < FOYER.menus && garde++ < 200) { var g = groupes[ordre[k++ % ordre.length]]; if (g && g.length) pris.push(g.shift().id); }
@@ -219,7 +219,9 @@
     pris.forEach(function (id) { cocherPlat(id, true); });
     var f = document.querySelector('#filters button[data-p="Tous"]'); if (f) f.click();
     var note = document.getElementById("pour-moi-note");
-    if (note) note.textContent = pris.length + " plats choisis. Décochez ceux qui ne vous plaisent pas, ou appuyez encore pour changer.";
+    var filtre = document.querySelector(".filtres-plus [aria-pressed=true]");
+    if (note) note.textContent = !pris.length ? "Aucun plat ne correspond aux filtres choisis : retirez un filtre et réessayez." :
+      pris.length + " plats choisis" + (pris.length < FOYER.menus ? " (seulement " + pris.length + " correspondent aux filtres)" : "") + ". Décochez ceux qui ne vous plaisent pas, ou appuyez encore pour changer.";
     var premier = document.querySelector("#menus .menu.on"); if (premier) premier.scrollIntoView({ behavior: "smooth", block: "center" });
   }
   var showTabParcours = showTab;
