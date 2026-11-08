@@ -240,6 +240,37 @@
   outils.insertBefore(go, outils.firstChild.nextSibling);
   go.addEventListener("click", ouvrirPas);
 
+  // ---------- Onglets : bulle blanche qui glisse sous l'onglet actif ----------
+  var tabs = document.querySelector(".tabs"), bulle = document.createElement("span");
+  bulle.className = "bulle"; bulle.setAttribute("aria-hidden", "true"); tabs.insertBefore(bulle, tabs.firstChild);
+  function placerBulle() {
+    var b = tabs.querySelector('button[aria-selected="true"]'); if (!b) return;
+    bulle.style.width = b.offsetWidth + "px";
+    bulle.style.height = b.offsetHeight + "px";
+    bulle.style.transform = "translateX(" + b.offsetLeft + "px)";
+  }
+  new MutationObserver(placerBulle).observe(tabs, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ["aria-selected"] });
+  window.addEventListener("resize", placerBulle);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(placerBulle);
+  placerBulle();
+
+  // ---------- Profondeur : la pièce et le mot fantôme suivent un peu la souris ----------
+  var fond = document.querySelector(".fond"), fantome = document.querySelector(".fantome");
+  var calme = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (fond && fantome && !calme && window.matchMedia("(pointer:fine)").matches) {
+    var vx = 0, vy = 0, sx = 0, sy = 0, enCours = false;
+    var boucle = function () {
+      sx += (vx - sx) * .06; sy += (vy - sy) * .06;
+      fond.style.transform = "translate3d(" + (-sx * 22).toFixed(2) + "px," + (-sy * 14).toFixed(2) + "px,0) scale(1.08)";
+      fantome.style.transform = "translate(calc(-50% - " + (sx * 40).toFixed(2) + "px)," + (-sy * 16).toFixed(2) + "px)";
+      if (Math.abs(vx - sx) + Math.abs(vy - sy) > .001) requestAnimationFrame(boucle); else enCours = false;
+    };
+    window.addEventListener("pointermove", function (e) {
+      vx = e.clientX / innerWidth - .5; vy = e.clientY / innerHeight - .5;
+      if (!enCours) { enCours = true; requestAnimationFrame(boucle); }
+    }, { passive: true });
+  }
+
   // Après chaque mise à jour de la liste (menus cochés, foyer, ajouts…)
   new MutationObserver(function () { majCourses(); majBarre(); majLiens(); }).observe(liste, { childList: true });
   majCourses(); majBarre(); majLiens();
