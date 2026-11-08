@@ -164,6 +164,7 @@
   function aller(e) {
     var b = e.target.closest("[data-aller]"); if (b) { showTab(b.dataset.aller); return; }
     if (e.target.closest("#pour-moi")) choisirPourMoi();
+    var v = e.target.closest("[data-vers]"); if (v) { var cible = document.querySelector(v.dataset.vers); if (cible) cible.scrollIntoView({ behavior: "smooth", block: "center" }); }
   }
   tete.addEventListener("click", aller); suite.addEventListener("click", aller);
   var courant = "semaine";
@@ -184,12 +185,12 @@
     });
     tete.hidden = suite.hidden = i < 0;
     if (i < 0) return;
-    var h = '<span class="eyebrow">Étape ' + (i + 1) + " sur " + PARCOURS.length + "</span><h2>" + (t === "recettes" ? "Les recettes de votre semaine" : p.consigne) + '</h2><p class="note">' + (t === "recettes" ? "Toutes les recettes choisies, à imprimer ou à garder sur le téléphone." : p.aide) + '</p><div class="etape-barre"><i style="width:' + Math.round((i + 1) / PARCOURS.length * 100) + '%"></i></div>';
+    var h = '<span class="eyebrow">Étape ' + (i + 1) + " sur " + PARCOURS.length + "</span><h2>" + (t === "recettes" ? "Les recettes de votre semaine" : p.consigne) + '</h2><p class="note">' + (t === "recettes" ? "Toutes les recettes choisies, à garder en PDF ou à envoyer par message." : p.aide) + '</p><div class="etape-barre"><i style="width:' + Math.round((i + 1) / PARCOURS.length * 100) + '%"></i></div>';
     if (i === 0) {
       h += '<div class="sous" role="group" aria-label="Que choisir">' + SOUS.map(function (x) { return '<button type="button" data-aller="' + x[0] + '" aria-pressed="' + (x[0] === t) + '">' + x[1] + " <i></i></button>"; }).join("") + "</div>";
       if (t === "semaine") h += '<div class="pour-moi"><button type="button" id="pour-moi">✨ Choisir pour moi</button><span class="note" id="pour-moi-note">Coche ' + FOYER.menus + " plats variés d'un coup. Appuyez encore pour en tirer d'autres.</span></div>";
     }
-    if (t === "liste") h += '<div class="ajout-row"><button type="button" class="ghost" data-aller="recettes">Voir les recettes de ma semaine</button></div>';
+    if (t === "liste") h += '<div class="ajout-row raccourcis"><button type="button" class="ghost" data-aller="recettes">Recettes de ma semaine</button><button type="button" class="ghost" data-vers=".envoi:not([hidden])">Envoyer la liste ↓</button></div>';
     if (t === "recettes") h += '<div class="ajout-row"><button type="button" class="ghost" data-aller="liste">← Revenir à ma liste de courses</button></div>';
     tete.innerHTML = h; majSous();
     var av = PARCOURS[i - 1], ap = PARCOURS[i + 1];

@@ -403,6 +403,48 @@ body.avec-barre .wrap{padding-bottom:110px}
 .suite button:not(.ghost){margin-left:auto}
 @media (max-width:767px){.tabs .num{width:18px;height:18px;margin-right:5px;font-size:10px}.tabs .extra{font-size:13px}.suite button{flex:1 1 auto;text-align:center}}
 @media print{.etape-tete,.suite{display:none!important}}
+/* Envoyer une liste, PDF */
+.envoi{display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid var(--line);border-radius:18px;background:var(--bg)}
+.envoi-titre{font:300 22px/1.15 var(--display);letter-spacing:-.02em;margin:0}
+.envoi-boutons{display:flex;flex-wrap:wrap;gap:8px}
+.envoi-boutons>*{flex:1 1 auto;justify-content:center;text-align:center;text-decoration:none;box-sizing:border-box;border-radius:999px;padding:11px 16px;font-weight:500;font-size:15px}
+.envoi-boutons .bouton.ghost{color:var(--ink);border:1px solid var(--ink);background:transparent}
+.envoi-ailleurs{border-color:var(--basil);background:var(--basil-soft)}
+.recettes-semaine .envoi{margin-top:4px}
+/* Téléphone : plus compact, plus lisible */
+@media (max-width:620px){
+  .wrap{gap:28px;padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px))}
+  h1{font-size:34px}
+  header .eyebrow{font-size:11px;letter-spacing:.08em}
+  .reglages>summary{padding:10px 12px}
+  .reglages-corps{padding:12px}
+  .foyer{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:10px}
+  .foyer label{font-size:12px;line-height:1.2;justify-content:space-between}
+  .foyer input{width:100%;box-sizing:border-box;font-size:18px}
+  .facts{gap:6px}.chip{font-size:12px;padding:3px 9px}
+  .infos .basics summary,.ailleurs-pli summary{font:500 15px var(--body);letter-spacing:0}
+  .basics,.ailleurs-pli{padding:10px 2px}
+  .basket,.recette,.perso-add,.perso-form{padding:14px;border-radius:16px}
+  .totals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 8px}
+  .totals strong{font-size:20px}
+  .totals span{font-size:11px;line-height:1.25}
+  .rayon li{font-size:15px;padding:7px 0}
+  .etape-tete h2{font-size:26px}
+  .etape-tete .note{font-size:13px}
+  .sous{width:100%;box-sizing:border-box;flex-wrap:nowrap}
+  .sous button{flex:1 1 0;padding:8px 6px;font-size:13px;white-space:nowrap}
+  .envoi{padding:14px;border-radius:16px}
+  .envoi-titre{font-size:20px}
+  .envoi-boutons>*{flex:1 1 40%;padding:11px 10px}
+  .cols{grid-template-columns:1fr;gap:6px}
+  .recette h3{font-size:16px}
+  .suite{position:static;padding-top:18px}
+  .ajout-row input{flex:1 1 100%}
+  .ajout-row button{flex:1 1 100%}
+  .table-wrap table{font-size:13px}
+  .raccourcis button{flex:1 1 0;padding:10px 8px;font-size:14px}
+}
+.recettes-semaine>.eyebrow,.recettes-semaine>h2,#rec-lead{display:none}
 /* Commander avec Jow */
 .jow-plats{list-style:none;padding:0;margin:4px 0 0;display:flex;flex-direction:column}
 .jow-plats li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);margin:0}
@@ -1349,6 +1391,14 @@ function syncCommande(b){
     syncChain=syncChain.then(()=>favDb.doc("commande/courante").update({...data,statut:"brouillon",maj:new Date().toISOString()}).catch(()=>favDb.doc("commande/courante").set({...data,statut:"brouillon",maj:new Date().toISOString()}))).catch(()=>{});
   },800);
 }
+// Additionne les quantités de même unité : « 1 kg + 800 g » devient « 1,8 kg », « 10 + 10 » devient « 20 »
+function sommeQ(q){
+  const U={g:["g",1],kg:["g",1000],ml:["ml",1],cl:["ml",10],l:["ml",1000]},tot={},reste=[];
+  q.filter(Boolean).forEach(s=>{const m=/^\s*(\d+(?:[.,]\d+)?)\s*(kg|g|cl|ml|l)?\s*$/i.exec(s);if(!m){reste.push(s);return}
+    const u=m[2]?U[m[2].toLowerCase()]:["",1];tot[u[0]]=(tot[u[0]]||0)+parseFloat(m[1].replace(",","."))*u[1]});
+  const j=n=>String(Math.round(n*100)/100).replace(".",",");
+  return Object.keys(tot).map(u=>{const n=tot[u];return u==="g"?(n>=1000?j(n/1000)+" kg":j(n)+" g"):u==="ml"?(n>=1000?j(n/1000)+" l":n>=100?j(n/10)+" cl":j(n)+" ml"):j(n)}).concat(reste).join(" + ");
+}
 function renderBasket(){
   const b=buildList(), {sel,repas,lignes,dehors,tot,totDehors,totRepas,oeufs}=b;
   renderAilleurs();
@@ -1358,9 +1408,9 @@ function renderBasket(){
   document.getElementById("tab-count").textContent=n?`(${n})`:"";
   const by={};lignes.forEach(x=>(by[x.r]=by[x.r]||[]).push(x));
   const cfS=n=>`<a class="cf-s" href="https://www.carrefour.fr/s?q=${encodeURIComponent(n.replace(/\s*\(.*?\)/g,"").replace(/ ou .*$/,""))}" target="_blank" rel="noopener" aria-label="Chercher ${esc(n)} sur Carrefour">Carrefour ↗</a>`;
-  let html=Object.keys(by).sort().map(r=>`<div class="rayon"><h4>${esc(r)}</h4><ul>${by[r].map(x=>`<li${/^[œŒ]ufs/.test(x.n)?' class="oeufs"':""}><span>${esc(x.n)}${x.q.filter(Boolean).length?` (${x.q.filter(Boolean).map(esc).join(" + ")})`:""}${cfS(x.n)}</span><span>${x.p?eur(x.p):"–"}</span></li>`).join("")}</ul></div>`).join("");
+  let html=Object.keys(by).sort().map(r=>`<div class="rayon"><h4>${esc(r)}</h4><ul>${by[r].map(x=>`<li${/^[œŒ]ufs/.test(x.n)?' class="oeufs"':""}><span>${esc(x.n)}${x.q.filter(Boolean).length?` (${esc(sommeQ(x.q))})`:""}${cfS(x.n)}</span><span>${x.p?eur(x.p):"–"}</span></li>`).join("")}</ul></div>`).join("");
   if(dehors.length){const bd={};dehors.forEach(x=>(bd[x.r]=bd[x.r]||[]).push(x));
-    html+=`<h3 class="dehors-titre">À acheter moi-même ailleurs</h3>`+GROUPES.map(([g,lab])=>bd[g]?`<div class="rayon dehors"><h4>Ailleurs · ${esc(lab)}</h4><ul>${bd[g].map(x=>`<li><span>${esc(x.n)}${x.q.filter(Boolean).length?` (${x.q.filter(Boolean).map(esc).join(" + ")})`:""}</span><span>${x.p?eur(x.p):"–"}</span></li>`).join("")}</ul></div>`:"").join("")}
+    html+=`<h3 class="dehors-titre">À acheter moi-même ailleurs</h3>`+GROUPES.map(([g,lab])=>bd[g]?`<div class="rayon dehors"><h4>Ailleurs · ${esc(lab)}</h4><ul>${bd[g].map(x=>`<li><span>${esc(x.n)}${x.q.filter(Boolean).length?` (${esc(sommeQ(x.q))})`:""}</span><span>${x.p?eur(x.p):"–"}</span></li>`).join("")}</ul></div>`:"").join("")}
   if(ajouts.size)html+=`<div class="rayon"><h4>Ajouts manuels</h4><ul>${[...ajouts.entries()].map(([id,a])=>`<li><span>${esc(a.nom)}${a.qte?` (${esc(a.qte)})`:""}</span><span><button type="button" class="x" data-del="${esc(id)}" aria-label="Retirer ${esc(a.nom)}">×</button></span></li>`).join("")}</ul></div>`;
   document.getElementById("list").innerHTML=html||'<p class="empty">Cochez un ou plusieurs menus, ou ajoutez un produit ci-dessous.</p>';
   syncCommande(b);
@@ -1800,5 +1850,6 @@ function fallback(t){const pre=document.createElement("pre");pre.textContent=t;p
   <button type="button" data-aller="liste">Courses</button>
 </div>
 <script src="perso.js?v=20261108"></script>
-<script src="ui.js?v=20261108m"></script>
+<script src="ui.js?v=20261108r"></script>
+<script src="partage.js?v=20261108p"></script>
 </body></html>
