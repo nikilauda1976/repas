@@ -445,6 +445,25 @@ body.avec-barre .wrap{padding-bottom:110px}
   .raccourcis button{flex:1 1 0;padding:10px 8px;font-size:14px}
 }
 .recettes-semaine>.eyebrow,.recettes-semaine>h2,#rec-lead{display:none}
+/* Ranger les courses par repas */
+.arrivee{width:100%;margin-top:6px;padding:14px 16px;font-size:15px}
+.rangement{gap:14px}
+.r-haut{display:flex;flex-direction:column;gap:8px}
+.r-etat{margin:0;font-size:15px}.r-etat b{font:300 24px var(--display);color:var(--basil)}
+.r-sac{border:1px solid var(--line);border-radius:18px;background:var(--surface);padding:14px 16px}
+.r-sac.complet{border-color:var(--basil);background:var(--basil-soft)}
+.r-tete{position:relative;padding-right:56px;display:flex;flex-direction:column;gap:3px}
+.r-tete h3{font-size:16px}
+.r-compte{position:absolute;top:0;right:0;font:300 20px var(--display);color:var(--basil)}
+.r-sac ul{list-style:none;padding:0;margin:8px 0 0}
+.r-sac li{display:flex;align-items:center;gap:10px;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);cursor:pointer;margin:0}
+.r-sac li::before{content:"";flex:none;width:20px;height:20px;border:2px solid var(--line);border-radius:6px;box-sizing:border-box}
+.r-sac li.fait::before{background:var(--basil);border-color:var(--basil);box-shadow:inset 0 0 0 3px var(--surface)}
+.r-sac li.fait .r-nom{text-decoration:line-through;color:var(--muted)}
+.r-nom{flex:1;min-width:0}.r-nom small{color:var(--muted);font-size:13px}
+.r-partage{font-style:normal;font-size:11px;color:var(--alerte);border:1px solid currentColor;border-radius:99px;padding:0 6px;white-space:nowrap}
+.r-ou{flex:none;font-size:12px;color:var(--basil);background:var(--basil-soft);border-radius:99px;padding:2px 9px}
+.r-groupe{font:300 22px var(--display);margin-top:6px}
 /* Commander avec Jow */
 .jow-plats{list-style:none;padding:0;margin:4px 0 0;display:flex;flex-direction:column}
 .jow-plats li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);margin:0}
@@ -777,7 +796,7 @@ body.tete-courte .wrap>header{display:none}
 </section>
 </div>
 
-<script src="compte.js?v=20261108"></script>
+<script src="compte.js?v=20261108s"></script>
 <script>
 const MENUS=[
  {id:"poulet",nom:"Poulet au paprika, riz et haricots verts",dessert:"Clémentines",temps:"25 min",profil:"Riche en protéines",
@@ -1850,6 +1869,7 @@ function fallback(t){const pre=document.createElement("pre");pre.textContent=t;p
   <button type="button" data-aller="liste">Courses</button>
 </div>
 <script src="perso.js?v=20261108"></script>
-<script src="ui.js?v=20261108r"></script>
+<script src="ui.js?v=20261108s"></script>
 <script src="partage.js?v=20261108p"></script>
+<script src="rangement.js?v=20261108t"></script>
 </body></html>
