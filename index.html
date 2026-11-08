@@ -2,21 +2,24 @@
 <title>Menus de la maison 1</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap">
 <style>
 /* Layout : carnet de cuisine en une colonne, cartes de menus cochables, liste de courses qui se construit en bas */
 :root{
-  --bg:#f5f7f2; --surface:#ffffff; --ink:#1d2a24; --muted:#5d6b63; --line:#dbe3dc;
-  --basil:#2f7a4f; --basil-soft:#e3f0e7; --saffron:#b86e00; --saffron-soft:#fbf0dc;
-  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
-  --body:"Source Sans 3",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --bg:#fff9f1; --surface:#ffffff; --ink:#2b241f; --muted:#6c6560; --line:#efe3d3;
+  --basil:#e3262a; --basil-soft:#ffe9d6; --saffron:#e3262a; --saffron-soft:#ffe0b8;
+  --cta:#2b241f; --cta-ink:#ffffff; --vert:#2f7a4f;
+  --display:"Montserrat",ui-sans-serif,system-ui,sans-serif;
+  --body:"Montserrat",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#121815; --surface:#1a221e; --ink:#e6ede8; --muted:#9fb0a6; --line:#2c3832;
-  --basil:#6cc493; --basil-soft:#1f3328; --saffron:#f0b45a; --saffron-soft:#33281a; color-scheme:dark}}
+  --bg:#1c1714; --surface:#26201c; --ink:#f6eee6; --muted:#b9ada3; --line:#3a312b;
+  --basil:#ff5b5e; --basil-soft:#3a2420; --saffron:#ff5b5e; --saffron-soft:#3d2c1c;
+  --cta:#f6eee6; --cta-ink:#1c1714; --vert:#6cc493; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#121815; --surface:#1a221e; --ink:#e6ede8; --muted:#9fb0a6; --line:#2c3832;
-  --basil:#6cc493; --basil-soft:#1f3328; --saffron:#f0b45a; --saffron-soft:#33281a; color-scheme:dark}
+  --bg:#1c1714; --surface:#26201c; --ink:#f6eee6; --muted:#b9ada3; --line:#3a312b;
+  --basil:#ff5b5e; --basil-soft:#3a2420; --saffron:#ff5b5e; --saffron-soft:#3d2c1c;
+  --cta:#f6eee6; --cta-ink:#1c1714; --vert:#6cc493; color-scheme:dark}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
 .wrap{max-width:860px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:36px}
 h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
@@ -281,6 +284,52 @@ details>.tips{margin-top:10px}
   .cols,.tips{grid-template-columns:1fr}
   .step{grid-template-columns:1fr;gap:2px}
 }
+/* Style : crème, rouge vif, titres en capitales Montserrat, actions en noir, angles nets */
+body{font-size:15px;letter-spacing:.005em}
+h1,h2{text-transform:uppercase;letter-spacing:.02em;font-weight:800;line-height:1.1}
+h1{display:inline-block;width:fit-content;background:var(--basil);color:#fff;padding:6px 12px 4px;font-size:clamp(24px,6vw,36px)}
+h2{color:var(--basil);font-size:22px}
+h3{font-weight:700}
+.basket h2,.basket h3{color:var(--basil)}
+.eyebrow{color:var(--ink);letter-spacing:.1em;font-weight:700}
+.menu,.recette,.basket,.basics,.reglages,.perso-add,.perso-form,.compte,.foyer,.pas-carte,.ailleurs,.liens-ig li,.favlist li{border-radius:4px}
+.menu{border-color:var(--line);box-shadow:0 1px 0 rgba(43,36,31,.04)}
+.menu.on{border-color:var(--basil);box-shadow:0 0 0 2px var(--basil) inset}
+button{border-radius:4px;background:var(--cta);color:var(--cta-ink);font-weight:700;letter-spacing:.01em}
+button.ghost,.ghost,.bouton.ghost{background:var(--surface);color:var(--ink);border:1.5px solid var(--ink)}
+button.x{background:none;color:var(--muted);border:1px solid var(--line)}
+.lien{background:none;color:var(--basil)}
+.cta{border-radius:4px;background:var(--basil)}
+.chip{border-radius:4px;background:var(--surface);border:1px solid var(--line)}
+.chip b{color:var(--basil)}
+.tabs{background:var(--surface);margin-inline:calc(-1*max(16px,env(safe-area-inset-left,0px)));padding-inline:max(16px,env(safe-area-inset-left,0px));box-shadow:0 4px 12px rgba(43,36,31,.08);border-bottom:0}
+.tabs button{border-radius:0;color:var(--ink);font-weight:600;padding:10px 12px;border-bottom:3px solid transparent;background:transparent}
+.tabs button[aria-selected="true"]{background:transparent;color:var(--basil);border-bottom-color:var(--basil)}
+.filters button,.compte-tabs button{border-radius:4px;font-weight:600}
+.filters button[aria-pressed="true"],.compte-tabs button[aria-pressed="true"]{background:var(--basil);border-color:var(--basil);color:#fff}
+.pick{border-radius:4px;background:var(--saffron-soft)}
+.pick input,.pc-pick input,.ailleurs-opts input{accent-color:var(--basil)}
+.pc-vignette{border-radius:4px;background:var(--saffron-soft);color:var(--basil)}
+.pc-pick{color:var(--ink)}
+.tip{border-radius:4px;background:var(--bg)}
+.cherche input,.tri select{border-radius:4px}
+.reglages-bouton{border-radius:4px;color:var(--ink);border-color:var(--ink)}
+.reglages[open] .reglages-bouton{background:var(--cta);color:var(--cta-ink)}
+.price strong,.kcal{color:var(--basil)}
+.ok,.note.ok{color:var(--vert)}
+.sucre,.pas-conseil{border-radius:4px}
+.pas-conseil{background:var(--saffron-soft)}
+.pas-barre{border-radius:0}
+.pas-barre i{background:var(--basil)}
+.pas-boite{border-radius:8px 8px 0 0}
+.barre-semaine{background:var(--cta);color:var(--cta-ink);border-top:0}
+.barre-semaine p b{color:var(--cta-ink)}
+.barre-semaine button{background:var(--basil);color:#fff;border:0}
+.barre-semaine button.ghost{background:transparent;color:var(--cta-ink);border:1.5px solid var(--cta-ink)}
+#list .rayon li.fait::before{background:var(--basil);border-color:var(--basil)}
+.rayon h4,.sub{color:var(--basil);font-weight:700}
+summary{color:var(--basil)}
+.reglages>summary{color:var(--ink)}
 </style>
 
 <div class="wrap">
