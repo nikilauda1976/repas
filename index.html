@@ -164,6 +164,70 @@ input.sr:focus-visible+*,.perso-add input.sr:focus-visible{outline:2px solid var
 .doc-lien{margin-left:0}
 .sucre{grid-column:1/-1;background:var(--saffron-soft);border-radius:8px;padding:8px 12px;font-size:14px}
 @media (max-width:620px){.perso-grille{grid-template-columns:1fr 1fr}.perso-ing{grid-template-columns:minmax(0,1fr) minmax(0,2fr) auto;padding-bottom:8px;border-bottom:1px dashed var(--line)}.perso-ing select{grid-column:1/3;grid-row:2}.perso-ing .x{grid-column:3;grid-row:1}}
+/* Bloc « Bon à savoir » */
+.infos{display:flex;flex-direction:column;gap:6px}
+.ailleurs-pli{padding:8px 14px}
+.ailleurs-pli summary{font-size:16px}
+.ailleurs-pli small{font-family:var(--body);font-weight:400;color:var(--saffron)}
+.ailleurs-pli .ailleurs{border:0;padding:8px 0 0}
+.ailleurs-pli legend{display:none}
+.infos .basics{padding:8px 14px}
+.infos .basics summary{font-size:16px}
+/* Réglages repliés */
+.reglages{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:0}
+.reglages>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;color:var(--ink);font-weight:600}
+.reglages>summary::-webkit-details-marker{display:none}
+.reglages-resume{font-size:15px;min-width:0}
+.reglages-bouton{flex:none;font-size:14px;color:var(--basil);border:1px solid var(--basil);border-radius:999px;padding:4px 12px}
+.reglages[open] .reglages-bouton{background:var(--basil);color:var(--surface)}
+.reglages-corps{display:flex;flex-direction:column;gap:12px;padding:0 14px 14px;border-top:1px solid var(--line);padding-top:12px}
+/* Outils de recherche et de tri */
+.outils{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center}
+.cherche{flex:1 1 220px;min-width:0}
+.wrap>.cherche,section>.cherche{flex:none;margin-bottom:-24px}
+section>.cherche{margin-bottom:0}
+.cherche input,.tri select{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:8px 14px;width:100%;box-sizing:border-box}
+.cherche input:focus-visible,.tri select:focus-visible{outline:2px solid var(--basil);outline-offset:1px}
+.tri{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--muted);font-weight:600}
+.tri select{width:auto;padding:7px 12px}
+.outils .filters{flex-basis:100%;margin:0;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.outils .filters::-webkit-scrollbar{display:none}
+.outils .filters button{flex:none}
+.cherche input{min-width:0}
+@media (max-width:620px){.outils .cherche{flex:1 1 100%}}
+.menus-vide{color:var(--muted)}
+/* Mes recettes : cartes compactes */
+.perso-tete{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px}
+.perso-type{margin-top:6px;font-size:17px;color:var(--basil)}
+.pc{grid-template-columns:1fr;padding:12px;gap:8px}
+.pc-ligne{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center}
+.pc-vignette{width:64px;height:64px;border-radius:10px;background:var(--basil-soft);color:var(--basil);display:grid;place-items:center;font-family:var(--display);font-size:26px;font-weight:700;overflow:hidden}
+.pc-vignette img{width:100%;height:100%;object-fit:cover}
+.pc-texte{display:flex;flex-direction:column;gap:2px;min-width:0}
+.pc-texte h3{font-size:17px;overflow-wrap:anywhere}
+.pc .meta{display:flex;flex-wrap:wrap;gap:2px 10px;font-size:13px;color:var(--muted)}
+.pc-pick{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;font-weight:700;color:var(--basil);cursor:pointer;padding:6px;border-radius:8px}
+.pc-pick input{width:24px;height:24px;accent-color:var(--basil);margin:0}
+.pc details{padding-top:8px}
+.pc-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.pc-actions button{padding:6px 12px;font-size:14px}
+/* Courses : cocher en magasin */
+.courses-outils{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.courses-outils p{margin:0;flex:1 1 160px;font-weight:600}
+.courses-outils button{padding:6px 12px;font-size:14px}
+#list .rayon li{cursor:pointer;justify-content:flex-start}
+#list .rayon li>span:first-child{flex:1;min-width:0}
+#list .rayon li::before{content:"";flex:none;width:18px;height:18px;margin-top:2px;border:2px solid var(--line);border-radius:50%;box-sizing:border-box}
+#list .rayon li.fait::before{background:var(--basil);border-color:var(--basil);box-shadow:inset 0 0 0 3px var(--surface)}
+#list .rayon li.fait>span{text-decoration:line-through;color:var(--muted)}
+/* Barre « Ma semaine » */
+.barre-semaine{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;align-items:center;gap:8px;padding:10px max(16px,env(safe-area-inset-left,0px)) calc(10px + env(safe-area-inset-bottom,0px));background:var(--surface);border-top:1px solid var(--line);box-shadow:0 -4px 16px rgba(0,0,0,.06)}
+.barre-semaine p{margin:0;flex:1;min-width:0;font-size:14px}
+.barre-semaine p b{font-family:var(--display);font-size:18px;color:var(--basil)}
+.barre-semaine button{padding:8px 12px;font-size:14px}
+body.avec-barre .wrap{padding-bottom:96px}
+@media (max-width:620px){.reglages-resume{font-size:14px}.pc-ligne{grid-template-columns:52px minmax(0,1fr) auto}.pc-vignette{width:52px;height:52px;font-size:22px}}
+@media print{.barre-semaine,.courses-outils{display:none!important}}
 @media print{
   body{background:#fff;color:#000}
   body::before,.tabs,header,[data-view]:not([data-view="recettes"]),#rec-print,.ajout-row{display:none!important}
@@ -189,7 +253,12 @@ input.sr:focus-visible+*,.perso-add input.sr:focus-visible{outline:2px solid var
 .liens-ig a{color:var(--basil);font-weight:600;text-decoration:none}
 .liens-ig a:hover{text-decoration:underline}
 .cta{display:inline-block;background:var(--saffron);color:var(--surface);font-weight:700;text-decoration:none;border-radius:8px;padding:12px 16px;width:fit-content}
+details>.tips{margin-top:10px}
 @media (max-width:620px){
+  .menu:not(.pc){grid-template-columns:1fr;padding:14px}
+  .menu:not(.pc) .price{flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:space-between;text-align:left}
+  .menu:not(.pc) .price>div{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+  .price strong{display:inline}
   .cols,.tips{grid-template-columns:1fr}
   .step{grid-template-columns:1fr;gap:2px}
 }
@@ -199,6 +268,9 @@ input.sr:focus-visible+*,.perso-add input.sr:focus-visible{outline:2px solid var
 <header>
   <span class="eyebrow">Semaine du 2 novembre 2026 · livraison samedi 31 octobre</span>
   <h1>Les menus de la maison</h1>
+  <details class="reglages" id="reglages">
+    <summary><span class="reglages-resume" id="reglages-resume">Réglages</span><span class="reglages-bouton">Réglages</span></summary>
+    <div class="reglages-corps">
   <div class="compte" id="compte" hidden>
     <div id="compte-off" class="compte-ligne">
       <p class="note">Créez votre famille avec un nom et un code secret : vos menus, votre liste et vos réglages vous suivent sur tous vos appareils. Pas besoin d'e-mail.</p>
@@ -223,7 +295,7 @@ input.sr:focus-visible+*,.perso-add input.sr:focus-visible{outline:2px solid var
       <p class="note" id="compte-msg" role="status" hidden></p>
     </form>
   </div>
-  <p class="lead">Trente-cinq menus au choix et des desserts sans sucre ajouté. Réglez votre foyer ci-dessous, cochez vos menus, puis ouvrez l'onglet « Ma liste » : les quantités, le nombre d'œufs et le total s'adaptent tout seuls.</p>
+  <p class="lead">Trente-cinq menus au choix et des desserts sans sucre ajouté. Réglez votre foyer ci-dessous, cochez vos menus, puis ouvrez l'onglet « Courses » : les quantités, le nombre d'œufs et le total s'adaptent tout seuls.</p>
   <form class="foyer" id="foyer" aria-label="Réglages du foyer">
     <label>Adultes et ados<input type="number" id="f-adultes" min="0" max="12" step="1" value="5" inputmode="numeric"></label>
     <label>Enfants de moins de 12 ans<input type="number" id="f-enfants" min="0" max="12" step="1" value="0" inputmode="numeric"></label>
@@ -241,6 +313,8 @@ input.sr:focus-visible+*,.perso-add input.sr:focus-visible{outline:2px solid var
     <span class="chip">Budget <b>3 à 4 €</b> par personne</span>
     <span class="chip">Plat + accompagnement + dessert</span>
   </div>
+    </div>
+  </details>
 </header>
 
 <nav class="tabs" role="tablist" aria-label="Sections de la page">
@@ -248,12 +322,14 @@ input.sr:focus-visible+*,.perso-add input.sr:focus-visible{outline:2px solid var
   <button type="button" role="tab" data-tab="desserts" aria-selected="false">Desserts</button>
   <button type="button" role="tab" data-tab="perso" aria-selected="false">Mes recettes <span id="tab-perso"></span></button>
   <button type="button" role="tab" data-tab="favoris" aria-selected="false">Favoris <span id="tab-fav"></span></button>
-  <button type="button" role="tab" data-tab="liste" aria-selected="false">Ma liste <span id="tab-count"></span></button>
-  <button type="button" role="tab" data-tab="carrefour" aria-selected="false">Panier Carrefour <span id="tab-cf"></span></button>
+  <button type="button" role="tab" data-tab="recettes" aria-selected="false">Ma semaine <span id="tab-rec"></span></button>
+  <button type="button" role="tab" data-tab="liste" aria-selected="false">Courses <span id="tab-count"></span></button>
+  <button type="button" role="tab" data-tab="carrefour" aria-selected="false">Carrefour <span id="tab-cf"></span></button>
   <button type="button" role="tab" data-tab="commande" aria-selected="false">Commande</button>
-  <button type="button" role="tab" data-tab="recettes" aria-selected="false">Recettes <span id="tab-rec"></span></button>
 </nav>
-<details class="basics" data-view="semaine">
+<div class="infos" data-view="semaine">
+<span class="eyebrow">Bon à savoir</span>
+<details class="basics">
   <summary>Les gestes de base, à lire une fois avant de commencer</summary>
   <dl>
     <dt>Feu doux, moyen, fort</dt><dd>Sur une plaque de 1 à 9 : doux = 2-3, moyen = 5-6, fort = 8-9. En cas de doute, commencez moyen : on peut toujours monter.</dd>
@@ -267,7 +343,7 @@ input.sr:focus-visible+*,.perso-add input.sr:focus-visible{outline:2px solid var
     <dt>Avant de commencer</dt><dd>Lisez toute la recette, sortez tous les ingrédients et le matériel sur le plan de travail. C'est le meilleur moyen de tenir les 25 minutes.</dd>
   </dl>
 </details>
-<details class="basics" data-view="semaine">
+<details class="basics">
   <summary>Moins de sucre, mieux pour les dents : nos règles</summary>
   <dl>
     <dt>Le repère</dt><dd>Moins de 25 g de sucres libres par jour, soit environ 5 morceaux : c'est l'objectif idéal de l'OMS. Les recettes n'ajoutent aucun sucre.</dd>
@@ -279,7 +355,7 @@ input.sr:focus-visible+*,.perso-add input.sr:focus-visible{outline:2px solid var
     <dt>Les fibres</dt><dd>Légumineuses (lentilles, pois chiches, haricots), légumes, pain et céréales complets : ils rassasient et ralentissent l'absorption du sucre.</dd>
   </dl>
 </details>
-<details class="basics" data-view="semaine">
+<details class="basics">
   <summary>Bien choisir les produits : Nutri-Score, NOVA et Yuka</summary>
   <dl>
     <dt>Nutri-Score</dt><dd>On vise A ou B. La note va de A (vert) à E (rouge) et juge le sucre, le sel, les graisses saturées, les fibres et les protéines. Les fromages AOP, le beurre et l'huile restent souvent en C ou D par nature : on les garde, en petite quantité.</dd>
@@ -289,6 +365,7 @@ input.sr:focus-visible+*,.perso-add input.sr:focus-visible{outline:2px solid var
     <dt>En magasin</dt><dd>Scannez avec Yuka ou Open Food Facts. Le plus simple : une liste d'ingrédients courte, que vous comprenez tous. Les fruits, légumes, viandes et poissons frais n'ont pas de note : ils sont la meilleure base.</dd>
   </dl>
 </details>
+</div>
 <div class="filters" id="filters" data-view="semaine" role="group" aria-label="Filtrer les menus"></div>
 <div class="menus" id="menus" data-view="semaine"></div>
 
@@ -312,17 +389,19 @@ input.sr:focus-visible+*,.perso-add input.sr:focus-visible{outline:2px solid var
 </section>
 
 <section data-view="perso" class="perso">
-  <span class="eyebrow">Les recettes de la famille</span>
-  <h2>Mes recettes</h2>
-  <p class="lead">Ajoutez vos propres recettes : écrivez-la, prenez-la en photo ou importez un fichier. Le site relève les ingrédients, la range par type (entrée, plat, dessert…) et la met au même format que les autres. Cochez-la ensuite : ses ingrédients partent dans « Ma liste » et dans la commande Carrefour.</p>
-  <div class="perso-add">
+  <div class="perso-tete">
+    <div><span class="eyebrow">Les recettes de la famille</span><h2>Mes recettes</h2></div>
+    <button type="button" id="p-ajouter" aria-expanded="false" aria-controls="perso-add">+ Ajouter une recette</button>
+  </div>
+  <p class="note" id="p-etat" aria-live="polite" hidden></p>
+  <div class="perso-add" id="perso-add" hidden>
+    <p class="note">Écrivez-la, prenez-la en photo ou importez un fichier : le site relève les ingrédients, la range par type et la met au même format que les autres. Cochez-la ensuite pour l'ajouter aux courses.</p>
     <div class="ajout-row">
       <button type="button" id="p-ecrire">Écrire une recette</button>
       <label class="bouton ghost" for="p-photo">Prendre en photo</label><input type="file" id="p-photo" class="sr" accept="image/*" capture="environment">
       <label class="bouton ghost" for="p-fichier">Importer un fichier</label><input type="file" id="p-fichier" class="sr" accept="image/*,.pdf,.txt,.md,.docx,text/plain,application/pdf">
     </div>
-    <p class="note">Photo, PDF, Word (.docx) ou texte. La lecture se fait dans votre téléphone ou votre ordinateur : rien n'est envoyé ailleurs.</p>
-    <p class="note" id="p-etat" aria-live="polite" hidden></p>
+    <p class="note">Photo, PDF, Word (.docx) ou texte. Avec le compte de la famille, la lecture intelligente (Gemini, de Google) lit le document et remplit la fiche ; sans compte, la lecture se fait dans votre appareil.</p>
     <div id="p-texte-box" class="perso-texte" hidden>
       <label for="p-texte" class="perso-lab">Texte de la recette</label>
       <textarea id="p-texte" rows="9" placeholder="Le titre, puis la liste des ingrédients (une ligne chacun, par exemple : 200 g de farine), puis les étapes."></textarea>
@@ -351,6 +430,12 @@ input.sr:focus-visible+*,.perso-add input.sr:focus-visible{outline:2px solid var
     <p class="note warn" id="p-form-msg" hidden></p>
     <div class="ajout-row"><button type="submit">Enregistrer la recette</button><button type="button" class="ghost" id="p-annuler">Annuler</button></div>
   </form>
+  <div class="outils" id="perso-outils" hidden>
+    <label class="cherche"><span class="sr">Chercher dans mes recettes</span><input type="search" id="p-cherche" placeholder="Chercher un plat ou un ingrédient" autocomplete="off"></label>
+    <label class="tri"><span>Trier</span><select id="p-tri"><option value="type">Par type</option><option value="nom">De A à Z</option><option value="recent">Les plus récentes</option><option value="rapide">Les plus rapides</option></select></label>
+    <div class="filters" id="p-types" role="group" aria-label="Filtrer par type"></div>
+  </div>
+  <p class="note" id="p-compte" hidden></p>
   <div id="perso-liste" class="perso-liste"></div>
 </section>
 
@@ -461,7 +546,7 @@ input.sr:focus-visible+*,.perso-add input.sr:focus-visible{outline:2px solid var
 </section>
 </div>
 
-<script src="compte.js"></script>
+<script src="compte.js?v=20261108"></script>
 <script>
 const MENUS=[
  {id:"poulet",nom:"Poulet au paprika, riz et haricots verts",dessert:"Clémentines",temps:"25 min",profil:"Riche en protéines",
@@ -1023,8 +1108,7 @@ function card(m,p="m-"){
     <div class="meta">${m.dessert?`<span>Dessert : ${esc(m.dessert)}</span>`:""}<span>${esc(m.temps)}</span>${m.kcal?`<span class="kcal">≈ ${m.kcal} kcal ${m.id==="gateau"?"par part":"par personne"}</span>`:""}</div></div>
    <div class="price"><div><strong>${eur(t/nbPers())}</strong><span>par personne · ${eur(t)} le repas</span></div>
     <button type="button" class="fav" data-fav="${esc(m.id)}" aria-pressed="false" aria-label="Ajouter ${esc(m.nom)} à mes favorites"><span class="heart" aria-hidden="true">♡</span> Favorite</button></div>
-   <div class="tips"><div class="tip"><b>Pour les 18 et 22 ans</b>${esc(m.jeunes)}</div><div class="tip"><b>Pour les plus de 50 ans</b>${esc(m.seniors)}</div></div>
-   <details><summary>Ingrédients et recette pas à pas</summary><div class="cols">
+   <details><summary>Ingrédients et recette pas à pas</summary>${m.jeunes||m.seniors?`<div class="tips">${m.jeunes?`<div class="tip"><b>Pour les 18 et 22 ans</b>${esc(m.jeunes)}</div>`:""}${m.seniors?`<div class="tip"><b>Pour les plus de 50 ans</b>${esc(m.seniors)}</div>`:""}</div>`:""}<div class="cols">
     <div><h4 class="sub">À acheter${Math.abs(facR(m)-1)>0.01?` pour ${fmt(portions())} portions`:""}</h4><ul>${ingF(m).map(i=>`<li class="ing">${esc(i[1])}, ${esc(i[2])} <small>${eur(i[3])}</small></li>`).join("")}</ul>
      ${m.materiel?`<h4 class="sub">Matériel</h4><p class="note">${esc(m.materiel)}</p>`:""}</div>
     <div><h4 class="sub">Étapes</h4>${Math.abs(facR(m)-1)>0.01?`<p class="note">Les étapes donnent les quantités pour ${m.base||6} portions. Pour votre foyer, multipliez-les par ${fmt(facR(m))} (environ ${facR(m)<0.85?"les deux tiers":facR(m)<1.2?"pareil":facR(m)<1.7?"une fois et demie":"le double"}).</p>`:""}<ol class="etapes">${m.etapes.map(e=>`<li>${esc(e)}</li>`).join("")}</ol></div></div></details>
@@ -1521,5 +1605,11 @@ const _cfRender=cfRender;cfRender=function(m){if(m===null)return;_cfRender(m)};
 })();
 function fallback(t){const pre=document.createElement("pre");pre.textContent=t;pre.style.whiteSpace="pre-wrap";document.getElementById("list").appendChild(pre);const r=document.createRange();r.selectNodeContents(pre);const s=getSelection();s.removeAllRanges();s.addRange(r)}
 </script>
-<script src="perso.js"></script>
+<div class="barre-semaine" id="barre-semaine" hidden>
+  <p id="barre-texte"></p>
+  <button type="button" class="ghost" data-aller="recettes">Ma semaine</button>
+  <button type="button" data-aller="liste">Courses</button>
+</div>
+<script src="perso.js?v=20261108"></script>
+<script src="ui.js?v=20261108"></script>
 </body></html>

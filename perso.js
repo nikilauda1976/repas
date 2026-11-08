@@ -471,7 +471,7 @@
     } else { z.hidden = true; z.innerHTML = ""; }
     el("p-doc-joindre").textContent = docForm.etat === "nouveau" || docForm.etat === "garder" ? "Remplacer le document" : "Joindre la photo ou le document";
   }
-  function ouvrirTexte() { el("p-texte-box").hidden = false; }
+  function ouvrirTexte() { el("p-texte-box").hidden = false; ouvrirAjout(true); }
 
   // ---------- Claude : pour l'écriture à la main ----------
   function consigne(texte) {
@@ -573,7 +573,8 @@
     } else if (d.etat === "garder" && avant) r.doc = avant;
     else if (avant) supprimerDoc(id);
     perso[id] = r; inscrire(r); garder();
-    fermer(); el("p-texte").value = ""; el("p-texte-box").hidden = true;
+    fermer(); el("p-texte").value = ""; el("p-texte-box").hidden = true; ouvrirAjout(false);
+    filtre.q = ""; filtre.type = "Tous"; el("p-cherche").value = "";
     etat("« " + nom + " » est enregistrée dans « " + r.type + " ». Cochez-la pour l'ajouter aux courses.");
     afficher(); renderBasket();
     var a = el("mr-" + id); if (a) a.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -586,34 +587,111 @@
 
   // ---------- Affichage ----------
   var SUCRE = /\bsucre\b|cassonade|vergeoise|sirop|\bmiel\b|confiture|nutella|p[aâ]te à tartiner|chocolat au lait|chocolat blanc|caramel|lait concentr/i;
+  var PLURIEL = { "Entrée": "Entrées", "Plat": "Plats", "Accompagnement": "Accompagnements", "Sauce": "Sauces", "Dessert": "Desserts", "Goûter": "Goûters", "Petit-déjeuner": "Petits-déjeuners", "Boisson": "Boissons" };
+  var filtre = { q: "", type: "Tous", tri: "type" };
+  try { var triGarde = localStorage.getItem("rdm-perso-tri"); if (triGarde) filtre.tri = triGarde; } catch (e) {}
+  var plat = function (s) { return String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); };
+  // Durée en minutes, pour trier « les plus rapides » (« 1 h 15 + 20 min » -> 95)
+  function minutes(t) {
+    var s = String(t || "").toLowerCase(), m = 0, x, re = /(\d+)\s*(h|heures?|min)\s*(\d+)?/g;
+    while ((x = re.exec(s))) m += x[2].charAt(0) === "h" ? parseInt(x[1], 10) * 60 + (x[3] ? parseInt(x[3], 10) : 0) : parseInt(x[1], 10);
+    return m || 9999;
+  }
+  function correspond(m, q) {
+    if (!q) return true;
+    var t = plat(m.nom + " " + m.type + " " + m.ing.map(function (i) { return i[1]; }).join(" ") + " " + (m.notes || ""));
+    return plat(q).split(/\s+/).filter(Boolean).every(function (w) { return t.indexOf(w) >= 0; });
+  }
+
   function carte(m) {
     var f = facR(m), mult = Math.abs(f - 1) > 0.01, sucre = m.ing.some(function (i) { return SUCRE.test(i[1]); });
-    return '<article class="menu' + (chosen.has(m.id) ? " on" : "") + '" id="mr-' + esc(m.id) + '" data-rid="' + esc(m.id) + '">' +
-      '<div class="menu-head"><span class="eyebrow">Ma recette · ' + esc(m.type) + "</span><h3>" + esc(m.nom) + "</h3>" +
-      '<div class="meta"><span>' + esc(m.temps) + "</span><span>Recette pour " + m.base + " portions</span><span>" + m.ing.length + " ingrédients</span></div></div>" +
-      '<div class="perso-actions"><button type="button" class="ghost" data-pmod="' + esc(m.id) + '">Modifier</button><button type="button" class="x" data-psup="' + esc(m.id) + '" aria-label="Supprimer ' + esc(m.nom) + '">Supprimer</button></div>' +
-      (m.doc ? '<div class="doc-carte" data-doc="' + esc(m.id) + '"><p class="note">Chargement du document d\'origine…</p></div>' : "") +
+    var id = esc(m.id), lettre = esc((m.nom || "?").charAt(0).toUpperCase());
+    var photo = m.doc && /^image\//.test(m.doc.type);
+    return '<article class="menu pc' + (chosen.has(m.id) ? " on" : "") + '" id="mr-' + id + '" data-rid="' + id + '">' +
+      '<div class="pc-ligne">' +
+        '<div class="pc-vignette"' + (photo ? ' data-thumb="' + id + '"' : "") + ' aria-hidden="true">' + lettre + "</div>" +
+        '<div class="pc-texte"><span class="eyebrow">' + esc(m.type) + "</span><h3>" + esc(m.nom) + "</h3>" +
+          '<div class="meta">' + (m.temps && m.temps !== "–" ? "<span>" + esc(m.temps) + "</span>" : "") + "<span>" + m.base + " portions</span><span>" + m.ing.length + " ingrédients</span></div></div>" +
+        '<label class="pc-pick"><input type="checkbox" id="mr-pick-' + id + '" data-id="' + id + '"' + (chosen.has(m.id) ? " checked" : "") + '><span>Choisir</span></label>' +
+      "</div>" +
+      "<details><summary>Voir la recette</summary>" +
       (sucre ? '<p class="sucre">Cette recette contient du sucre ajouté. Pour les dents, essayez d\'en mettre moitié moins ou de le remplacer par des dattes ou une banane bien mûre, et servez-la pendant le repas plutôt qu\'en grignotage.</p>' : "") +
-      '<details><summary>Ingrédients et recette pas à pas</summary><div class="cols">' +
-      '<div><h4 class="sub">À acheter' + (mult ? " pour " + fmt(portions()) + " portions" : "") + "</h4><ul>" +
+      (m.doc ? '<div class="doc-carte" data-doc="' + id + '" data-titre="1"></div>' : "") +
+      '<div class="cols"><div><h4 class="sub">À acheter' + (mult ? " pour " + fmt(portions()) + " portions" : "") + "</h4><ul>" +
       ingF(m).map(function (i) { return '<li class="ing">' + esc(i[1]) + (i[2] ? ", " + esc(i[2]) : "") + "</li>"; }).join("") + "</ul>" +
       (m.materiel ? '<h4 class="sub">Matériel</h4><p class="note">' + esc(m.materiel) + "</p>" : "") + "</div>" +
       '<div><h4 class="sub">Étapes</h4>' + (mult ? '<p class="note">Les étapes donnent les quantités pour ' + m.base + " portions. Pour votre foyer, multipliez-les par " + fmt(f) + ".</p>" : "") +
       (m.etapes.length ? '<ol class="etapes">' + m.etapes.map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("") + "</ol>" : '<p class="note">Pas d\'étapes notées.</p>') +
-      (m.notes ? '<h4 class="sub">Notes</h4><p class="note">' + esc(m.notes) + "</p>" : "") + "</div></div></details>" +
-      '<label class="pick"><input type="checkbox" id="mr-pick-' + esc(m.id) + '" data-id="' + esc(m.id) + '"' + (chosen.has(m.id) ? " checked" : "") + "> Je choisis cette recette</label></article>";
+      (m.notes ? '<h4 class="sub">Notes</h4><p class="note">' + esc(m.notes) + "</p>" : "") + "</div></div>" +
+      '<div class="pc-actions"><button type="button" class="ghost" data-pmod="' + id + '">Modifier</button><button type="button" class="x" data-psup="' + id + '" aria-label="Supprimer ' + esc(m.nom) + '">Supprimer</button></div>' +
+      "</details></article>";
   }
+
+  // Vignettes : la photo d'origine, chargée seulement quand la carte arrive à l'écran
+  var io = "IntersectionObserver" in window ? new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); vignette(e.target); } });
+  }, { rootMargin: "300px" }) : null;
+  function vignette(n) {
+    var id = n.dataset.thumb;
+    docDe(id).then(function (f) { if (f && /^image\//.test(f.type)) n.innerHTML = '<img src="' + urlDe(id, f) + '" alt="">'; });
+  }
+
   function afficher() {
-    var liste = Object.keys(perso).map(function (id) { return REG.get(id); }).filter(Boolean);
-    el("tab-perso").textContent = liste.length ? "(" + liste.length + ")" : "";
-    if (!liste.length) { el("perso-liste").innerHTML = '<p class="empty">Aucune recette pour l\'instant. Choisissez une des trois façons ci-dessus pour ajouter la première.</p>'; return; }
-    el("perso-liste").innerHTML = TYPES.map(function (t) {
-      var de = liste.filter(function (m) { return m.type === t; }).sort(function (a, b) { return a.nom.localeCompare(b.nom); });
-      return de.length ? '<h3 class="perso-type">' + (t === "Plat" ? "Plats" : t === "Sauce" ? "Sauces" : t === "Boisson" ? "Boissons" : t === "Petit-déjeuner" ? "Petits-déjeuners" : t + "s") + " (" + de.length + ')</h3><div class="menus">' + de.map(carte).join("") + "</div>" : "";
+    var toutes = Object.keys(perso).map(function (id) { return REG.get(id); }).filter(Boolean);
+    el("tab-perso").textContent = toutes.length ? "(" + toutes.length + ")" : "";
+    el("perso-outils").hidden = toutes.length < 2;
+    if (!toutes.length) ouvrirAjout(true);
+    var presents = TYPES.filter(function (t) { return toutes.some(function (m) { return m.type === t; }); });
+    if (filtre.type !== "Tous" && presents.indexOf(filtre.type) < 0) filtre.type = "Tous";
+    el("p-types").innerHTML = ["Tous"].concat(presents).map(function (t) {
+      var n = t === "Tous" ? toutes.length : toutes.filter(function (m) { return m.type === t; }).length;
+      return '<button type="button" data-ptype="' + t + '" aria-pressed="' + (filtre.type === t) + '">' + (t === "Tous" ? "Toutes" : PLURIEL[t]) + " (" + n + ")</button>";
     }).join("");
-    remplirDocs(el("perso-liste"));
+    el("p-tri").value = filtre.tri;
+    var liste = toutes.filter(function (m) { return (filtre.type === "Tous" || m.type === filtre.type) && correspond(m, filtre.q); });
+    var c = el("p-compte"), filtrees = filtre.q || filtre.type !== "Tous";
+    c.hidden = !filtrees; c.textContent = liste.length + (liste.length > 1 ? " recettes" : " recette") + " sur " + toutes.length;
+    var box = el("perso-liste");
+    if (!toutes.length) { box.innerHTML = '<p class="empty">Aucune recette pour l\'instant. Appuyez sur « Ajouter une recette » : écrivez-la, prenez-la en photo ou importez un fichier.</p>'; return; }
+    if (!liste.length) { box.innerHTML = '<p class="empty">Aucune recette ne correspond. <button type="button" class="lien" data-pvider>Tout afficher</button></p>'; return; }
+    var parNom = function (a, b) { return a.nom.localeCompare(b.nom, "fr"); };
+    var TRIS = {
+      nom: parNom,
+      recent: function (a, b) { return String(b.ajoute || "").localeCompare(String(a.ajoute || "")) || parNom(a, b); },
+      rapide: function (a, b) { return minutes(a.temps) - minutes(b.temps) || parNom(a, b); }
+    };
+    box.innerHTML = filtre.tri === "type"
+      ? TYPES.map(function (t) {
+          var de = liste.filter(function (m) { return m.type === t; }).sort(parNom);
+          return de.length ? '<h3 class="perso-type">' + PLURIEL[t] + " (" + de.length + ')</h3><div class="menus">' + de.map(carte).join("") + "</div>" : "";
+        }).join("")
+      : '<div class="menus">' + liste.slice().sort(TRIS[filtre.tri] || parNom).map(carte).join("") + "</div>";
+    [].forEach.call(box.querySelectorAll("[data-thumb]"), function (n) { if (io) io.observe(n); else vignette(n); });
   }
+
+  // Panneau « Ajouter une recette »
+  function ouvrirAjout(ouvert) {
+    el("perso-add").hidden = !ouvert;
+    el("p-ajouter").setAttribute("aria-expanded", ouvert ? "true" : "false");
+    el("p-ajouter").textContent = ouvert && Object.keys(perso).length ? "Fermer" : "+ Ajouter une recette";
+  }
+  el("p-ajouter").addEventListener("click", function () {
+    var ouvrir = el("perso-add").hidden;
+    ouvrirAjout(ouvrir);
+    if (ouvrir) el("perso-add").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+  // Recherche, filtres et tri
+  var minuterieQ = null;
+  el("p-cherche").addEventListener("input", function (e) { clearTimeout(minuterieQ); minuterieQ = setTimeout(function () { filtre.q = e.target.value.trim(); afficher(); }, 150); });
+  el("p-tri").addEventListener("change", function (e) { filtre.tri = e.target.value; try { localStorage.setItem("rdm-perso-tri", filtre.tri); } catch (err) {} afficher(); });
+  el("p-types").addEventListener("click", function (e) { var b = e.target.closest("[data-ptype]"); if (b) { filtre.type = b.dataset.ptype; afficher(); } });
+  // Le document d'origine se charge quand on ouvre la recette
+  el("perso-liste").addEventListener("toggle", function (e) {
+    var d = e.target;
+    if (d.tagName === "DETAILS" && d.open) [].forEach.call(d.querySelectorAll("[data-doc]:not([data-charge])"), function (n) { n.dataset.charge = "1"; remplirDocs(d); });
+  }, true);
   el("perso-liste").addEventListener("click", function (e) {
+    if (e.target.closest("[data-pvider]")) { filtre.q = ""; filtre.type = "Tous"; el("p-cherche").value = ""; afficher(); return; }
     var b = e.target.closest("[data-pmod]");
     if (b) { var r = perso[b.dataset.pmod]; if (r) { ouvrirTexte(); formulaire(r, r.id); } return; }
     b = e.target.closest("[data-psup]");
