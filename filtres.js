@@ -32,7 +32,18 @@
     };
     return info[m.id];
   }
+  // « Les moins chers » : le tiers le moins cher par personne, calculé pour le foyer réglé
+  var ecoIds = null;
+  function calculerEco() {
+    ecoIds = new Set();
+    var groupes = [MENUS, EXTRAS.filter(function (m) { return m.profil === "Dessert et goûter"; }), EXTRAS.filter(function (m) { return m.profil !== "Dessert et goûter"; })];
+    groupes.forEach(function (liste) {
+      var tries = liste.slice().sort(function (a, b) { return totalRepas(a) - totalRepas(b); });
+      tries.slice(0, Math.max(1, Math.ceil(tries.length / 3))).forEach(function (m) { ecoIds.add(m.id); });
+    });
+  }
   var FILTRES = [
+    ["eco", "€ Les moins chers", function (g, m) { if (!ecoIds) calculerEco(); return ecoIds.has(m.id); }],
     ["express", "⚡ 20 min max", function (g) { return g.express; }],
     ["enfants", "Les enfants aiment", function (g) { return g.enfants; }],
     ["sgluten", "Sans gluten", function (g) { return !g.gluten; }],
@@ -41,7 +52,7 @@
   ];
   var actifs = new Set();
   try { (JSON.parse(localStorage.getItem("rdm-filtres") || "[]") || []).forEach(function (k) { actifs.add(k); }); } catch (e) {}
-  var ok = function (m) { var g = tags(m); return FILTRES.every(function (f) { return !actifs.has(f[0]) || f[2](g); }); };
+  var ok = function (m) { var g = tags(m); return FILTRES.every(function (f) { return !actifs.has(f[0]) || f[2](g, m); }); };
   window.rdmFiltreOk = ok;
 
   // Deux rangées de filtres : au-dessus des plats et au-dessus des desserts
@@ -56,10 +67,17 @@
   r2.hidden = true;
 
   function appliquer() {
+    calculerEco();
+    var eco = actifs.has("eco");
     var conteneurs = [menus, document.getElementById("extras"), desserts];
     conteneurs.forEach(function (c) {
       if (!c) return;
-      c.querySelectorAll(".menu[data-rid]").forEach(function (a) { var m = REG.get(a.dataset.rid); if (m) a.classList.toggle("filtre-off", !ok(m)); });
+      c.querySelectorAll(".menu[data-rid]").forEach(function (a) {
+        var m = REG.get(a.dataset.rid); if (!m) return;
+        a.classList.toggle("filtre-off", !ok(m));
+        // Avec « Les moins chers », les cartes sont rangées du moins cher au plus cher
+        a.style.order = eco ? String(Math.round(totalRepas(m) / nbPers() * 100)) : "";
+      });
     });
     [r1, r2].forEach(function (r, i) {
       var c = i ? desserts : menus, n = c.querySelectorAll(".menu[data-rid]:not(.filtre-off)").length;

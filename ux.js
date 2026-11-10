@@ -23,13 +23,14 @@
   var premiere = !localStorage.getItem("menus-foyer") && !localStorage.getItem("rdm-famille") && !localStorage.getItem("rdm-bienvenue");
   var ENVIES = [["express", "⚡ Rapide, 20 min max"], ["enfants", "👧 Des plats que les enfants aiment"], ["sgluten", "Sans gluten"], ["slactose", "Sans lactose"], ["soeufs", "Sans œufs"]];
   function accueil() {
-    var etat = { a: 2, e: 2, n: 5, envies: [] }, pas = 0;
+    var etat = { a: 2, e: 2, n: 5, app: "normal", envies: [] }, pas = 0;
     var fen = document.createElement("div"); fen.className = "bienvenue"; fen.setAttribute("role", "dialog"); fen.setAttribute("aria-modal", "true"); fen.setAttribute("aria-label", "Bienvenue");
     document.body.appendChild(fen); document.body.classList.add("bienvenue-ouverte");
     var stepper = function (k, lab, min) { return '<div class="bv-ligne"><span>' + lab + '</span><div class="bv-stepper"><button type="button" class="ghost" data-moins="' + k + '" aria-label="Moins">−</button><b>' + etat[k] + '</b><button type="button" class="ghost" data-plus="' + k + '" aria-label="Plus">+</button></div></div>'; };
     var ecrans = [
       function () { return '<div class="bv-emoji" aria-hidden="true">🥗</div><h2>Bienvenue sur repas</h2><p>Les menus de la semaine, la liste de courses et les recettes de la famille, prêts en 2 minutes.</p>'; },
-      function () { return "<h2>Combien êtes-vous à table ?</h2>" + stepper("a", "Adultes et ados", 1) + stepper("e", "Enfants de moins de 12 ans", 0); },
+      function () { return "<h2>Combien êtes-vous à table ?</h2>" + stepper("a", "Adultes et ados", 1) + stepper("e", "Enfants de moins de 12 ans", 0) +
+        '<p class="bv-sous">Plutôt…</p><div class="bv-choix bv-appetit">' + [["petit", "Petits mangeurs"], ["normal", "Normal"], ["grand", "Grands mangeurs"]].map(function (x) { return '<button type="button" class="ghost" data-app="' + x[0] + '" aria-pressed="' + (etat.app === x[0]) + '">' + x[1] + "</button>"; }).join("") + "</div>"; },
       function () { return "<h2>Combien de repas par semaine ?</h2><p>Les dîners que vous cuisinez. Les desserts s'ajoutent à part.</p><div class=\"bv-choix\">" + [3, 4, 5, 6, 7].map(function (k) { return '<button type="button" class="ghost" data-n="' + k + '" aria-pressed="' + (etat.n === k) + '">' + k + "</button>"; }).join("") + "</div>"; },
       function () { return "<h2>Des envies particulières ?</h2><p>Facultatif, vous pourrez changer plus tard.</p><div class=\"bv-envies\">" + ENVIES.map(function (x) { return '<button type="button" class="ghost" data-envie="' + x[0] + '" aria-pressed="' + (etat.envies.indexOf(x[0]) >= 0) + '">' + x[1] + "</button>"; }).join("") + "</div>"; },
       function () { return '<div class="bv-emoji" aria-hidden="true">✨</div><h2>C\'est prêt !</h2><p>' + (etat.a + etat.e) + " personne" + (etat.a + etat.e > 1 ? "s" : "") + ", " + etat.n + ' repas par semaine. On choisit les plats pour vous ? Vous pourrez en changer en un toucher.</p><div class="bv-fin"><button type="button" data-fin="moi">✨ Choisir mes plats pour moi</button><button type="button" class="ghost" data-fin="seul">Je choisis moi-même</button></div>'; }
@@ -42,7 +43,7 @@
           '<button type="button" data-bv="suiv">' + (pas ? "Continuer" : "Commencer") + "</button></div>" : "") + "</div>";
     }
     function appliquer() {
-      el("f-adultes").value = etat.a; el("f-enfants").value = etat.e; el("f-menus").value = etat.n;
+      el("f-adultes").value = etat.a; el("f-enfants").value = etat.e; el("f-menus").value = etat.n; if (el("f-appetit")) el("f-appetit").value = etat.app;
       el("foyer").dispatchEvent(new Event("change", { bubbles: true }));
       etat.envies.forEach(function (k) { var b = document.querySelector('.filtres-plus [data-filtre="' + k + '"]'); if (b && b.getAttribute("aria-pressed") !== "true") b.click(); });
     }
@@ -52,6 +53,7 @@
       if (b.dataset.moins) { etat[b.dataset.moins] = Math.max(b.dataset.moins === "a" ? 1 : 0, etat[b.dataset.moins] - 1); montrer(); return; }
       if (b.dataset.plus) { etat[b.dataset.plus] = Math.min(12, etat[b.dataset.plus] + 1); montrer(); return; }
       if (b.dataset.n) { etat.n = +b.dataset.n; montrer(); return; }
+      if (b.dataset.app) { etat.app = b.dataset.app; montrer(); return; }
       if (b.dataset.envie) { var i = etat.envies.indexOf(b.dataset.envie); i < 0 ? etat.envies.push(b.dataset.envie) : etat.envies.splice(i, 1); montrer(); return; }
       if (b.dataset.fin) { appliquer(); fermer(); showTab("semaine"); if (b.dataset.fin === "moi") setTimeout(function () { var p = el("pour-moi"); if (p) p.click(); }, 50); return; }
       var a = b.dataset.bv;
@@ -108,10 +110,14 @@
   function rendreFeuille() {
     var puce = function (b, i) { return '<button type="button" data-proxy="' + i + '" aria-pressed="' + b.getAttribute("aria-pressed") + '">' + b.textContent + "</button>"; };
     var P = profils(), X = extras();
+    var groupe = function (titre, cles) {
+      var h = X.map(function (b, i) { return cles.indexOf(b.dataset.filtre) >= 0 ? puce(b, "x" + i) : ""; }).join("");
+      return h ? "<h3>" + titre + '</h3><div class="feuille-puces">' + h + "</div>" : "";
+    };
     feuille.innerHTML = '<div class="feuille-boite"><div class="feuille-haut"><button type="button" class="ghost cu-x" data-feuille="fermer" aria-label="Fermer">×</button><b>Filtres</b><span></span></div>' +
       '<div class="feuille-corps"><h3>Type de plat</h3><div class="feuille-puces">' + P.map(function (b, i) { return puce(b, "p" + i); }).join("") + "</div>" +
-      "<h3>Temps et famille</h3><div class=\"feuille-puces\">" + X.slice(0, 2).map(function (b, i) { return puce(b, "x" + i); }).join("") + "</div>" +
-      "<h3>Régimes</h3><div class=\"feuille-puces\">" + X.slice(2).map(function (b, i) { return puce(b, "x" + (i + 2)); }).join("") + '</div><p class="note">Repéré d\'après les ingrédients : en cas d\'allergie, vérifiez toujours les étiquettes.</p></div>' +
+      groupe("Budget et temps", ["eco", "express"]) + groupe("Famille", ["enfants"]) + groupe("Régimes", ["sgluten", "slactose", "soeufs"]) +
+      '<p class="note">Repéré d\'après les ingrédients : en cas d\'allergie, vérifiez toujours les étiquettes.</p></div>' +
       '<div class="feuille-bas"><button type="button" class="lien" data-feuille="effacer">Tout effacer</button><button type="button" data-feuille="fermer">Afficher ' + visibles() + " plat" + (visibles() > 1 ? "s" : "") + "</button></div></div>";
   }
   barreF.addEventListener("click", function (e) { if (e.target.closest('[data-feuille="ouvrir"]')) { rendreFeuille(); feuille.hidden = false; document.body.classList.add("feuille-ouverte"); } });
