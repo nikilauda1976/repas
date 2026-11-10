@@ -27,7 +27,7 @@
   function charger() {
     var d = demande();
     if (!d.plats.length) { plan = null; cle = ""; rendre(); return; }
-    var k = "rdm-batch:" + hache(JSON.stringify(d));
+    var k = "rdm-batch3:" + hache(JSON.stringify(d));
     if (k === cle && (plan || enCours)) { rendre(); return; }
     cle = k; erreur = ""; plan = lire(k, null);
     if (plan) { rendre(); return; }
@@ -36,7 +36,7 @@
       .then(function (x) { return x.json(); })
       .then(function (j) {
         if (k !== cle) return;
-        if (j && j.plan) { plan = j.plan; ecrire(k, plan); } else erreur = RAISONS[j && j.erreur] || "réessayez dans un moment";
+        if (j && j.plan) { plan = j.plan; if (!(plan.alertes && plan.alertes.length)) ecrire(k, plan); } else erreur = RAISONS[j && j.erreur] || "réessayez dans un moment";
       }, function () { if (k === cle) erreur = "pas de connexion"; })
       .then(function () { if (k === cle) { enCours = false; rendre(); } });
   }
@@ -48,12 +48,13 @@
   function rendre() {
     var b = buildList();
     if (!b.sel.length) { sec.innerHTML = '<p class="empty">Choisissez d\'abord vos plats : le plan de batch cooking se prépare à partir d\'eux.</p>'; return; }
-    if (enCours) { sec.innerHTML = '<div class="bt-attente"><p class="cu-etape">Préparation du plan pour ' + b.sel.length + " plats…</p><p class=\"note\">Environ 20 secondes la première fois. Ensuite il est gardé.</p></div>"; return; }
+    if (enCours) { sec.innerHTML = '<div class="bt-attente"><p class="cu-etape">Préparation du plan pour ' + b.sel.length + " plats…</p><p class=\"note\">Cela peut prendre jusqu'à 2 minutes la première fois : le plan est vérifié et corrigé si besoin. Ensuite il est gardé.</p></div>"; return; }
     if (!plan) { sec.innerHTML = '<p class="note warn">Le plan n\'a pas pu être préparé (' + erreur + ').</p><button type="button" id="bt-refaire">Réessayer</button>'; return; }
     var faits = lire(cle + ":faits", []);
     var n = plan.etapes.length, f = plan.etapes.filter(function (e, i) { return faits.indexOf(i) >= 0; }).length;
     sec.innerHTML =
       '<div class="bt-resume"><div><b>' + esc(plan.duree_totale) + "</b><span>le dimanche</span></div><div><b>" + plan.boites.length + "</b><span>boîte" + (plan.boites.length > 1 ? "s" : "") + "</span></div><div><b>" + plan.soirs.length + "</b><span>soirs prêts vite</span></div></div>" +
+      (plan.alertes && plan.alertes.length ? '<div class="bt-alerte"><b>⚠️ À vérifier avant de suivre ce plan</b><ul>' + plan.alertes.map(function (a) { return "<li>" + esc(a) + "</li>"; }).join("") + '</ul><button type="button" class="ghost" id="bt-refaire">Refaire le plan</button></div>' : "") +
       '<div class="bt-prog"><div class="pas-barre"><i style="width:' + Math.round(f / n * 100) + '%"></i></div><span>' + f + " / " + n + " étapes faites</span></div>" +
       '<h3 class="bt-titre">Le dimanche, dans l\'ordre</h3><ol class="bt-etapes">' + plan.etapes.map(function (e, i) {
         var m = /(\d+)\s*min/.exec(e.duree || "");

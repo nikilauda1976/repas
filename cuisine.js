@@ -122,9 +122,9 @@
     if (bloc.length) bloc[0] = '<p class="note tm-avert">Version Thermomix préparée automatiquement à partir de la recette : surveillez la cuisson et ne dépassez pas le repère MAX du bol.</p>' + bloc[0];
     remplacer(bloc);
   }
-  var RAISONS = { quota_global: "la limite du jour est atteinte", limite_google: "le service est très demandé", pas_de_cle: "le service n'est pas configuré" };
+  var RAISONS = { quota_global: "la limite du jour est atteinte", limite_google: "le service est très demandé, réessayez dans une minute", pas_de_cle: "le service n'est pas configuré", regles: "la version proposée ne respectait pas les règles de sécurité du Thermomix" };
   function chargerTM(r) {
-    var cle = "rdm-tm:" + r.id + ":" + (r.etapes || []).length;
+    var cle = "rdm-tm3:" + r.id + ":" + (r.etapes || []).length;
     var garde = null; try { garde = JSON.parse(localStorage.getItem(cle) || "null"); } catch (e) {}
     var fini = function (d, err) {
       if (rec !== r || fen.hidden) return;
