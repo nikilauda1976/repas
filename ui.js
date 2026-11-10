@@ -12,7 +12,7 @@
   function resume() {
     var a = +el("f-adultes").value || 0, e = +el("f-enfants").value || 0, n = +el("f-menus").value || 0;
     var fam = el("compte-on") && !el("compte-on").hidden ? el("compte-nom").textContent : "";
-    el("reglages-resume").textContent = (a + e) + " mangeur" + (a + e > 1 ? "s" : "") + " · " + n + " menus par semaine · " + (fam ? "Famille " + fam : "Pas de famille connectée");
+    el("reglages-resume").textContent = (a + e) + " personne" + (a + e > 1 ? "s" : "") + " · " + n + " repas" + (fam ? " · Famille " + fam : "");
   }
   if (reg) {
     // Première visite (rien de réglé, pas de famille) : on ouvre pour guider

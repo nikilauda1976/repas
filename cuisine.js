@@ -86,14 +86,74 @@
       (mult ? '<p class="note">Quantités pour ' + fmt(portions()) + " portions. Les étapes parlent de " + (rec.base || 6) + " portions : multipliez par " + fmt(facR(rec)) + ".</p>" : "") +
       '<ul class="cu-ings">' + ings.map(function (i) { return '<li><label><input type="checkbox"> <span>' + esc(i[1]) + (i[2] ? " <b>" + esc(i[2]) + "</b>" : "") + "</span></label></li>"; }).join("") + "</ul>" +
       (rec.materiel ? '<p class="cu-mat"><b>Matériel :</b> ' + esc(rec.materiel) + "</p>" : ""));
-    (rec.etapes || []).forEach(function (s, i) {
-      ecrans.push('<span class="eyebrow">Étape ' + (i + 1) + " sur " + rec.etapes.length + '</span><p class="cu-etape">' + avecMinuteurs(s, "Étape " + (i + 1)) + "</p>");
-    });
+    debut = ecrans.length;
+    if (TM) { ecrans.push('<div class="tm-attente"><span class="eyebrow">Thermomix</span><p class="cu-etape">Préparation de la version Thermomix…</p><p class="note">La première fois, cela prend une dizaine de secondes. Ensuite, elle est gardée.</p></div>'); chargerTM(rec); }
+    else etapesClassiques();
     ecrans.push('<div class="cu-fin"><span class="eyebrow">C\'est prêt</span><h2>Bon appétit !</h2><p>La famille a aimé ?</p><div class="cu-notes">' +
       '<button type="button" class="ghost" data-noter="' + esc(rec.id) + '" data-v="1" aria-pressed="' + (NOTES[rec.id] === 1) + '">👍 On a aimé</button>' +
       '<button type="button" class="ghost" data-noter="' + esc(rec.id) + '" data-v="-1" aria-pressed="' + (NOTES[rec.id] === -1) + '">👎 Bof</button></div>' +
       '<p class="note">« Choisir pour moi » proposera plus souvent les plats aimés et évitera les « bof ».</p></div>');
     pas = 0; fen.hidden = false; document.body.classList.add("cuisine-ouverte"); montrer(); allume();
+  }
+  // ---------- Thermomix ----------
+  var TM = localStorage.getItem("rdm-thermomix") === "1", debut = 1;
+  function etapesClassiques(note) {
+    var et = rec.etapes || [], bloc = et.map(function (s, i) {
+      return '<span class="eyebrow">Étape ' + (i + 1) + " sur " + et.length + "</span>" + (i === 0 && note ? '<p class="note">' + note + "</p>" : "") + '<p class="cu-etape">' + avecMinuteurs(s, "Étape " + (i + 1)) + "</p>";
+    });
+    remplacer(bloc);
+  }
+  function remplacer(bloc) { var fin = ecrans[ecrans.length - 1]; ecrans = ecrans.slice(0, debut).concat(bloc, fin ? [fin] : []); }
+  function etapesTM(d) {
+    var et = d.etapes || [];
+    var bloc = et.map(function (e, i) {
+      var r = [];
+      if (e.hors_thermomix) r.push('<span class="tm-hors">🍳 Hors Thermomix</span>');
+      else {
+        if (e.duree) { var m = /(\d+)\s*min/.exec(e.duree), sec = /(\d+)\s*s\b/.exec(e.duree);
+          r.push(m ? '<button type="button" class="minuteur-btn tm-p" data-min="' + m[1] + '" data-titre="' + esc("Étape " + (i + 1)) + '">⏱ ' + esc(e.duree) + "</button>" : '<span class="tm-p">⏱ ' + esc(e.duree) + "</span>"); }
+        if (e.temperature) r.push('<span class="tm-p">🌡 ' + esc(e.temperature) + "</span>");
+        if (e.vitesse) r.push('<span class="tm-p">⚙ vitesse ' + esc(e.vitesse) + "</span>");
+        if (e.sens_inverse) r.push('<span class="tm-p">↺ sens inverse</span>');
+      }
+      return '<span class="eyebrow">Étape ' + (i + 1) + " sur " + et.length + " · Thermomix</span>" + (i === 0 && d.remarque ? '<p class="note">' + esc(d.remarque) + "</p>" : "") +
+        '<p class="cu-etape">' + (r.length && !e.hors_thermomix ? esc(e.texte) : avecMinuteurs(e.texte, "Étape " + (i + 1))) + "</p>" + (r.length ? '<div class="tm-reglages">' + r.join("") + "</div>" : "");
+    });
+    if (bloc.length) bloc[0] = '<p class="note tm-avert">Version Thermomix préparée automatiquement à partir de la recette : surveillez la cuisson et ne dépassez pas le repère MAX du bol.</p>' + bloc[0];
+    remplacer(bloc);
+  }
+  var RAISONS = { quota_global: "la limite du jour est atteinte", limite_google: "le service est très demandé", pas_de_cle: "le service n'est pas configuré" };
+  function chargerTM(r) {
+    var cle = "rdm-tm:" + r.id + ":" + (r.etapes || []).length;
+    var garde = null; try { garde = JSON.parse(localStorage.getItem(cle) || "null"); } catch (e) {}
+    var fini = function (d, err) {
+      if (rec !== r || fen.hidden) return;
+      if (d && d.possible !== false && d.etapes && d.etapes.length) etapesTM(d);
+      else etapesClassiques(d && d.possible === false ? "Pas de version Thermomix utile pour ce plat" + (d.remarque ? " : " + esc(d.remarque) : "") + ". Voici la recette classique." : "Version Thermomix indisponible" + (err ? " (" + err + ")" : "") + ". Voici la recette classique.");
+      if (pas >= ecrans.length) pas = ecrans.length - 1;
+      montrer();
+    };
+    if (garde) { setTimeout(function () { fini(garde); }, 0); return; }
+    fetch("https://isjnrurkcbwgezasbosv.supabase.co/functions/v1/thermomix", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: r.id, nom: r.nom, portions: r.base || 6, materiel: r.materiel || "", ingredients: (r.ing || []).map(function (i) { return [i[1], i[2]]; }), etapes: r.etapes || [] })
+    }).then(function (x) { return x.json(); }).then(function (j) {
+      if (j && j.thermomix) { try { localStorage.setItem(cle, JSON.stringify(j.thermomix)); } catch (e) {} fini(j.thermomix); }
+      else fini(null, RAISONS[j && j.erreur] || "réessayez plus tard");
+    }, function () { fini(null, "pas de connexion"); });
+  }
+  function basculerTM() {
+    TM = !TM; try { localStorage.setItem("rdm-thermomix", TM ? "1" : "0"); } catch (e) {}
+    var c = document.getElementById("tm-reglage"); if (c) c.checked = TM;
+    if (!fen.hidden && rec) { var p = pas; ouvrir(rec.id); pas = Math.min(p, ecrans.length - 1); montrer(); }
+  }
+  // Case dans les réglages
+  var corps = document.querySelector(".reglages-corps");
+  if (corps) {
+    var l = document.createElement("label"); l.className = "tm-case";
+    l.innerHTML = '<input type="checkbox" id="tm-reglage"' + (TM ? " checked" : "") + '> <span><b>J\'ai un Thermomix</b> : le mode cuisine donne les temps, températures et vitesses</span>';
+    corps.insertBefore(l, corps.firstChild);
+    l.querySelector("input").addEventListener("change", function () { if (this.checked !== TM) basculerTM(); });
   }
   function fermer() {
     fen.hidden = true; document.body.classList.remove("cuisine-ouverte");
@@ -101,7 +161,7 @@
   }
   function montrer() {
     var n = ecrans.length;
-    fen.innerHTML = '<div class="cu-haut"><button type="button" class="ghost cu-x" data-cu="fermer" aria-label="Quitter le mode cuisine">×</button><p class="cu-nom">' + esc(rec.nom) + '</p></div>' +
+    fen.innerHTML = '<div class="cu-haut"><button type="button" class="ghost cu-x" data-cu="fermer" aria-label="Quitter le mode cuisine">×</button><p class="cu-nom">' + esc(rec.nom) + '</p><button type="button" class="ghost tm-bascule" data-cu="tm" aria-pressed="' + TM + '">Thermomix</button></div>' +
       '<div class="pas-barre"><i style="width:' + Math.round((pas + 1) / n * 100) + '%"></i></div>' +
       '<div class="cu-corps">' + ecrans[pas] + "</div>" +
       '<div class="cu-bas"><button type="button" class="ghost" data-cu="prec"' + (pas ? "" : " disabled") + '>‹ Précédent</button>' +
@@ -111,6 +171,7 @@
   var aller = function (d) { var p = pas + d; if (p >= 0 && p < ecrans.length) { pas = p; montrer(); } };
   fen.addEventListener("click", function (e) {
     var b = e.target.closest("[data-cu]"); if (!b) return;
+    if (b.dataset.cu === "tm") { basculerTM(); return; }
     if (b.dataset.cu === "fermer") fermer(); else aller(b.dataset.cu === "suiv" ? 1 : -1);
   });
   document.addEventListener("keydown", function (e) {

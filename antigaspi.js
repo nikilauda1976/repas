@@ -40,12 +40,12 @@
     var liste = plats.concat(desserts);
     if (!liste.length) { box.hidden = true; box.innerHTML = ""; return; }
     box.hidden = ailleursVue;
-    box.innerHTML = '<div class="ag-tete"><span class="eyebrow">♻ Anti-gaspi</span><button type="button" class="lien ag-x" aria-label="Masquer">Masquer</button></div>' +
-      '<p class="ag-titre">Il vous restera sûrement : ' + ks.slice(0, 6).join(", ") + (ks.length > 6 ? "…" : "") + "</p>" +
-      '<p class="note">Ces plats finissent les restes, sans racheter :</p><ul class="ag-liste">' + liste.map(function (p) {
+    var ouvert = box.querySelector(".ag-pli") && box.querySelector(".ag-pli").open;
+    box.innerHTML = '<details class="ag-pli"' + (ouvert ? " open" : "") + '><summary><span>♻ ' + liste.length + " idée" + (liste.length > 1 ? "s" : "") + " pour finir vos restes<small>" + ks.slice(0, 4).join(", ") + (ks.length > 4 ? "…" : "") + "</small></span></summary>" +
+      '<ul class="ag-liste">' + liste.map(function (p) {
         return '<li><span><b>' + esc(p.m.nom.split(",")[0]) + "</b>" + (p.dessert ? ' <small class="ag-type">dessert</small>' : "") + '<small>finit : ' + p.communs.join(", ") + "</small></span>" +
           '<button type="button" class="ghost" data-ag="' + esc(p.m.id) + '">Ajouter</button></li>';
-      }).join("") + "</ul>";
+      }).join("") + '</ul><button type="button" class="lien ag-x">Ne plus afficher cette semaine</button></details>';
   }
   box.addEventListener("click", function (e) {
     if (e.target.closest(".ag-x")) { box.dataset.ferme = "1"; box.hidden = true; box.innerHTML = ""; return; }

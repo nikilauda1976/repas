@@ -206,6 +206,9 @@
     var bb = document.querySelector("#barre-texte b"); if (bb) { bb.classList.remove("bond"); void bb.offsetWidth; bb.classList.add("bond"); }
   });
 
+  // Le texte sous « Choisir pour moi » n'apparaît qu'après l'avoir utilisé
+  document.addEventListener("click", function (e) { if (e.target.closest("#pour-moi")) { var p = e.target.closest(".pour-moi"); if (p) p.classList.add("fait"); } });
+
   // ---------- Suivre la vue courante et tout mettre à jour ----------
   var showTabUx = showTab;
   showTab = function (t) {
