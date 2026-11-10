@@ -710,7 +710,17 @@ body.tete-courte .wrap>header{display:none}
 <div class="haut"><a class="marque" href="./">repas</a></div>
 <div class="wrap">
 <header>
-  <span class="eyebrow">Semaine du 2 novembre 2026 · livraison samedi 31 octobre</span>
+  <span class="eyebrow" id="semaine-titre">Semaine du 2 novembre 2026 · livraison samedi 31 octobre</span>
+  <script>
+  // La semaine affichée se calcule toute seule : en semaine, la semaine en cours ; le week-end, la semaine qui vient.
+  (function(){
+    var M=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+    var d=new Date();d.setHours(0,0,0,0);var j=d.getDay();
+    var lundi=new Date(d);lundi.setDate(d.getDate()+(j===6?2:j===0?1:1-j));
+    var samedi=new Date(lundi);samedi.setDate(lundi.getDate()-2);
+    document.getElementById("semaine-titre").textContent="Semaine du "+lundi.getDate()+" "+M[lundi.getMonth()]+" "+lundi.getFullYear()+" · livraison samedi "+samedi.getDate()+" "+M[samedi.getMonth()];
+  })();
+  </script>
   <h1>Les menus de la maison</h1>
   <details class="reglages" id="reglages">
     <summary><span class="reglages-resume" id="reglages-resume">Réglages</span><span class="reglages-bouton">Réglages</span></summary>
