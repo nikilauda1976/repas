@@ -141,7 +141,7 @@
   // ---------- Parcours en 3 étapes : choisir (plats, desserts, mes recettes), courses, commander ----------
   var PARCOURS = [
     { t: "semaine", nom: "Choisir", groupe: ["semaine", "desserts", "perso"], consigne: "Choisissez vos repas de la semaine", aide: "Cochez vos plats, ou laissez-nous choisir. Ajoutez des desserts et vos propres recettes si vous voulez." },
-    { t: "liste", nom: "Courses", groupe: ["liste", "recettes", "rangement"], consigne: "Vérifiez vos courses", aide: "Retirez ce que vous avez déjà, puis remplissez votre panier en ligne article par article." },
+    { t: "liste", nom: "Courses", groupe: ["liste", "recettes", "rangement", "batch"], consigne: "Vérifiez vos courses", aide: "Retirez ce que vous avez déjà, puis remplissez votre panier en ligne article par article." },
     { t: "commande", nom: "Commander", groupe: ["commande"], consigne: "Choisissez où commander", aide: "Comparez les magasins et notez le bon jour pour réserver la livraison." }
   ];
   var rang = function (t) { for (var i = 0; i < PARCOURS.length; i++) if (PARCOURS[i].groupe.indexOf(t) >= 0) return i; return -1; };
@@ -187,14 +187,15 @@
     });
     tete.hidden = suite.hidden = i < 0;
     if (i < 0) return;
-    var h = '<span class="eyebrow">Étape ' + (i + 1) + " sur " + PARCOURS.length + "</span><h2>" + (t === "recettes" ? "Les recettes de votre semaine" : t === "rangement" ? "Les courses sont arrivées : rangez par repas" : p.consigne) + '</h2><p class="note">' + (t === "recettes" ? "Toutes les recettes choisies, à garder en PDF ou à envoyer par message." : t === "rangement" ? "Un sac par repas, comme un kit HelloFresh : dans l'ordre où les cuisiner, avec l'endroit où ranger chaque ingrédient." : p.aide) + '</p><div class="etape-barre"><i style="width:' + Math.round((i + 1) / PARCOURS.length * 100) + '%"></i></div>';
+    var h = '<span class="eyebrow">Étape ' + (i + 1) + " sur " + PARCOURS.length + "</span><h2>" + (t === "recettes" ? "Les recettes de votre semaine" : t === "rangement" ? "Les courses sont arrivées : rangez par repas" : t === "batch" ? "Batch cooking du dimanche" : p.consigne) + '</h2><p class="note">' + (t === "recettes" ? "Toutes les recettes choisies, à garder en PDF ou à envoyer par message." : t === "rangement" ? "Un sac par repas, comme un kit HelloFresh : dans l'ordre où les cuisiner, avec l'endroit où ranger chaque ingrédient." : p.aide) + '</p><div class="etape-barre"><i style="width:' + Math.round((i + 1) / PARCOURS.length * 100) + '%"></i></div>';
     if (i === 0) {
       h += '<div class="sous" role="group" aria-label="Que choisir">' + SOUS.map(function (x) { return '<button type="button" data-aller="' + x[0] + '" aria-pressed="' + (x[0] === t) + '">' + x[1] + " <i></i></button>"; }).join("") + "</div>";
       if (t === "semaine") h += '<div class="pour-moi"><button type="button" id="pour-moi">✨ Choisir pour moi</button><span class="note" id="pour-moi-note">Coche ' + FOYER.menus + " plats variés d'un coup. Appuyez encore pour en tirer d'autres.</span></div>";
     }
-    if (t === "liste") h += '<div class="ajout-row raccourcis"><button type="button" class="ghost" data-aller="recettes">Recettes de ma semaine</button><button type="button" class="ghost" data-vers=".envoi:not([hidden])">Envoyer la liste ↓</button></div><button type="button" class="arrivee" data-aller="rangement">📦 Les courses sont arrivées : ranger par repas</button>';
+    if (t === "liste") h += '<div class="ajout-row raccourcis"><button type="button" class="ghost" data-aller="recettes">Recettes de ma semaine</button><button type="button" class="ghost" data-vers=".envoi:not([hidden])">Envoyer la liste ↓</button></div><div class="arrivees"><button type="button" class="arrivee" data-aller="rangement">📦 Ranger les courses par repas</button><button type="button" class="arrivee ghost" data-aller="batch">🍲 Batch cooking du dimanche</button></div>';
     if (t === "recettes") h += '<div class="ajout-row"><button type="button" class="ghost" data-aller="liste">← Revenir à ma liste de courses</button></div>';
-    if (t === "rangement") h += '<div class="ajout-row"><button type="button" class="ghost" data-aller="liste">← Revenir à ma liste de courses</button></div>';
+    if (t === "rangement") h += '<div class="ajout-row"><button type="button" class="ghost" data-aller="liste">← Ma liste de courses</button><button type="button" class="ghost" data-aller="batch">🍲 Batch cooking</button></div>';
+    if (t === "batch") h += '<div class="ajout-row"><button type="button" class="ghost" data-aller="liste">← Ma liste de courses</button><button type="button" class="ghost" data-aller="rangement">📦 Ranger par repas</button></div>';
     tete.innerHTML = h; majSous();
     var av = PARCOURS[i - 1], ap = PARCOURS[i + 1];
     suite.innerHTML = (av ? '<button type="button" class="ghost" data-aller="' + av.t + '">← ' + av.nom + "</button>" : "<span></span>") +

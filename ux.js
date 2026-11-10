@@ -134,6 +134,7 @@
     ["✨ Choisir mes plats pour moi", function () { showTab("semaine"); setTimeout(function () { el("pour-moi") && el("pour-moi").click(); }, 30); }],
     ["🛒 Ma liste de courses", function () { showTab("liste"); }],
     ["📦 Ranger les courses par repas", function () { showTab("rangement"); }],
+    ["🍲 Batch cooking du dimanche", function () { showTab("batch"); }],
     ["📅 Ma semaine jour par jour", function () { showTab("recettes"); }],
     ["📄 Télécharger le PDF de la semaine", function () { showTab("recettes"); setTimeout(function () { el("pdf-dl") && el("pdf-dl").click(); }, 30); }],
     ["🍰 Desserts", function () { showTab("desserts"); }],
