@@ -1,7 +1,7 @@
 // Garde le site en mémoire pour qu'il s'ouvre même sans réseau (dans la cuisine, au magasin).
 // Les pages et scripts du site : d'abord le réseau (pour avoir la dernière version), sinon la copie gardée.
 // Polices et bibliothèques extérieures : la copie gardée d'abord.
-var VERSION = "repas-v1";
+var VERSION = "repas-v2";
 var BASE = ["./", "./index.html", "./manifest.webmanifest", "./icone-192.png", "./icone-512.png"];
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(VERSION).then(function (c) { return c.addAll(BASE); }).then(function () { return self.skipWaiting(); }));

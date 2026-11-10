@@ -556,6 +556,107 @@ body.cuisine-ouverte .barre-semaine{display:none}
 .cal-x2.on{background:var(--basil-soft);color:var(--basil);border-color:var(--basil)}
 .cal-reste .cal-nom{font-style:italic;color:var(--basil);background:transparent;border-style:dashed}
 @media (max-width:620px){.filtres-plus{margin-top:0;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}.filtres-plus::-webkit-scrollbar{display:none}.filtres-plus button{flex:none}.filtres-plus .note{display:none}}
+/* ===== Confort : accueil, tableau, filtres, recherche, animations, typographie ===== */
+/* Typographie (Pentagram) : chiffres alignés, retours à la ligne soignés */
+p,li,dd{text-wrap:pretty}
+h1,h2,.envoi-titre,.ag-titre{font-optical-sizing:auto;hanging-punctuation:first}
+.price strong,.totals strong,.r-compte,.r-etat b,.tb-carte b,.cf-prix,.prix-l{font-variant-numeric:tabular-nums lining-nums}
+.lead{max-width:60ch}
+/* Bon à savoir replié (Muji) */
+.infos{border:0}
+.infos-pli>summary{font:500 15px var(--body);color:var(--ink);padding:10px 2px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);list-style:none;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.infos-pli>summary::-webkit-details-marker{display:none}
+.infos-pli>summary::after{content:"+";font:300 22px var(--display);color:var(--basil)}
+.infos-pli[open]>summary::after{content:"−"}
+.infos-pli>summary small{flex:1;margin-left:10px;color:var(--muted);font-weight:400;font-size:13px}
+/* Accueil pas à pas (Duolingo) */
+body.bienvenue-ouverte{overflow:hidden}
+.bienvenue{position:fixed;inset:0;z-index:80;background:var(--bg);display:flex;justify-content:center;padding:calc(14px + env(safe-area-inset-top,0px)) 18px calc(18px + env(safe-area-inset-bottom,0px))}
+.bv-boite{width:100%;max-width:480px;display:flex;flex-direction:column;gap:18px}
+.bv-haut{display:flex;align-items:center;gap:14px}.bv-haut .pas-barre{flex:1;height:10px}
+.bv-haut .pas-barre i{transition:width .5s var(--ease)}
+.bv-corps{flex:1;display:flex;flex-direction:column;justify-content:center;gap:16px;animation:bvEntre .45s var(--ease) both}
+@keyframes bvEntre{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+.bv-corps h2{font-size:clamp(30px,8vw,40px)}
+.bv-corps p{font-size:17px;color:var(--muted);margin:0}
+.bv-emoji{font-size:64px;line-height:1;animation:bvRebond .7s var(--ease) both}
+@keyframes bvRebond{0%{transform:scale(.4);opacity:0}60%{transform:scale(1.12);opacity:1}100%{transform:scale(1)}}
+.bv-ligne{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-top:1px solid var(--line);font-size:17px}
+.bv-stepper{display:flex;align-items:center;gap:14px}.bv-stepper b{font:300 30px var(--display);min-width:32px;text-align:center}
+.bv-stepper button{width:48px;height:48px;padding:0;font-size:24px}
+.bv-choix{display:flex;gap:10px;flex-wrap:wrap}.bv-choix button{width:58px;height:58px;padding:0;font:300 26px var(--display)}
+.bv-envies{display:flex;flex-direction:column;gap:10px}.bv-envies button{width:100%;text-align:left;padding:15px 18px;font-size:16px;border-radius:16px}
+.bv-choix button[aria-pressed="true"],.bv-envies button[aria-pressed="true"]{background:var(--basil);color:var(--on-basil);border-color:var(--basil)}
+.bv-fin{display:flex;flex-direction:column;gap:10px}.bv-fin button{width:100%;padding:16px;font-size:17px}
+.bv-bas{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.bv-bas button:last-child{flex:1;max-width:260px;margin-left:auto;padding:16px;font-size:17px;box-shadow:0 4px 0 var(--basil-fonce)}
+.bv-bas button:last-child:active{transform:translateY(3px);box-shadow:0 1px 0 var(--basil-fonce)}
+/* Tableau « Ma semaine en un coup d'œil » (Notion) */
+.tableau{margin-top:-10px}
+.tb-grille{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px}
+.tb-carte{display:flex;flex-direction:column;gap:3px;padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--surface);min-width:0}
+.tb-carte b{font:300 24px/1.15 var(--display);letter-spacing:-.02em;overflow:hidden;text-overflow:ellipsis}
+.tb-sous{font-size:12.5px;color:var(--muted)}
+.tb-carte button{margin-top:auto;align-self:flex-start;padding:7px 14px;font-size:14px}
+.tb-carte .lien{padding:6px 0 0}
+.tb-soir{background:var(--basil);color:var(--on-basil);border-color:var(--basil)}
+.tb-soir .eyebrow,.tb-soir .tb-sous{color:var(--on-basil);opacity:.8}
+.tb-soir b{font-size:20px;white-space:normal}
+.tb-soir button{background:var(--on-basil);color:var(--basil)}
+@media (max-width:760px){.tb-grille{grid-template-columns:repeat(2,minmax(0,1fr))}.tb-soir{grid-column:1/-1}}
+/* Panneau de filtres (Airbnb) : sur téléphone seulement */
+.filtre-barre{display:none}
+@media (max-width:620px){
+  #filters,.filtres-plus[data-view="semaine"]{display:none!important}
+  .filtre-barre{display:flex;align-items:center;gap:10px;margin-top:-14px}
+  .filtre-bouton{flex:none;padding:9px 16px;font-size:14px}
+  .filtre-bouton i{font-style:normal;display:inline-grid;place-items:center;min-width:20px;height:20px;border-radius:99px;background:var(--basil);color:var(--on-basil);font-size:12px;margin-left:4px}
+  .filtre-resume{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+}
+body.feuille-ouverte{overflow:hidden}
+.feuille{position:fixed;inset:0;z-index:75;background:rgba(14,21,14,.4);display:flex;align-items:flex-end;animation:fondu .2s both}
+@keyframes fondu{from{opacity:0}}
+.feuille-boite{width:100%;max-height:88vh;background:var(--bg);border-radius:24px 24px 0 0;display:flex;flex-direction:column;animation:monteFeuille .35s var(--ease) both}
+@keyframes monteFeuille{from{transform:translateY(100%)}}
+.feuille-haut{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;padding:10px 12px;border-bottom:1px solid var(--line);text-align:center}
+.feuille-corps{overflow:auto;padding:6px 18px 12px}
+.feuille-corps h3{font:500 15px var(--body);text-transform:none;letter-spacing:0;margin:16px 0 8px}
+.feuille-puces{display:flex;flex-wrap:wrap;gap:8px}
+.feuille-puces button{background:transparent;color:var(--ink);border:1px solid var(--line);padding:10px 16px;font-size:14px}
+.feuille-puces button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.feuille-bas{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 18px calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line)}
+.feuille-bas button:last-child{padding:14px 22px;font-size:16px}
+/* Recherche rapide ⌘K (Linear) */
+.raccourci-k{position:absolute;left:max(12px,env(safe-area-inset-left,0px));top:50%;transform:translateY(-50%);padding:6px 12px;font-size:13px;border-color:var(--line);color:var(--muted)}
+.raccourci-k:active{transform:translateY(-50%) scale(.97)}
+kbd{font:500 11px var(--body);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:0 5px;margin-left:4px;color:var(--muted);background:var(--surface)}
+.palette{position:fixed;inset:0;z-index:85;background:rgba(14,21,14,.35);display:flex;justify-content:center;align-items:flex-start;padding:12vh 16px 16px;animation:fondu .15s both}
+.palette-boite{width:100%;max-width:620px;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 30px 60px -20px rgba(0,0,0,.45);overflow:hidden;animation:paletteEntre .2s var(--ease) both}
+@keyframes paletteEntre{from{opacity:0;transform:translateY(-8px) scale(.98)}}
+.palette input{width:100%;box-sizing:border-box;border:0;border-bottom:1px solid var(--line);padding:16px 18px;font:400 17px var(--body);background:transparent;color:var(--ink);outline:none}
+.palette ul{list-style:none;margin:0;padding:6px;max-height:50vh;overflow:auto}
+.palette li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;cursor:pointer;margin:0}
+.palette li[aria-selected="true"]{background:var(--basil-soft)}
+.palette li small{flex:none;color:var(--muted);font-size:12px}
+.palette li.vide{color:var(--muted);cursor:default}
+.palette-pied{margin:0;padding:8px 14px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+@media (max-width:620px){.raccourci-k{display:none}}
+/* Animations (Apple) et micro-interactions (Framer) */
+html.anim :is(.menu,.recette,.r-sac,.envoi,.calendrier,.tb-carte):not(.vu){opacity:0;transform:translateY(16px)}
+html.anim :is(.menu,.recette,.r-sac,.envoi,.calendrier,.tb-carte).vu{transition:opacity .55s var(--ease),transform .7s var(--ease),border-color .2s,background-color .2s}
+.menu.pop{animation:pop .45s var(--ease)}
+@keyframes pop{40%{transform:scale(1.015);box-shadow:inset 0 0 0 2px var(--basil),0 12px 30px -16px rgba(0,71,60,.5)}}
+.bond{display:inline-block;animation:bond .4s var(--ease)}
+@keyframes bond{40%{transform:scale(1.35) translateY(-2px)}}
+.wrap.entree>[data-view]:not([hidden]),.wrap.entree>.etape-tete{animation:entree .35s var(--ease) both}
+@keyframes entree{from{opacity:0;transform:translateY(8px)}}
+.menu.eclaire{box-shadow:0 0 0 3px var(--basil)!important;transition:box-shadow .3s}
+button,.bouton,.cta{transition:background-color .2s,color .2s,border-color .2s,transform .15s var(--ease),box-shadow .2s}
+.tabs .num{transition:background-color .3s,color .3s,transform .3s var(--ease)}
+.tabs button[aria-selected="true"] .num{transform:scale(1.08)}
+.pick input,.pc-pick input{transition:transform .2s var(--ease)}
+.pick input:checked,.pc-pick input:checked{transform:scale(1.12)}
+@media (prefers-reduced-motion:reduce){.bv-corps,.bv-emoji,.feuille,.feuille-boite,.palette,.palette-boite,.menu.pop,.bond{animation:none!important}}
 /* Commander avec Jow */
 .jow-plats{list-style:none;padding:0;margin:4px 0 0;display:flex;flex-direction:column}
 .jow-plats li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);margin:0}
@@ -1988,5 +2089,6 @@ function fallback(t){const pre=document.createElement("pre");pre.textContent=t;p
 <script src="cuisine.js?v=20261108w"></script>
 <script src="filtres.js?v=20261108w"></script>
 <script src="antigaspi.js?v=20261108w"></script>
+<script src="ux.js?v=20261110b"></script>
 <script src="pwa.js?v=20261108w"></script>
 </body></html>
