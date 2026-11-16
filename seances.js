@@ -23,6 +23,7 @@
   function decor(props) {
     return (props || []).map(function (x) {
       if (x[0] === "r") return '<rect class="sc-objet" x="' + x[1] + '" y="' + x[2] + '" width="' + x[3] + '" height="' + x[4] + '" rx="1.5"/>';
+      if (x[0] === "o") return '<circle class="sc-poids" cx="' + x[1] + '" cy="' + x[2] + '" r="' + x[3] + '"/>';
       if (x[0] === "c") return '<line class="sc-serviette" x1="' + x[1] + '" y1="' + x[2] + '" x2="' + x[3] + '" y2="' + x[4] + '"/>';
       return '<line class="sc-objet" x1="' + x[1] + '" y1="' + x[2] + '" x2="' + x[3] + '" y2="' + x[4] + '"/>';
     }).join("");
@@ -133,6 +134,106 @@
       conseil: "Mains derrière la tête. Amène le coude vers le genou opposé en tournant le buste, lentement, puis change de côté." }
   };
 
+  // ---------- En salle : charges, barres, haltères et machines ----------
+  var BANC = [["r", 26, 56, 62, 4], ["l", 32, 60, 32, 72], ["l", 82, 60, 82, 72]];
+  var o = function (x, y, r) { return ["o", x, y, r]; };
+  var avec = function (pose, add) { var c = {}; for (var k in pose) c[k] = pose[k]; for (var j in add) c[j] = add[j]; return c; };
+  var COUCHE_H = { h: [31, 51], n: [37, 54], p: [59, 54], k: [74, 57], f: [78, 72], e: [37, 44], w: [37, 34] };
+  var COUCHE_B = { h: [31, 51], n: [37, 54], p: [59, 54], k: [74, 57], f: [78, 72], e: [45, 60], w: [39, 47] };
+  var SQ_H = { h: [60, 12], n: [60, 18], p: [60, 40], k: [62, 56], f: [60, 72], e: [53, 25], w: [58, 18] };
+  var SQ_B = { h: [61, 31], n: [58, 36], p: [48, 56], k: [66, 58], f: [60, 72], e: [51, 43], w: [56, 36] };
+  var ASSIS_H = { h: [60, 22], n: [60, 28], p: [60, 50], k: [74, 52], f: [76, 72], e: [68, 33], w: [66, 23] };
+  var ASSIS_B = { h: [60, 22], n: [60, 28], p: [60, 50], k: [74, 52], f: [76, 72], e: [64, 18], w: [62, 8] };
+  var PENCHE = { h: [73, 29], n: [68, 32], p: [50, 44], k: [58, 57], f: [56, 72] };
+  var SUSP = { h: [58, 18], n: [58, 24], p: [58, 46], k: [58, 58], f: [58, 70], e: [53, 14], w: [52, 4], e2: [63, 14], w2: [64, 4] };
+  var FENTE_H = { h: [60, 12], n: [60, 18], p: [60, 40], k: [61, 56], f: [60, 72], e: [60, 29], w: [60, 39] };
+  var FENTE_B = { h: [56, 24], n: [56, 30], p: [56, 52], k: [70, 57], f: [70, 72], k2: [52, 70], f2: [38, 70], e: [56, 41], w: [56, 50] };
+  var SALLE = {
+    devcouche: { nom: "Développé couché à la barre", poses: [COUCHE_H, COUCHE_B], props: BANC.concat([o(37, 32, 6)]), props2: BANC.concat([o(39, 45, 6)]),
+      conseil: "Omoplates serrées, pieds au sol. La barre descend au bas des pectoraux, puis tu pousses à la verticale. Demande quelqu'un pour te parer sur les séries lourdes." },
+    devhalteres: { nom: "Développé incliné aux haltères", poses: [COUCHE_H, COUCHE_B], props: BANC.concat([o(37, 33, 3)]), props2: BANC.concat([o(39, 46, 3)]),
+      conseil: "Banc incliné à 30 degrés. Descends les haltères sur les côtés de la poitrine, coudes à 45 degrés, puis pousse. Haut des pectoraux." },
+    ecarte: { nom: "Développé aux haltères, banc plat", poses: [COUCHE_H, COUCHE_B], props: BANC.concat([o(37, 33, 3)]), props2: BANC.concat([o(39, 46, 3)]),
+      conseil: "Amplitude complète, descente en 3 secondes. Les haltères travaillent chaque côté séparément." },
+    tirage: { nom: "Tirage vertical à la poulie",
+      poses: [{ h: [58, 22], n: [58, 28], p: [58, 48], k: [72, 50], f: [72, 70], e: [60, 18], w: [61, 9] }, { h: [58, 22], n: [58, 28], p: [58, 48], k: [72, 50], f: [72, 70], e: [55, 39], w: [62, 28] }],
+      props: [["r", 48, 50, 20, 4], ["l", 61, 0, 61, 8], o(61, 8, 2.5)], props2: [["r", 48, 50, 20, 4], ["l", 61, 0, 62, 27], o(62, 27, 2.5)],
+      conseil: "Prise un peu plus large que les épaules. Tire la barre vers le haut de la poitrine en serrant les omoplates, sans te pencher en arrière. Dos large." },
+    rowing: { nom: "Rowing à la barre, buste penché", poses: [avec(PENCHE, { e: [68, 43], w: [68, 53] }), avec(PENCHE, { e: [57, 38], w: [63, 47] })],
+      props: [o(68, 55, 6)], props2: [o(63, 49, 6)],
+      conseil: "Dos plat, buste penché vers l'avant. Tire la barre vers le nombril, coudes le long du corps. Épaisseur du dos." },
+    tractions: { nom: "Tractions (lestées si c'est trop facile)", poses: EX.tractions.poses, props: EX.tractions.props,
+      conseil: "Amplitude complète, menton au dessus de la barre. Quand tu fais 10 propres, ajoute du poids avec une ceinture de lest." },
+    squat: { nom: "Squat à la barre", poses: [SQ_H, SQ_B], props: [o(60, 17, 6)], props2: [o(58, 35, 6)],
+      conseil: "Barre sur le haut du dos, pieds largeur d'épaules. Descends au moins à la parallèle, dos droit, genoux dans l'axe des pieds. Utilise la cage avec les sécurités." },
+    sdt: { nom: "Soulevé de terre jambes tendues (roumain)",
+      poses: [{ h: [60, 12], n: [60, 18], p: [60, 40], k: [61, 56], f: [60, 72], e: [62, 30], w: [63, 40] }, { h: [72, 35], n: [67, 36], p: [46, 40], k: [50, 56], f: [52, 72], e: [67, 47], w: [67, 57] }],
+      props: [o(63, 42, 6)], props2: [o(67, 59, 6)],
+      conseil: "Genoux légèrement fléchis. Pousse les fesses en arrière, la barre glisse le long des cuisses jusqu'aux tibias, dos plat. Arrière des cuisses et fessiers." },
+    hipthrust: { nom: "Hip thrust à la barre", poses: EX.hipthrust.poses, props: [["r", 8, 50, 24, 22], o(44, 61, 6)], props2: [["r", 8, 50, 24, 22], o(52, 45, 6)],
+      conseil: "Haut du dos sur le banc, barre sur les hanches avec un coussin. Monte jusqu'à ce que le corps soit droit, serre les fessiers 1 seconde." },
+    presse: { nom: "Presse à cuisses",
+      poses: [{ h: [24, 40], n: [28, 45], p: [42, 60], k: [50, 44], f: [64, 50], e: [34, 54], w: [40, 59] }, { h: [24, 40], n: [28, 45], p: [42, 60], k: [56, 53], f: [71, 46], e: [34, 54], w: [40, 59] }],
+      props: [["l", 16, 38, 40, 63], ["l", 40, 63, 54, 63], ["l", 60, 38, 68, 62]], props2: [["l", 16, 38, 40, 63], ["l", 40, 63, 54, 63], ["l", 67, 34, 75, 58]],
+      conseil: "Pieds au milieu de la plateforme. Descends jusqu'à 90 degrés aux genoux sans décoller le bas du dos, puis pousse sans verrouiller les genoux." },
+    fentes: { nom: "Fentes avec haltères", poses: [FENTE_H, FENTE_B], props: [o(60, 41, 3)], props2: [o(56, 52, 3)],
+      conseil: "Un haltère dans chaque main. Grand pas, le genou arrière frôle le sol, le buste reste droit. 10 par jambe." },
+    legcurl: { nom: "Leg curl allongé à la machine",
+      poses: [{ h: [24, 48], n: [30, 50], p: [52, 50], k: [67, 50], f: [82, 50], e: [26, 56], w: [22, 60] }, { h: [24, 48], n: [30, 50], p: [52, 50], k: [67, 50], f: [72, 36], e: [26, 56], w: [22, 60] }],
+      props: [["r", 18, 53, 66, 4], ["l", 30, 57, 30, 72], ["l", 78, 57, 78, 72], o(84, 48, 3)], props2: [["r", 18, 53, 66, 4], ["l", 30, 57, 30, 72], ["l", 78, 57, 78, 72], o(73, 33, 3)],
+      conseil: "Hanches collées au banc. Ramène les talons vers les fesses, descente lente. Arrière des cuisses." },
+    legext: { nom: "Leg extension à la machine",
+      poses: [{ h: [52, 22], n: [52, 28], p: [54, 48], k: [68, 50], f: [68, 66], e: [56, 38], w: [62, 48] }, { h: [52, 22], n: [52, 28], p: [54, 48], k: [68, 50], f: [83, 48], e: [56, 38], w: [62, 48] }],
+      props: [["r", 44, 51, 24, 4], ["l", 46, 55, 46, 72], ["l", 44, 51, 40, 24], o(69, 67, 3)], props2: [["r", 44, 51, 24, 4], ["l", 46, 55, 46, 72], ["l", 44, 51, 40, 24], o(84, 46, 3)],
+      conseil: "Tends les jambes complètement, pause d'une seconde en haut, descente en 3 secondes. Quadriceps." },
+    mollets: { nom: "Mollets debout à la machine", poses: EX.mollets.poses, props: [["r", 54, 64, 26, 8]],
+      conseil: "Talons dans le vide, descends au plus bas puis monte sur la pointe, pause en haut. Charge lourde, mouvement lent." },
+    militaire: { nom: "Développé épaules aux haltères, assis", poses: [ASSIS_H, ASSIS_B], props: [["r", 50, 50, 20, 4], ["l", 52, 50, 52, 72], ["l", 50, 50, 48, 24], o(66, 21, 3)], props2: [["r", 50, 50, 20, 4], ["l", 52, 50, 52, 72], ["l", 50, 50, 48, 24], o(62, 6, 3)],
+      conseil: "Dos collé au dossier. Les haltères partent à hauteur des oreilles et montent au dessus de la tête sans se cogner. Épaules." },
+    elevlat: { nom: "Élévations latérales aux haltères",
+      poses: [{ h: [60, 12], n: [60, 18], p: [60, 40], k: [56, 56], f: [54, 72], k2: [64, 56], f2: [66, 72], e: [55, 28], w: [53, 38], e2: [65, 28], w2: [67, 38] }, { h: [60, 12], n: [60, 18], p: [60, 40], k: [56, 56], f: [54, 72], k2: [64, 56], f2: [66, 72], e: [49, 19], w: [39, 20], e2: [71, 19], w2: [81, 20] }],
+      props: [o(53, 40, 3), o(67, 40, 3)], props2: [o(38, 20, 3), o(82, 20, 3)],
+      conseil: "Vu de face. Monte les bras sur les côtés jusqu'à hauteur des épaules, coudes très légèrement fléchis. Charge légère, pas d'élan." },
+    facepull: { nom: "Face pull à la poulie",
+      poses: [{ h: [56, 12], n: [56, 18], p: [56, 40], k: [57, 56], f: [56, 72], e: [67, 19], w: [78, 18] }, { h: [56, 12], n: [56, 18], p: [56, 40], k: [57, 56], f: [56, 72], e: [50, 16], w: [62, 12] }],
+      props: [["l", 112, 4, 112, 72], ["l", 112, 15, 78, 18]], props2: [["l", 112, 4, 112, 72], ["l", 112, 15, 62, 12]],
+      conseil: "Corde à hauteur du visage. Tire vers le front en écartant les mains, coudes hauts. Arrière des épaules et posture." },
+    curl: { nom: "Curl à la barre",
+      poses: [{ h: [58, 12], n: [58, 18], p: [58, 40], k: [59, 56], f: [58, 72], e: [60, 30], w: [64, 40] }, { h: [58, 12], n: [58, 18], p: [58, 40], k: [59, 56], f: [58, 72], e: [60, 30], w: [66, 20] }],
+      props: [o(65, 42, 4)], props2: [o(67, 19, 4)],
+      conseil: "Coudes collés au corps, pas de balancier avec le dos. Monte en 1 seconde, descends en 3. Biceps." },
+    barrefront: { nom: "Barre au front", poses: [COUCHE_H, avec(COUCHE_H, { e: [38, 44], w: [28, 46] })], props: BANC.concat([o(37, 32, 4)]), props2: BANC.concat([o(26, 45, 4)]),
+      conseil: "Allongé, bras tendus au dessus de toi. Seuls les avant bras bougent : la barre descend vers le front puis remonte. Triceps." },
+    extpoulie: { nom: "Extension triceps à la poulie haute",
+      poses: [{ h: [60, 12], n: [60, 18], p: [60, 40], k: [61, 56], f: [60, 72], e: [58, 30], w: [50, 24] }, { h: [60, 12], n: [60, 18], p: [60, 40], k: [61, 56], f: [60, 72], e: [58, 30], w: [55, 41] }],
+      props: [["l", 38, 0, 50, 24]], props2: [["l", 38, 0, 55, 41]],
+      conseil: "Coudes fixes contre le corps. Pousse la corde vers le bas jusqu'à bras tendus, écarte les mains en bas. Triceps." },
+    dips: { nom: "Dips aux barres parallèles", poses: EX.dips.poses, props: [["l", 40, 50, 64, 50], ["l", 42, 50, 42, 72], ["l", 62, 50, 62, 72]],
+      conseil: "Buste légèrement penché en avant. Descends jusqu'à un angle droit aux coudes. Trop facile : ajoute du lest. Trop dur : machine assistée." },
+    planche: { nom: "Gainage planche", poses: [{ h: [25, 57], n: [30, 60], p: [51, 64], k: [66, 68], f: [81, 72], e: [30, 72], w: [40, 72] }],
+      conseil: "Sur les avant bras, corps droit de la tête aux talons. Serre les fessiers et le ventre." },
+    relsusp: { nom: "Relevés de jambes suspendu", poses: [SUSP, avec(SUSP, { k: [72, 45], f: [87, 44] })], props: [["l", 30, 4, 90, 4]],
+      conseil: "Suspendu à la barre, monte les jambes à l'horizontale sans te balancer. Descente lente. Trop dur : genoux pliés." },
+    lateral: EX.lateral,
+    crunchpoulie: { nom: "Crunch à la poulie haute, à genoux",
+      poses: [{ h: [56, 29], n: [58, 35], p: [62, 57], k: [62, 72], f: [76, 72], e: [62, 36], w: [54, 30] }, { h: [42, 55], n: [46, 50], p: [62, 57], k: [62, 72], f: [76, 72], e: [50, 56], w: [42, 48] }],
+      props: [["l", 50, 0, 54, 30]], props2: [["l", 50, 0, 42, 48]],
+      conseil: "À genoux face à la poulie, corde derrière la tête. Enroule le buste vers le sol avec les abdos, les hanches ne bougent pas." }
+  };
+
+  var SEANCES_SALLE = {
+    p1: [["devcouche", "4 × 8 à 10"], ["tirage", "4 × 8 à 12"], ["squat", "4 × 6 à 10"], ["militaire", "3 × 8 à 12"], ["fentes", "3 × 10 par jambe"], ["dips", "3 × 8 à 12"], ["planche", "3 × 45 s"], ["relsusp", "3 × 10 à 15"]],
+    hautA: [["devhalteres", "4 × 8 à 12"], ["militaire", "4 × 6 à 10"], ["rowing", "4 × 8 à 10"], ["dips", "3 × 8 à 12"], ["extpoulie", "3 × 10 à 15"], ["elevlat", "3 × 12 à 15"]],
+    basA: [["squat", "4 × 6 à 10"], ["sdt", "4 × 8 à 10"], ["hipthrust", "3 × 8 à 12"], ["mollets", "4 × 10 à 15"], ["planche", "3 × 45 s"], ["relsusp", "3 × 10 à 15"]],
+    hautB: [["tractions", "4 × 6 à 10"], ["devcouche", "4 × 6 à 10"], ["curl", "3 × 8 à 12"], ["ecarte", "3 × 10 à 12"], ["facepull", "3 × 12 à 15"], ["barrefront", "3 × 8 à 12"]],
+    basB: [["presse", "4 × 10 à 12"], ["fentes", "3 × 10 par jambe"], ["legcurl", "3 × 10 à 15"], ["legext", "3 × 12 à 15"], ["lateral", "3 × 30 s par côté"], ["crunchpoulie", "3 × 12 à 15"]]
+  };
+  var REGLES = {
+    maison: ["Échauffe toi 5 minutes : rotations d'épaules, 10 squats lents, 30 secondes de gainage, 10 pompes faciles.", "Arrête chaque série quand il te reste 1 ou 2 répétitions en réserve. Descente en 3 secondes.", "Repos de 60 à 90 secondes entre les séries, 2 minutes sur les exercices les plus durs.", "Note tes répétitions. Quand tu atteins le haut de la fourchette sur toutes les séries, passe à la variante plus dure."],
+    salle: ["Échauffe toi 5 minutes de cardio, puis 2 séries légères (barre vide ou 50 % de ta charge) avant le premier exercice.", "Choisis une charge qui te laisse 1 ou 2 répétitions en réserve sur la dernière série. Descente en 2 à 3 secondes.", "Repos de 2 minutes sur les gros exercices (couché, squat, soulevé, tractions), 90 secondes sur les autres.", "Note tes charges. Quand tu atteins le haut de la fourchette sur toutes les séries, ajoute 2,5 kg (1 à 2 kg par haltère).", "Les premières semaines, prends des charges modérées et soigne la technique. Demande au coach de la salle de vérifier ton squat et ton soulevé."]
+  };
+  var lieu = "maison"; try { lieu = localStorage.getItem("rdm-seances-lieu") === "salle" ? "salle" : "maison"; } catch (e) {}
+
   var SEANCES = {
     p1: { nom: "Corps entier", phase: "Phase 1", liste: [["pompes", "4 × max"], ["rowtable", "4 × 8 à 12"], ["squat", "4 × 15 à 25"], ["pike", "3 × 8 à 12"], ["fentes", "3 × 10 par jambe"], ["dips", "3 × 8 à 15"], ["hollow", "3 × 20 à 40 s"], ["releves", "3 × 10 à 15"]] },
     hautA: { nom: "Haut A, poussée", phase: "Phase 2", liste: [["declinees", "4 × 8 à 15"], ["pikedecl", "4 × 6 à 12"], ["rowtable", "4 × 8 à 12"], ["diamant", "3 × 8 à 15"], ["dips", "3 × 10 à 15"], ["rowserviette", "3 × 12 à 15"]] },
@@ -164,10 +265,14 @@
       var s = SEANCES[id];
       return '<button type="button" data-sc="' + id + '" aria-pressed="' + (id === cur) + '">' + esc(s.phase === "Phase 1" ? "Phase 1, corps entier" : s.nom) + (id === du ? " · aujourd'hui" : "") + "</button>";
     }).join("");
-    var s = SEANCES[cur];
-    el("sc-liste").innerHTML = s.liste.map(function (x, i) {
-      var ex = EX[x[0]];
-      return '<article class="sc-ex">' + dessin(ex) + '<div class="sc-txt"><span class="eyebrow">' + (i + 1) + " sur " + s.liste.length + '</span><h3>' + esc(ex.nom) + '</h3><p class="sc-series">' + esc(x[1]) + '</p><p class="note">' + esc(ex.conseil) + "</p></div></article>";
+    el("sc-lieu").innerHTML = [["maison", "À la maison"], ["salle", "En salle de sport"]].map(function (l) {
+      return '<button type="button" data-lieu="' + l[0] + '" aria-pressed="' + (l[0] === lieu) + '">' + l[1] + "</button>";
+    }).join("");
+    el("sc-regles").innerHTML = REGLES[lieu].map(function (r) { return "<li>" + esc(r) + "</li>"; }).join("");
+    var s = SEANCES[cur], liste = lieu === "salle" ? SEANCES_SALLE[cur] : s.liste, BASE = lieu === "salle" ? SALLE : EX;
+    el("sc-liste").innerHTML = liste.map(function (x, i) {
+      var ex = BASE[x[0]];
+      return '<article class="sc-ex">' + dessin(ex) + '<div class="sc-txt"><span class="eyebrow">' + (i + 1) + " sur " + liste.length + '</span><h3>' + esc(ex.nom) + '</h3><p class="sc-series">' + esc(x[1]) + '</p><p class="note">' + esc(ex.conseil) + "</p></div></article>";
     }).join("");
   }
 
@@ -182,10 +287,18 @@
     ".sc-corps{stroke:currentColor;stroke-width:3.2;stroke-linecap:round}.sc-loin{stroke:currentColor;stroke-width:3.2;stroke-linecap:round;opacity:.35}" +
     ".sc-tete{fill:currentColor}.sc-sol{stroke:var(--line);stroke-width:1.5}.sc-objet{fill:none;stroke:var(--muted);stroke-width:1.8;stroke-linecap:round}" +
     ".sc-serviette{stroke:var(--basil);stroke-width:2.4;stroke-dasharray:3 2}.sc-fleche{fill:none;stroke:var(--muted);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}" +
+    ".sc-poids{fill:none;stroke:var(--basil);stroke-width:2.2}.sc-lieu{margin-bottom:-4px}" +
     ".sc-leg{font-size:6px;fill:var(--muted);letter-spacing:.05em;text-transform:uppercase}";
   document.head.appendChild(st);
 
   el("sc-choix").addEventListener("click", function (e) { var b = e.target.closest("[data-sc]"); if (b) { choix = b.dataset.sc; rendre(); } });
+  el("sc-lieu").addEventListener("click", function (e) { var b = e.target.closest("[data-lieu]"); if (b) { lieu = b.dataset.lieu; try { localStorage.setItem("rdm-seances-lieu", lieu); } catch (er) {} rendre(); } });
+  // Espace d'Anatole seulement (voir muscle.js)
+  if (window.rdmPerso) window.rdmPerso.sur(function (ok) {
+    var b = document.querySelector('.tabs button[data-tab="seances"]');
+    if (b) b.hidden = !ok;
+    if (!ok) { var sec = document.querySelector('[data-view="seances"]'); if (sec && !sec.hidden && typeof showTab === "function") showTab("semaine"); }
+  });
   document.addEventListener("visibilitychange", function () { if (!document.hidden) rendre(); });
   rendre();
 })();
