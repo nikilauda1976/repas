@@ -4,6 +4,18 @@
 (function () {
   "use strict";
   var ID = "muscle-semaine";
+
+  // Espace personnel : ces onglets n'apparaissent que connecté au compte d'Anatole (nom qui commence par « Anatole »),
+  // jamais dans le compte de la famille ni sans compte.
+  window.rdmPerso = window.rdmPerso || (function () {
+    var cbs = [];
+    function ok() {
+      var f = window.rdmCompte && window.rdmCompte.famille && window.rdmCompte.famille();
+      return !!(f && /^anatole(\b|$)/i.test(String(f.nom || "").trim()));
+    }
+    window.addEventListener("rdm-famille", function () { var v = ok(); cbs.forEach(function (c) { c(v); }); });
+    return { ok: ok, sur: function (c) { cbs.push(c); c(ok()); } };
+  })();
   var JOURS = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
   var MOIS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
   var CRENEAUX = ["Petit déjeuner", "Déjeuner", "Collation"];
@@ -98,7 +110,6 @@
   };
   // Toujours pour 1 personne, quel que soit le foyer : la base suit le nombre de portions du foyer.
   Object.defineProperty(semaine, "base", { get: function () { return typeof portions === "function" ? portions() : 6; } });
-  if (typeof REG !== "undefined") REG.set(ID, semaine);
 
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
   var eur = function (n) { return n.toFixed(2).replace(".", ",") + " €"; };
@@ -146,5 +157,13 @@
   var c2 = document.getElementById("mu-prot"); if (c2) c2.innerHTML = "<b>≈ " + protJour + " g</b> de protéines par jour avant le dîner";
   rendre();
   document.addEventListener("visibilitychange", function () { if (!document.hidden) rendre(); });
-  if (typeof renderBasket === "function") renderBasket();
+
+  // Visible et dans les courses seulement dans l'espace d'Anatole
+  window.rdmPerso.sur(function (ok) {
+    var b = document.querySelector('.tabs button[data-tab="muscle"]');
+    if (b) b.hidden = !ok;
+    if (typeof REG !== "undefined") { if (ok) REG.set(ID, semaine); else REG.delete(ID); }
+    if (!ok) { var sec = document.querySelector('[data-view="muscle"]'); if (sec && !sec.hidden && typeof showTab === "function") showTab("semaine"); }
+    if (typeof renderBasket === "function") renderBasket();
+  });
 })();
