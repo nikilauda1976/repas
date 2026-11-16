@@ -866,6 +866,8 @@ button.tm-p{background:var(--basil);color:var(--on-basil)}
   <button type="button" role="tab" data-tab="semaine" aria-selected="true">Menus</button>
   <button type="button" role="tab" data-tab="desserts" aria-selected="false">Desserts</button>
   <button type="button" role="tab" data-tab="perso" aria-selected="false">Mes recettes <span id="tab-perso"></span></button>
+  <button type="button" role="tab" data-tab="muscle" aria-selected="false">Prise de muscle</button>
+  <button type="button" role="tab" data-tab="seances" aria-selected="false">Séances</button>
   <button type="button" role="tab" data-tab="favoris" aria-selected="false">Favoris <span id="tab-fav"></span></button>
   <button type="button" role="tab" data-tab="recettes" aria-selected="false">Ma semaine <span id="tab-rec"></span></button>
   <button type="button" role="tab" data-tab="liste" aria-selected="false">Courses <span id="tab-count"></span></button>
@@ -984,6 +986,28 @@ button.tm-p{background:var(--basil);color:var(--on-basil)}
   <div id="perso-liste" class="perso-liste"></div>
 </section>
 
+<section data-view="muscle" class="muscle">
+  <span class="eyebrow">Pour Anatole, 1 personne</span>
+  <h2>Prise de muscle</h2>
+  <p class="lead">Trois vrais repas par jour en plus du dîner : petit déjeuner, déjeuner et collation. Le soir, c'est le dîner de la famille avec une portion et demie. Cuisinez le déjeuner du lundi et du mardi en double, ça fait ceux du mercredi et du vendredi.</p>
+  <div class="facts"><span class="chip" id="mu-kcal"></span><span class="chip" id="mu-prot"></span><span class="chip" id="mu-prix"></span></div>
+  <label class="pick"><input type="checkbox" id="mu-pick" data-id="muscle-semaine"> Ajouter les ingrédients de la semaine à mes courses</label>
+  <p class="note">Pèse toi une fois par semaine, le matin. Si ton poids ne bouge pas pendant 3 semaines, ajoute une collation de plus.</p>
+  <div id="mu-jours" class="mu-jours"></div>
+</section>
+<section data-view="seances" class="seances">
+  <span class="eyebrow">Pour Anatole · au poids du corps, sans matériel</span>
+  <h2>Mes séances</h2>
+  <p class="sc-auj" id="sc-auj"></p>
+  <ol class="sc-regles note">
+    <li>Échauffe toi 5 minutes : rotations d'épaules, 10 squats lents, 30 secondes de gainage, 10 pompes faciles.</li>
+    <li>Arrête chaque série quand il te reste 1 ou 2 répétitions en réserve. Descente en 3 secondes.</li>
+    <li>Repos de 60 à 90 secondes entre les séries, 2 minutes sur les exercices les plus durs.</li>
+    <li>Note tes répétitions. Quand tu atteins le haut de la fourchette sur toutes les séries, passe à la variante plus dure.</li>
+  </ol>
+  <div class="sc-choix" id="sc-choix" role="group" aria-label="Choisir la séance"></div>
+  <div class="sc-liste" id="sc-liste"></div>
+</section>
 <section data-view="favoris">
   <span class="eyebrow">Ce que vous avez aimé</span>
   <h2>Mes recettes favorites</h2>
@@ -1692,7 +1716,7 @@ function card(m,p="m-"){
    <label class="pick"><input type="checkbox" id="${p}pick-${esc(m.id)}" data-id="${esc(m.id)}" ${chosen.has(m.id)?"checked":""}> Je choisis ce menu</label>
   </article>`;
 }
-const isExtra=m=>m.perso?m.type!=="Plat":m.profil==="Gâteau de la semaine"||m.profil==="Soirée de la semaine"||m.profil==="Dessert et goûter";
+const isExtra=m=>m.muscle?true:m.perso?m.type!=="Plat":m.profil==="Gâteau de la semaine"||m.profil==="Soirée de la semaine"||m.profil==="Dessert et goûter";
 const chosenRecipes=()=>[...chosen].map(id=>REG.get(id)).filter(Boolean);
 const nbOeufs=sel=>sel.reduce((n,m)=>n+ingF(m).reduce((s,i)=>s+(/^[œŒ]ufs/.test(i[1])?(parseInt(i[2],10)||0):0),0),0);
 // Rayons que la famille achète elle-même ailleurs (marché, boucher, poissonnier) : gardés sur l'appareil
@@ -2222,5 +2246,7 @@ function fallback(t){const pre=document.createElement("pre");pre.textContent=t;p
 <script src="antigaspi.js?v=20261110c"></script>
 <script src="ux.js?v=20261110i"></script>
 <script src="batch.js?v=20261110h"></script>
+<script src="muscle.js?v=20261115"></script>
+<script src="seances.js?v=20261115"></script>
 <script src="pwa.js?v=20261108w"></script>
 </body></html>
